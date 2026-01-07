@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "npx @biomejs/biome check .",
-    "lint:fix": "npx @biomejs/biome check --write .",
+    "format": "npx @biomejs/biome format .",
+    "lint": "npx @biomejs/biome lint .",
+    "check": "npx @biomejs/biome check .",
+    "check:fix": "npx @biomejs/biome check --write .",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -15,8 +15,37 @@
   },
   "linter": {
     "enabled": true,
+    "domains": {
+      "react": "all"
+    },
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        "useSimplifiedLogicExpression": "info"
+      },
+      "correctness": {
+        "noNestedComponentDefinitions": "error",
+        "noUndeclaredVariables": "error"
+      },
+      "style": {
+        "noUselessElse": "error",
+        "useConsistentCurlyBraces": "error",
+        "useDefaultParameterLast": "error",
+        "useDefaultSwitchClause": "error",
+        "useFilenamingConvention": {
+          "level": "info",
+          "options": { "filenameCases": ["camelCase", "PascalCase", "export"] }
+        },
+        "useObjectSpread": "info",
+        "noNestedTernary": "error",
+        "noParameterAssign": "error",
+        "useSelfClosingElements": "info",
+        "useShorthandAssign": "info"
+      },
+      "suspicious": {
+        "useAwait": "warn",
+        "useErrorMessage": "error"
+      }
     }
   },
   "javascript": {
