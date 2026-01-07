@@ -1,10 +1,14 @@
-import "./App.css";
+import Header from "./components/Header";
+import LoginForm from "./components/LoginForm";
 
 export default function App() {
   return (
-    <main>
-      <h1>App Home</h1>
-      <p>Hello World</p>
-    </main>
+    <>
+      <Header />
+      <main>
+        <h1>MediMate Medical Centre</h1>
+        <LoginForm />
+      </main>
+    </>
   );
 }
