@@ -1,4 +1,5 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getJwtPayload } from "../utils/jwt";
 
 const defaultState = {
   userId: null,
@@ -11,19 +12,24 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => {
-    const saved = localStorage.getItem("user");
+    const saved = localStorage.getItem("token");
 
     if (!saved) {
       return defaultState;
     }
 
     try {
-      const parsed = JSON.parse(saved);
+      const parsedToken = JSON.parse(saved);
+
+      // Validate token - this could refresh token too
+
+      const payload = getJwtPayload(parsedToken);
+
       return {
-        userId: parsed.userId,
-        userType: parsed.userType,
-        token: parsed.token,
-        isAuthenticated: parsed.isAuthenticated,
+        userId: payload.userId,
+        userType: payload.userType,
+        token: parsedToken,
+        isAuthenticated: true,
       };
     } catch {
       return {
@@ -34,13 +40,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (!auth.isAuthenticated) {
-      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       return;
     }
 
-    const { userId, userType, token } = auth;
+    const { token } = auth;
 
-    localStorage.setItem("user", JSON.stringify({ userId, userType, token }));
+    localStorage.setItem("token", JSON.stringify(token));
   }, [auth]);
 
   const login = ({ userId, userType, token }) => {
