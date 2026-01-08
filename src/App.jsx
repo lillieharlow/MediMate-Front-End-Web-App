@@ -1,10 +1,11 @@
-import "./App.css";
+import Header from "./components/Header";
+import AppRoutes from "./router/AppRoutes";
 
 export default function App() {
   return (
-    <main>
-      <h1>App Home</h1>
-      <p>Hello World</p>
-    </main>
+    <>
+      <Header />
+      <AppRoutes />
+    </>
   );
 }
