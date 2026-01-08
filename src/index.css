@@ -25,10 +25,11 @@ a:hover {
 
 main {
   margin: 0;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-width: 320px;
   min-height: 100vh;
 }
