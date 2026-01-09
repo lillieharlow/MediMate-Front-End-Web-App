@@ -47,7 +47,6 @@ export default function LoginForm() {
       if (!payload) throw new Error("Invalid token");
 
       login({ userId: payload.userId, userType: payload.userType, token });
-      console.log("You are now logged in, woohoo");
       navigate("/dashboard");
     } catch (error) {
       setError(error.message);
@@ -58,7 +57,7 @@ export default function LoginForm() {
   return (
     <LoginCard>
       <h2>Log In</h2>
-      <form onSubmit={handleLoginSubmit}>
+      <form onSubmit={handleLoginSubmit} data-testid="app-login-form">
         <label>
           Email:{" "}
           <input
@@ -67,6 +66,7 @@ export default function LoginForm() {
             onChange={(event) => setEmail(event.target.value)}
             placeholder="Enter your email"
             required
+            data-testid="app-login-form-input-email"
           />
         </label>
         <label>
@@ -77,10 +77,13 @@ export default function LoginForm() {
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Enter your password"
             required
+            data-testid="app-login-form-input-password"
           />
         </label>
         <span id="login-error-span">{error || ""}</span>
-        <button type="submit">Log In</button>
+        <button type="submit" data-testid="app-login-form-button-submit">
+          Log In
+        </button>
       </form>
     </LoginCard>
   );

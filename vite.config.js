@@ -7,6 +7,6 @@ export default defineConfig({
   test: {
     globals: true, // enables Jest-like syntax in Vitest test files
     environment: 'jsdom', // tells the test runner system (Vitest, Jest) to be ready to run browser-related code
-    setupFiles: 'src/setupTests.js', // Perform any additional configuration before any tests run
+    setupFiles: './tests/setupTests.js', // Perform any additional configuration before any tests run
   },
 });
