@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
     <main>
-      <h1>Dashboard (Placeholder)</h1>
+      <h1 data-testid="app-dashboard-heading">Dashboard (Placeholder)</h1>
       {/* Placeholder information to verify login */}
       <div id="dev-information">
         <p>Authenticated: {JSON.stringify(isAuthenticated)}</p>

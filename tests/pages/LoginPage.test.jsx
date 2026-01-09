@@ -1,0 +1,82 @@
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it } from "vitest";
+import LoginPage from "../../src/pages/LoginPage";
+import { renderWithAll } from "../testUtils";
+
+describe("Test /login page", () => {
+  it("LoginForm displayed on LoginPage when user not authenticated", () => {
+    renderWithAll(<LoginPage />);
+
+    // LoginForm form element is present
+    expect(screen.getByTestId("app-login-form")).toBeInTheDocument();
+
+    // LoginForm elements are visible (email/password fields, submit button)
+    expect(
+      screen.getByTestId("app-login-form-input-email")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId("app-login-form-input-password")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId("app-login-form-button-submit")
+    ).toBeInTheDocument();
+  });
+
+  it("User can enter details into login form", async () => {
+    renderWithAll(<LoginPage />);
+
+    const emailField = screen.getByTestId("app-login-form-input-email");
+    const passwordField = screen.getByTestId("app-login-form-input-password");
+
+    const user = userEvent.setup();
+
+    expect(emailField.value).toBe("");
+
+    await user.type(emailField, "test@email.com");
+    await user.type(passwordField, "123456");
+    expect(emailField.value).toBe("test@email.com");
+    expect(passwordField.value).toBe("123456");
+  });
+
+  it("Remain on login page & display error on failed login attempt", async () => {
+    renderWithAll(<LoginPage />);
+
+    const loginForm = screen.getByTestId("app-login-form");
+    const emailField = screen.getByTestId("app-login-form-input-email");
+    const passwordField = screen.getByTestId("app-login-form-input-password");
+    const submitButton = screen.getByTestId("app-login-form-button-submit");
+    const user = userEvent.setup();
+
+    expect(screen.getByTestId("app-login-form")).toBeInTheDocument();
+
+    await user.type(emailField, "bad-email@example.com");
+    await user.type(passwordField, "123456");
+    await user.click(submitButton);
+
+    // LoginForm should still be present
+    expect(loginForm).toBeInTheDocument();
+    // Error message displayed on screen matches that sent in mock response
+    expect(
+      await screen.findByText(/invalid test credentials/i)
+    ).toBeInTheDocument();
+  });
+
+  it("Successful login navigates to /dashboard", async () => {
+    renderWithAll(<LoginPage />);
+
+    const emailField = screen.getByTestId("app-login-form-input-email");
+    const passwordField = screen.getByTestId("app-login-form-input-password");
+    const submitButton = screen.getByTestId("app-login-form-button-submit");
+    const user = userEvent.setup();
+
+    expect(screen.getByTestId("app-login-form")).toBeInTheDocument();
+
+    await user.type(emailField, "ok-email@example.com");
+    await user.type(passwordField, "123456");
+    await user.click(submitButton);
+
+    // Should have navigated to dashboard on successful login
+    expect(screen.getByTestId("app-dashboard-heading")).toBeInTheDocument();
+  });
+});
