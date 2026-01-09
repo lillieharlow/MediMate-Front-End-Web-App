@@ -1,20 +1,13 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
-import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
-import styled from "styled-components";
-import { loginRequest } from "../api/auth";
-import { useAuth } from "../contexts/AuthContext";
-import { getJwtPayload } from "../utils/jwt";
+import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router';
+import styled from 'styled-components';
+import { loginRequest } from '../api/auth';
+import { useAuth } from '../contexts/AuthContext';
+import { Card } from '../style/componentStyles';
+import { getJwtPayload } from '../utils/jwt';
 
-const LoginCard = styled.div`
-  border: 1px black solid;
-  border-radius: 8px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  form {
+const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,7 +18,6 @@ const LoginCard = styled.div`
     > #login-error-span {
       color: red;
     }
-  }
 `;
 
 const StyledInput = styled.input`
@@ -43,14 +35,14 @@ const StyledInput = styled.input`
 
 export default function LoginForm() {
   const { login, isAuthenticated } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   if (isAuthenticated) return <Navigate to="/dashboard" />;
 
-  const handleLoginSubmit = async (event) => {
+  const handleLoginSubmit = async event => {
     event.preventDefault();
     setError(null);
 
@@ -58,10 +50,10 @@ export default function LoginForm() {
       const { token } = await loginRequest({ email, password });
       const payload = getJwtPayload(token);
 
-      if (!payload) throw new Error("Invalid token");
+      if (!payload) throw new Error('Invalid token');
 
       login({ userId: payload.userId, userType: payload.userType, token });
-      navigate("/dashboard");
+      navigate('/dashboard');
     } catch (error) {
       setError(error.message);
       console.log(error);
@@ -69,36 +61,36 @@ export default function LoginForm() {
   };
 
   return (
-    <LoginCard>
+    <Card>
       <h2>Log In</h2>
-      <form onSubmit={handleLoginSubmit} data-testid="app-login-form">
+      <StyledForm onSubmit={handleLoginSubmit} data-testid="app-login-form">
         <label>
-          Email:{" "}
+          Email:{' '}
           <StyledInput
             type="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={event => setEmail(event.target.value)}
             placeholder="Enter your email"
             required
             data-testid="app-login-form-input-email"
           />
         </label>
         <label>
-          Password:{" "}
+          Password:{' '}
           <StyledInput
             type="password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={event => setPassword(event.target.value)}
             placeholder="Enter your password"
             required
             data-testid="app-login-form-input-password"
           />
         </label>
-        <span id="login-error-span">{error || ""}</span>
+        <span id="login-error-span">{error || ''}</span>
         <button type="submit" data-testid="app-login-form-button-submit">
           Log In
         </button>
-      </form>
-    </LoginCard>
+      </StyledForm>
+    </Card>
   );
 }
