@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import styled from "styled-components";
@@ -24,6 +25,19 @@ const LoginCard = styled.div`
     > #login-error-span {
       color: red;
     }
+  }
+`;
+
+const StyledInput = styled.input`
+  padding: 0.2rem;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid rgba(204, 204, 204, 0.5);
+
+  &:focus {
+    border: 1.5px solid rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    color: black;
   }
 `;
 
@@ -60,8 +74,8 @@ export default function LoginForm() {
       <form onSubmit={handleLoginSubmit} data-testid="app-login-form">
         <label>
           Email:{" "}
-          <input
-            type="text"
+          <StyledInput
+            type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="Enter your email"
@@ -71,7 +85,7 @@ export default function LoginForm() {
         </label>
         <label>
           Password:{" "}
-          <input
+          <StyledInput
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
