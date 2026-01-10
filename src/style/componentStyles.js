@@ -18,3 +18,7 @@ export const StyledForm = styled.form`
     font-weight: bold;
   }
 `;
+
+export const FormErrorSpan = styled.span`
+  color: red;
+`;
