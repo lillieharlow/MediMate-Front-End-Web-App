@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styled from 'styled-components';
+import { signupRequest } from '../api/auth';
 import { Card, FormErrorSpan, StyledForm } from '../style/componentStyles';
 
 // TODO: Update styling for input to reflect front-end validation once done
@@ -21,11 +22,24 @@ const StyledInput = styled.input`
 export default function CreateAccountForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState('');
 
-  const handleSignupSubmit = event => {
+  const handleSignupSubmit = async event => {
     event.preventDefault();
-    setError(null);
+    setError(false);
+    setMessage('');
+
+    try {
+      const signupSuccess = await signupRequest({ email, password });
+
+      if (signupSuccess) {
+        setMessage('Patient account created! You can now log in.');
+      }
+    } catch (error) {
+      setError(true);
+      setMessage(error.message);
+    }
   };
   return (
     <Card>
@@ -53,7 +67,9 @@ export default function CreateAccountForm() {
             data-testid="app-login-form-input-password"
           />
         </label>
-        <FormErrorSpan id="login-error-span">{error || ''}</FormErrorSpan>
+        <FormErrorSpan id="signup-error-span" style={{ color: error ? 'red' : 'green' }}>
+          {message}
+        </FormErrorSpan>
         <button type="submit" data-testid="app-login-form-button-submit">
           Log In
         </button>
