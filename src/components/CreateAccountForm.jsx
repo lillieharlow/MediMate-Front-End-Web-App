@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { signupRequest } from '../api/auth';
 import { Card, FormErrorSpan, StyledForm } from '../style/componentStyles';
@@ -22,22 +23,30 @@ const StyledInput = styled.input`
 export default function CreateAccountForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSignupSubmit = async event => {
     event.preventDefault();
-    setError(false);
+    setIsError(false);
     setMessage('');
 
     try {
       const signupSuccess = await signupRequest({ email, password });
 
       if (signupSuccess) {
-        setMessage('Patient account created! You can now log in.');
+        setMessage('Patient account created! Redirecting to login page...');
+        // TODO: redirect to /login after timeout
+        setTimeout(
+          () => {
+            navigate('/login');
+          },
+          1000 * 3, //3 seconds
+        );
       }
     } catch (error) {
-      setError(true);
+      setIsError(true);
       setMessage(error.message);
     }
   };
@@ -67,7 +76,7 @@ export default function CreateAccountForm() {
             data-testid="app-login-form-input-password"
           />
         </label>
-        <FormErrorSpan id="signup-error-span" style={{ color: error ? 'red' : 'green' }}>
+        <FormErrorSpan id="signup-error-span" className={isError ? 'error' : ''}>
           {message}
         </FormErrorSpan>
         <button type="submit" data-testid="app-login-form-button-submit">
