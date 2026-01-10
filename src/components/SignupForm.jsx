@@ -1,12 +1,12 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
-import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
-import styled from 'styled-components';
-import { loginRequest } from '../api/auth';
-import { useAuth } from '../contexts/AuthContext';
-import { Card, FormErrorSpan, StyledForm } from '../style/componentStyles';
-import { getJwtPayload } from '../utils/jwt';
 
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
+import { signupRequest } from '../api/auth';
+import { Card, FormErrorSpan, StyledForm } from '../style/componentStyles';
+
+// TODO: Update styling for input to reflect front-end validation once done
 const StyledInput = styled.input`
   padding: 0.2rem;
   border-radius: 4px;
@@ -20,40 +20,40 @@ const StyledInput = styled.input`
   }
 `;
 
-export default function LoginForm() {
-  const { login, isAuthenticated } = useAuth();
+export default function SignupForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  if (isAuthenticated) return <Navigate to="/dashboard" />;
-
-  const handleLoginSubmit = async event => {
+  const handleSignupSubmit = async event => {
     event.preventDefault();
+    setIsError(false);
     setMessage('');
-    setIsError(null);
 
     try {
-      const { token } = await loginRequest({ email, password });
-      const payload = getJwtPayload(token);
+      const signupSuccess = await signupRequest({ email, password });
 
-      if (!payload) throw new Error('Invalid token');
-
-      login({ userId: payload.userId, userType: payload.userType, token });
-      navigate('/dashboard');
+      if (signupSuccess) {
+        setMessage('Patient account created! Redirecting to login page...');
+        // TODO: redirect to /login after timeout
+        setTimeout(
+          () => {
+            navigate('/login');
+          },
+          1000 * 3, //3 seconds
+        );
+      }
     } catch (error) {
       setIsError(true);
       setMessage(error.message);
-      console.log(error);
     }
   };
-
   return (
     <Card>
-      <h2>Log In</h2>
-      <StyledForm onSubmit={handleLoginSubmit} data-testid="app-login-form">
+      <h2 data-testid="app-signup-heading">Create Account</h2>
+      <StyledForm onSubmit={handleSignupSubmit} data-testid="app-signup-form">
         <label>
           Email:{' '}
           <StyledInput
@@ -62,7 +62,7 @@ export default function LoginForm() {
             onChange={event => setEmail(event.target.value)}
             placeholder="Enter your email"
             required
-            data-testid="app-login-form-input-email"
+            data-testid="app-signup-form-input-email"
           />
         </label>
         <label>
@@ -71,16 +71,16 @@ export default function LoginForm() {
             type="password"
             value={password}
             onChange={event => setPassword(event.target.value)}
-            placeholder="Enter your password"
+            placeholder="Choose your password"
             required
-            data-testid="app-login-form-input-password"
+            data-testid="app-signup-form-input-password"
           />
         </label>
-        <FormErrorSpan id="login-error-span" className={isError ? 'error' : ''}>
+        <FormErrorSpan id="signup-error-span" className={isError ? 'error' : ''}>
           {message}
         </FormErrorSpan>
-        <button type="submit" data-testid="app-login-form-button-submit">
-          Log In
+        <button type="submit" data-testid="app-signup-form-button-submit">
+          Create Account
         </button>
       </StyledForm>
     </Card>
