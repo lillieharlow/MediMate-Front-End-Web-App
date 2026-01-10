@@ -24,14 +24,16 @@ export default function LoginForm() {
   const { login, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
   if (isAuthenticated) return <Navigate to="/dashboard" />;
 
   const handleLoginSubmit = async event => {
     event.preventDefault();
-    setError(null);
+    setMessage('');
+    setIsError(null);
 
     try {
       const { token } = await loginRequest({ email, password });
@@ -42,7 +44,8 @@ export default function LoginForm() {
       login({ userId: payload.userId, userType: payload.userType, token });
       navigate('/dashboard');
     } catch (error) {
-      setError(error.message);
+      setIsError(true);
+      setMessage(error.message);
       console.log(error);
     }
   };
@@ -73,7 +76,9 @@ export default function LoginForm() {
             data-testid="app-login-form-input-password"
           />
         </label>
-        <FormErrorSpan id="login-error-span">{error || ''}</FormErrorSpan>
+        <FormErrorSpan id="login-error-span" className={isError ? 'error' : ''}>
+          {message}
+        </FormErrorSpan>
         <button type="submit" data-testid="app-login-form-button-submit">
           Log In
         </button>

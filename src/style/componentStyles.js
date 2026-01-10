@@ -20,5 +20,8 @@ export const StyledForm = styled.form`
 `;
 
 export const FormErrorSpan = styled.span`
-  color: red;
+  color: green;
+  &.error {
+    color: red;
+  }
 `;
