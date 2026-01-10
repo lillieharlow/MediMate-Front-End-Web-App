@@ -1,18 +1,11 @@
-import { post } from './common';
+import { getErrorReason, post } from "./common";
 
 export const loginRequest = async ({ email, password }) => {
-  const loginResData = await post('api/v1/auth/login', { email, password });
+  const loginResData = await post("api/v1/auth/login", { email, password });
 
   if (!loginResData.success) {
-    const errorsString = Array.isArray(loginResData.errors)
-      ? loginResData.errors
-          .map(e => e?.msg)
-          .filter(Boolean)
-          .join(', ')
-      : undefined;
-    throw new Error(
-      `Login failed: ${errorsString || loginResData.error || loginResData.name || loginResData.message || 'Unknown error'}`,
-    );
+    const errorsString = getErrorReason(loginResData);
+    throw new Error(`Login failed: ${errorsString}`);
   }
   //Unpack required items
   const returnObj = {
@@ -22,4 +15,16 @@ export const loginRequest = async ({ email, password }) => {
   };
 
   return returnObj;
+};
+
+export const signupRequest = async ({ email, password }) => {
+  const signupResData = await post("api/v1/auth/signup", { email, password });
+
+  if (!signupResData.success) {
+    const errorsString = getErrorReason(signupResData);
+    throw new Error(`Signup failed: ${errorsString}`);
+  }
+
+  // Don't need to return anything, if success then return true
+  return true;
 };
