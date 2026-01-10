@@ -4,20 +4,11 @@ import { Navigate, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { loginRequest } from '../api/auth';
 import { useAuth } from '../contexts/AuthContext';
-import { Card } from '../style/componentStyles';
+import { Card, StyledForm } from '../style/componentStyles';
 import { getJwtPayload } from '../utils/jwt';
 
-const StyledForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    > label {
-      font-weight: bold;
-    }
-    > #login-error-span {
-      color: red;
-    }
+const ErrorSpan = styled.span`
+  color: red;
 `;
 
 const StyledInput = styled.input`
@@ -86,7 +77,7 @@ export default function LoginForm() {
             data-testid="app-login-form-input-password"
           />
         </label>
-        <span id="login-error-span">{error || ''}</span>
+        <ErrorSpan id="login-error-span">{error || ''}</ErrorSpan>
         <button type="submit" data-testid="app-login-form-button-submit">
           Log In
         </button>

@@ -8,3 +8,13 @@ export const Card = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+export const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  > label {
+    font-weight: bold;
+  }
+`;
