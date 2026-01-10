@@ -20,7 +20,7 @@ const StyledInput = styled.input`
   }
 `;
 
-export default function CreateAccountForm() {
+export default function SignupForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
@@ -62,7 +62,7 @@ export default function CreateAccountForm() {
             onChange={event => setEmail(event.target.value)}
             placeholder="Enter your email"
             required
-            data-testid="app-login-form-input-email"
+            data-testid="app-signup-form-input-email"
           />
         </label>
         <label>
@@ -73,14 +73,14 @@ export default function CreateAccountForm() {
             onChange={event => setPassword(event.target.value)}
             placeholder="Choose your password"
             required
-            data-testid="app-login-form-input-password"
+            data-testid="app-signup-form-input-password"
           />
         </label>
         <FormErrorSpan id="signup-error-span" className={isError ? 'error' : ''}>
           {message}
         </FormErrorSpan>
-        <button type="submit" data-testid="app-login-form-button-submit">
-          Log In
+        <button type="submit" data-testid="app-signup-form-button-submit">
+          Create Account
         </button>
       </StyledForm>
     </Card>
