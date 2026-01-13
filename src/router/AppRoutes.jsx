@@ -1,8 +1,9 @@
-import { Route, Routes } from 'react-router';
-import DashboardPage from '../pages/DashboardPage';
-import HomePage from '../pages/HomePage';
-import LoginPage from '../pages/LoginPage';
-import SignupPage from '../pages/SignupPage';
+import { Route, Routes } from "react-router";
+import DashboardPage from "../pages/DashboardPage";
+import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
+import LogoutPage from "../pages/LogoutPage";
+import SignupPage from "../pages/SignupPage";
 
 export default function AppRoutes() {
   return (
@@ -11,6 +12,7 @@ export default function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/logout" element={<LogoutPage />} />
     </Routes>
   );
 }

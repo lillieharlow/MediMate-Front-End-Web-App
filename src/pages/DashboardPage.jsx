@@ -2,10 +2,10 @@ import { Navigate } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function HomePage() {
-  const { userId, userType, isAuthenticated, logout } = useAuth();
+  const { userId, userType, isAuthenticated } = useAuth();
 
   // Return user to login page if they're not authenticated
-  if (!isAuthenticated) return <Navigate to="/login" />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return (
     <main>
@@ -16,9 +16,6 @@ export default function HomePage() {
         <p>User: {JSON.stringify(userId)}</p>
         <p>Type: {JSON.stringify(userType)}</p>
       </div>
-      <button type="button" onClick={() => logout()}>
-        Log Out
-      </button>
     </main>
   );
 }
