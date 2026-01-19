@@ -1,0 +1,61 @@
+import styled from "styled-components";
+import { useAuth } from "../../contexts/AuthContext";
+import HeaderMenuLink from "./HeaderMenuLink";
+
+const Menu = styled.div`
+  background-color: white;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin: 0;
+
+  > ul {
+    margin: 0;
+    padding: 0 0.5rem;
+    list-style: none;
+    width: 150px;
+  }
+`;
+export default function HeaderMenu({ onClickItem }) {
+  const { userType } = useAuth();
+  return (
+    <Menu role="menu">
+      <ul>
+        <li>
+          <HeaderMenuLink to="/dashboard" onClick={onClickItem}>
+            <span>Dashboard</span>
+          </HeaderMenuLink>
+        </li>
+        {/* Render /book conditionally for patients & staff */}
+        {["patient", "staff"].includes(userType) && (
+          <li>
+            <HeaderMenuLink to="/book" onClick={onClickItem}>
+              <span>New Booking</span>
+            </HeaderMenuLink>
+          </li>
+        )}
+        {/* Render /useradmin conditionally for staff */}
+        {userType === "staff" && (
+          <li>
+            <HeaderMenuLink to="/useradmin" onClick={onClickItem}>
+              <span>User Administration</span>
+            </HeaderMenuLink>
+          </li>
+        )}
+        <li>
+          <HeaderMenuLink to="/profile" onClick={onClickItem}>
+            <span>My Profile</span>
+          </HeaderMenuLink>
+        </li>
+        <li>
+          <HeaderMenuLink to="/logout" onClick={onClickItem}>
+            <span>Logout</span>
+          </HeaderMenuLink>
+        </li>
+      </ul>
+    </Menu>
+  );
+}

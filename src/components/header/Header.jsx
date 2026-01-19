@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import styled from "styled-components";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import HeaderMenu from "./HeaderMenu";
 
 const StyledHeader = styled.header`
@@ -43,21 +43,27 @@ export default function Header() {
     <StyledHeader>
       <span>
         <Link to="/" style={{ color: "inherit" }}>
-          <h3>MediMate</h3>
+          <h3 data-testid="app-header-title">MediMate</h3>
         </Link>
       </span>
 
+      {/* Conditionally render menu button for logged in users */}
       {isAuthenticated && (
         <div style={{ position: "relative" }}>
           <MenuButton
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
           >
-            <span style={{ fontSize: "16pt" }}>☰</span>
+            <span
+              style={{ fontSize: "16pt" }}
+              data-testid="app-header-menu-icon"
+            >
+              ☰
+            </span>
           </MenuButton>
 
           {/* Render overlay first so the menu is still interactable */}
-          {menuOpen && <MenuOverlay onClick={() => setMenuOpen(false)} />}
+          {menuOpen && <MenuOverlay onClick={closeMenu} />}
 
           {menuOpen && (
             <HeaderMenu
