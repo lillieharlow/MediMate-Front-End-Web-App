@@ -2,11 +2,11 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import SignupPage from '../../src/pages/SignupPage';
-import { renderWithAll } from '../testUtils';
+import { renderWithoutRoutes } from '../testUtils';
 
 describe('test /signup page', () => {
   it('SignupForm displays on /signup page, and is interactable', async () => {
-    renderWithAll(<SignupPage />, '/signup');
+    renderWithoutRoutes(<SignupPage />);
     const user = userEvent.setup();
 
     // Checks signup form is present
@@ -24,7 +24,7 @@ describe('test /signup page', () => {
 
   it('User & password fields should require a valid email address & password', async () => {
     //TODO: update test to reflect front end validation
-    renderWithAll(<SignupPage />, '/signup');
+    renderWithoutRoutes(<SignupPage />);
     const user = userEvent.setup();
 
     const emailInput = screen.getByTestId('app-signup-form-input-email');
@@ -36,7 +36,7 @@ describe('test /signup page', () => {
   });
 
   it('Signup with valid credentials returns success message', async () => {
-    renderWithAll(<SignupPage />, '/signup');
+    renderWithoutRoutes(<SignupPage />);
     const user = userEvent.setup();
 
     const emailInput = screen.getByTestId('app-signup-form-input-email');
@@ -50,7 +50,7 @@ describe('test /signup page', () => {
   });
 
   it('Signup with existing email address should return relevant error', async () => {
-    renderWithAll(<SignupPage />, '/signup');
+    renderWithoutRoutes(<SignupPage />);
     const user = userEvent.setup();
 
     const emailInput = screen.getByTestId('app-signup-form-input-email');
