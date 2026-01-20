@@ -22,17 +22,17 @@ const Menu = styled.div`
 export default function HeaderMenu({ onClickItem }) {
   const { userType } = useAuth();
   return (
-    <Menu role="menu">
+    <Menu role="menu" onClick={onClickItem}>
       <ul>
         <li>
-          <HeaderMenuLink to="/dashboard" onClick={onClickItem}>
+          <HeaderMenuLink to="/dashboard">
             <span>Dashboard</span>
           </HeaderMenuLink>
         </li>
         {/* Render /book conditionally for patients & staff */}
         {["patient", "staff"].includes(userType) && (
           <li>
-            <HeaderMenuLink to="/book" onClick={onClickItem}>
+            <HeaderMenuLink to="/book">
               <span>New Booking</span>
             </HeaderMenuLink>
           </li>
@@ -40,18 +40,18 @@ export default function HeaderMenu({ onClickItem }) {
         {/* Render /useradmin conditionally for staff */}
         {userType === "staff" && (
           <li>
-            <HeaderMenuLink to="/useradmin" onClick={onClickItem}>
+            <HeaderMenuLink to="/useradmin">
               <span>User Administration</span>
             </HeaderMenuLink>
           </li>
         )}
         <li>
-          <HeaderMenuLink to="/profile" onClick={onClickItem}>
+          <HeaderMenuLink to="/profile">
             <span>My Profile</span>
           </HeaderMenuLink>
         </li>
         <li>
-          <HeaderMenuLink to="/logout" onClick={onClickItem}>
+          <HeaderMenuLink to="/logout">
             <span>Logout</span>
           </HeaderMenuLink>
         </li>
