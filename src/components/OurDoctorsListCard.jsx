@@ -1,6 +1,7 @@
 /*
 OurDoctorsListCard component
-- Card for displaying "Our Doctors" in patient dashboard
+- Card for displaying "Our Doctors"
+- Child component of ListCard when layout is set to 'our-doctors'
 */
 
 function OurDoctorsListCard({ image, title, subtitle, info, actions, style }) {
