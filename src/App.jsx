@@ -1,4 +1,4 @@
-import Header from "./components/Header";
+import Header from "./components/header/Header";
 import AppRoutes from "./router/AppRoutes";
 
 export default function App() {
