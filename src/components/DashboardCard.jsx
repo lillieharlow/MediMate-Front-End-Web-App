@@ -1,15 +1,15 @@
 /*
-DashboardCard component
+Dashboard Card component
 - Displaying dashboard sections in a card style
 - title required, optional custom content and styles
 - For use on dashboard pages
 */
 import PropTypes from "prop-types";
-import "../style/componentStyles.js";
+import { Card } from "../style/componentStyles.js";
 
 const DashboardCard = ({ title, children, style }) => {
   return (
-    <div className="dashboard-card" style={style}>
+    <Card style={style}>
       <div className="dashboard-card-header">
         <h3 className="dashboard-card-title">{title}</h3>
         {typeof children === "object" && children && children.props && children.props.actions && (
@@ -17,7 +17,7 @@ const DashboardCard = ({ title, children, style }) => {
         )}
       </div>
       <div className="dashboard-card-content">{children}</div>
-    </div>
+    </Card>
   );
 };
 
