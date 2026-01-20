@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { HttpResponse, http } from "msw";
-import { API_BASE_URL } from "../../src/api/config";
+import { API_BASE_URL } from "../../src/api/apiConfig";
 
 export const handlers = [
   // Login route success & fail state
