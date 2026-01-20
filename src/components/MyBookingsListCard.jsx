@@ -1,9 +1,10 @@
 /*
 MyBookingsListCard component
-- Renders "My Bookings" card for the patient dashboard
+- Renders "My Bookings" card for a patient
 - Shows booking date, time, doctor name, icons, and action buttons
-- Used by ListCard when layout is 'my-bookings'
+- Child component of ListCard when layout is set to 'my-bookings'
 */
+
 
 function MyBookingsListCard({ bookingDate, bookingTime, doctorName, title, icon, actions, style }) {
   return (

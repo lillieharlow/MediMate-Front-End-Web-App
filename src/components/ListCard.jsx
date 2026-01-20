@@ -1,5 +1,5 @@
 /*
-ListCard component
+List Card component
 - Displays card-style list items for user dashboards
 - Layouts are in their own files
 - Accepts props for title (required), image, icon, subtitle, info, actions, and custom content

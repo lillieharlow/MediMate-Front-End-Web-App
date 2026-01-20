@@ -1,13 +1,15 @@
 /*
 CreateBookingButton component
 - Button for creating a booking for a patient
-- Pass patientId and onCreate handler as props
+- Pass patientId as prop
 */
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-function CreateBookingButton({ patientId, onCreate }) {
+function CreateBookingButton({ patientId }) {
+  const navigate = useNavigate();
   return (
-    <button type="button" onClick={() => onCreate(patientId)}>
+    <button type="button" onClick={() => navigate(`/patients/${patientId}/bookings/create`)}>
       Create Booking
     </button>
   );
@@ -15,7 +17,6 @@ function CreateBookingButton({ patientId, onCreate }) {
 
 CreateBookingButton.propTypes = {
   patientId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  onCreate: PropTypes.func.isRequired,
 };
 
 export default CreateBookingButton;

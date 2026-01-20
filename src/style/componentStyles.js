@@ -9,6 +9,15 @@ export const Card = styled.div`
   align-items: center;
 `;
 
+export const DashboardCardRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+`;
+
 export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;

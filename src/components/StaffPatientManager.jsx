@@ -1,15 +1,14 @@
 /*
 StaffPatientManager component
 - Card for staff to search and manage patients
-- Includes search fields, filter logic, and patient actions
 */
 
 // biome-ignore assist/source/organizeImports: false positive
 import { useState, useEffect } from "react";
 import { getAllPatients } from "../api/staff.js";
-import FindPatientButton from "./FindPatientButton.jsx";
-import ViewBookingsButton from "./ViewBookingsButton.jsx";
-import CreateBookingButton from "./CreateBookingButton.jsx";
+import FindPatientButton from "./button/FindPatientButton.jsx";
+import ViewBookingsButton from "./button/ViewBookingsButton.jsx";
+import CreateBookingButton from "./button/CreateBookingButton.jsx";
 
 function StaffPatientManager() {
   const [search, setSearch] = useState({
@@ -57,12 +56,7 @@ function StaffPatientManager() {
           <input name="email" value={search.email} onChange={handleChange} />
         </label>
         <label>
-          DOB{" "}
-          <input
-            name="dob"
-            value={search.dateOfBirth}
-            onChange={handleChange}
-          />
+          DOB <input name="dob" value={search.dob} onChange={handleChange} />
         </label>
         <label>
           Phone #{" "}
@@ -74,24 +68,14 @@ function StaffPatientManager() {
         {patients.length === 0 ? (
           <div>No patients found.</div>
         ) : (
-          patients.map((p) => (
-            <div key={p.id} className="patient-list-item">
+          patients.map((patient) => (
+            <div key={patient.id} className="patient-list-item">
               <strong>
-                {p.firstName} {p.lastName}
+                {patient.firstName} {patient.lastName}
               </strong>
               <div className="patient-list-actions">
-                <ViewBookingsButton
-                  patientId={p.id}
-                  onView={() => {
-                    /* handle view bookings */
-                  }}
-                />
-                <CreateBookingButton
-                  patientId={p.id}
-                  onCreate={() => {
-                    /* handle create booking */
-                  }}
-                />
+                <ViewBookingsButton patientId={patient.id} />
+                <CreateBookingButton patientId={patient.id} />
               </div>
             </div>
           ))
