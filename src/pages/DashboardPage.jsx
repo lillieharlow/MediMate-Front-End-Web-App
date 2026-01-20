@@ -13,27 +13,31 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import DashboardCard from "../components/DashboardCard.jsx";
 import ListCard from "../components/ListCard.jsx";
-import BookButton from "../components/BookButton.jsx";
+import BookButton from "../components/button/BookButton.jsx";
 import StaffPatientManager from "../components/StaffPatientManager.jsx";
-import DoctorManagerCard from "../components/DoctorManagerCard.jsx";
+import DoctorManagerCard, {
+  DoctorManagerListCard,
+} from "../components/DoctorManagerCard.jsx";
+import { DashboardCardRow } from "../style/componentStyles";
 
 import { useAuth } from "../contexts/AuthContext";
 import { getAllDoctors } from "../api/doctors";
-import { getPatientBookings } from "../api/bookings";
+import { getPatientBookings, getDoctorBookings } from "../api/bookings";
 import {
   createBookHandler,
   manageBooking,
   cancelBooking,
 } from "../utils/bookingUtils";
-import ManageBookingButton from "../components/ManageBookingButton.jsx";
-import CancelBookingButton from "../components/CancelBookingButton.jsx";
+import ManageBookingButton from "../components/button/ManageBookingButton.jsx";
+import CancelBookingButton from "../components/button/CancelBookingButton.jsx";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const handleBook = createBookHandler(navigate);
   const { userId, userType, isAuthenticated } = useAuth();
+  const handleBook = createBookHandler(navigate, userId);
   const [bookings, setBookings] = useState([]);
   const [doctors, setDoctors] = useState([]);
+  const [doctorBookings, setDoctorBookings] = useState([]);
 
   useEffect(() => {
     if (userType !== "patient") return;
@@ -44,6 +48,8 @@ export default function DashboardPage() {
           getAllDoctors(),
           getPatientBookings(userId),
         ]);
+        console.log("Fetched doctors:", doctorsData);
+        console.log("Fetched patient bookings:", bookingsData);
         setDoctors(doctorsData);
         setBookings(bookingsData);
       } catch (error) {
@@ -52,6 +58,17 @@ export default function DashboardPage() {
     }
 
     fetchData();
+  }, [userType, userId]);
+
+  useEffect(() => {
+    if (userType === "doctor") {
+      async function fetchDoctorBookings() {
+        const bookingsData = await getDoctorBookings(userId);
+        console.log("Fetched doctor bookings:", bookingsData);
+        setDoctorBookings(bookingsData);
+      }
+      fetchDoctorBookings();
+    }
   }, [userType, userId]);
 
   // Helper function to get dashboard heading based on user type
@@ -66,17 +83,19 @@ export default function DashboardPage() {
     <Navigate to="/login" replace />
   ) : (
     <main>
-      <h1 data-testid="app-dashboard-heading">{getDashboardHeading(userType)}</h1>
+      <h1 data-testid="app-dashboard-heading">
+        {getDashboardHeading(userType)}
+      </h1>
       {userType === "patient" && (
-        <>
+        <DashboardCardRow>
           <DashboardCard title="Our Doctors">
-            {doctors.map((doc) => (
+            {doctors.map((doctor) => (
               <ListCard
-                key={doc.id}
-                image={doc.image}
-                title={doc.title}
-                subtitle={doc.subtitle}
-                info={doc.info}
+                key={doctor.id}
+                image={doctor.image}
+                title={doctor.title}
+                subtitle={doctor.subtitle}
+                info={doctor.info}
                 actions={<BookButton onBook={handleBook} />}
                 layout="our-doctors"
               />
@@ -117,19 +136,54 @@ export default function DashboardPage() {
               ))
             )}
           </DashboardCard>
-        </>
+        </DashboardCardRow>
       )}
       {userType === "staff" && (
-        <>
+        <DashboardCardRow>
           <DashboardCard title="Patient Manager">
             <StaffPatientManager />
           </DashboardCard>
           <DashboardCard title="Doctor Manager">
             <DoctorManagerCard />
           </DashboardCard>
-        </>
+        </DashboardCardRow>
       )}
-      {/* TODO: Add doctor dashboard with different info */}
+      {userType === "doctor" && (
+        <DashboardCardRow>
+          <DashboardCard title="Current Booking">
+            {/* Current booking list item */}
+            {doctorBookings.length > 0 ? (
+              <DoctorManagerListCard booking={doctorBookings[0]} />
+            ) : (
+              <div>No current booking.</div>
+            )}
+            <div>
+              <strong>Patient Notes</strong>
+              <div className="notes-block">
+                <div>{doctorBookings[0]?.patientNotes || "No notes."}</div>
+              </div>
+            </div>
+            <div>
+              <strong>Appointment Notes</strong>
+              <div className="notes-block">
+                <textarea
+                  placeholder="Add appointment notes..."
+                  defaultValue={doctorBookings[0]?.appointmentNotes || ""}
+                />
+              </div>
+            </div>
+          </DashboardCard>
+          <DashboardCard title="Today's Bookings">
+            {doctorBookings.length === 0 ? (
+              <div>No bookings for today.</div>
+            ) : (
+              doctorBookings.map((booking) => (
+                <DoctorManagerListCard key={booking.id} booking={booking} />
+              ))
+            )}
+          </DashboardCard>
+        </DashboardCardRow>
+      )}
     </main>
   );
 }
