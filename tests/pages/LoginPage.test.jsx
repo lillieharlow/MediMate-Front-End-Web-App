@@ -2,11 +2,11 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import LoginPage from '../../src/pages/LoginPage';
-import { renderWithAll } from '../testUtils';
+import { renderWithoutRoutes, renderWithRoutes } from '../testUtils';
 
 describe('Test /login page', () => {
   it('LoginForm displayed on LoginPage when user not authenticated', () => {
-    renderWithAll(<LoginPage />);
+    renderWithoutRoutes(<LoginPage />);
 
     // LoginForm form element is present
     expect(screen.getByTestId('app-login-form')).toBeInTheDocument();
@@ -18,7 +18,7 @@ describe('Test /login page', () => {
   });
 
   it('User can enter details into login form', async () => {
-    renderWithAll(<LoginPage />);
+    renderWithoutRoutes(<LoginPage />);
 
     const emailField = screen.getByTestId('app-login-form-input-email');
     const passwordField = screen.getByTestId('app-login-form-input-password');
@@ -34,7 +34,7 @@ describe('Test /login page', () => {
   });
 
   it('Remain on login page & display error on failed login attempt', async () => {
-    renderWithAll(<LoginPage />);
+    renderWithRoutes(<LoginPage />);
 
     const loginForm = screen.getByTestId('app-login-form');
     const emailField = screen.getByTestId('app-login-form-input-email');
@@ -55,7 +55,7 @@ describe('Test /login page', () => {
   });
 
   it('Successful login navigates to /dashboard', async () => {
-    renderWithAll(<LoginPage />);
+    renderWithRoutes(<LoginPage />);
 
     const emailField = screen.getByTestId('app-login-form-input-email');
     const passwordField = screen.getByTestId('app-login-form-input-password');
@@ -75,7 +75,7 @@ describe('Test /login page', () => {
 
 describe('Test /login page create account card', () => {
   it('Create account card rendered on /login', () => {
-    renderWithAll(<LoginPage />);
+    renderWithoutRoutes(<LoginPage />);
 
     const createAccountCard = screen.getByTestId('app-create-account-card');
     const createAccountButton = screen.getByTestId('app-create-account-card-button');
@@ -84,7 +84,7 @@ describe('Test /login page create account card', () => {
   });
 
   it('Create account button directs to /signup page', async () => {
-    renderWithAll(<LoginPage />);
+    renderWithRoutes(<LoginPage />);
     const user = userEvent.setup();
     const createAccountButton = screen.getByTestId('app-create-account-card-button');
 
