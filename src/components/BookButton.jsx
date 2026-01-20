@@ -1,21 +1,20 @@
 /*
 BookButton component
-- Reusable button for booking appointments
-- Pass doctorId and onBook handler as props
+- "BOOK" button for navigating to the booking page
+- Pass onBook handler as prop
 */
+
 import PropTypes from "prop-types";
 
-function BookButton({ doctorId, onBook }) {
+function BookButton({ onBook }) {
   return (
-    <button type="button" onClick={() => onBook(doctorId)}>
+    <button type="button" onClick={onBook}>
       BOOK
     </button>
   );
 }
 
 BookButton.propTypes = {
-  doctorId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired,
   onBook: PropTypes.func.isRequired,
 };
 

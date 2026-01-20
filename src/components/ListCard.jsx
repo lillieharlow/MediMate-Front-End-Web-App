@@ -1,49 +1,22 @@
 /*
 ListCard component
-- Displaying list items in a card style
-- title required, optional image, icon, subtitle, info, actions, custom content
-- For use inside DashboardCard or any card-style list item
+- Displays card-style list items for user dashboards
+- Layouts are in their own files
+- Accepts props for title (required), image, icon, subtitle, info, actions, and custom content
+- Used inside DashboardCard component
 */
 
-import PropTypes from "prop-types";
+
+// biome-ignore assist/source/organizeImports: false positive
+import  OurDoctorsListCard from "./OurDoctorsListCard.jsx";
+import MyBookingsListCard from "./MyBookingsListCard.jsx";
 import "../style/componentStyles.js";
 
-const ListCard = ({
-  image,
-  icon,
-  title,
-  subtitle,
-  info,
-  actions,
-  children,
-  style,
-}) => {
-  return (
-    <div className="list-card" style={style}>
-      <div className="list-card-header">
-        {image && <img src={image} alt="" className="list-card-image" />}
-        {icon && <span className="list-card-icon">{icon}</span>}
-        <div className="list-card-titles">
-          <h4 className="list-card-title">{title}</h4>
-          {subtitle && <div className="list-card-subtitle">{subtitle}</div>}
-        </div>
-      </div>
-      {info && <div className="list-card-info">{info}</div>}
-      <div className="list-card-content">{children}</div>
-      {actions && <div className="list-card-actions">{actions}</div>}
-    </div>
-  );
-};
-
-ListCard.propTypes = {
-  image: PropTypes.string,
-  icon: PropTypes.node,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string,
-  info: PropTypes.node,
-  actions: PropTypes.node,
-  children: PropTypes.node,
-  style: PropTypes.object,
+const ListCard = (props) => {
+  const { layout } = props;
+  if (layout === "our-doctors") return <OurDoctorsListCard {...props} />;
+  if (layout === "my-bookings") return <MyBookingsListCard {...props} />;
+  return null;
 };
 
 export default ListCard;
