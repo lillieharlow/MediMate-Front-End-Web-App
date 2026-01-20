@@ -1,6 +1,6 @@
 import { API_BASE_URL } from './apiConfig';
 
-export const getApiResponse = async (method, endpoint, body, sendToken = false) => {
+export const getApiResponse = async (method, endpoint, body = null, sendToken = false) => {
   const methods = ['GET', 'POST', 'PATCH', 'DELETE'];
   if (!methods.includes(method)) throw new Error('Method not recognised');
 
@@ -11,13 +11,13 @@ export const getApiResponse = async (method, endpoint, body, sendToken = false) 
   // Attach bearer token to header if request is to a protected route
   if (sendToken) {
     const token = localStorage.getItem('token');
-    if (token) headers.Authorization = `Bearer ${token}`;
+    if (token) headers.authorization = `Bearer ${token}`;
   }
 
   const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
     method: method,
     headers,
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
   });
   // TODO: error handling
   const responseData = await response.json();
