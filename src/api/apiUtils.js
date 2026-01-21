@@ -1,38 +1,86 @@
-import { API_BASE_URL } from './apiConfig';
+/*
+ * API Utilities:
+ * - getApiResponse: sends GET, POST, PATCH, and DELETE requests.
+ *   Auto adds authentication tokens for protected routes, handles errors,
+ *   Returns server response in a consistent format.
+ *
+ * - getErrorReason: user-friendly error message from API response.
+ */
 
-export const getApiResponse = async (method, endpoint, body = null, sendToken = false) => {
-  const methods = ['GET', 'POST', 'PATCH', 'DELETE'];
-  if (!methods.includes(method)) throw new Error('Method not recognised');
+import { API_BASE_URL } from "./apiConfig";
+
+export const getApiResponse = async (
+  method,
+  endpoint,
+  body,
+  sendToken = false,
+) => {
+  const methods = ["GET", "POST", "PATCH", "DELETE"];
+  if (!methods.includes(method)) throw new Error("Method not recognised");
 
   const headers = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   };
 
-  // Attach bearer token to header if request is to a protected route
   if (sendToken) {
-    const token = localStorage.getItem('token');
-    if (token) headers.authorization = `Bearer ${token}`;
+    const token = localStorage.getItem("token");
+    if (token) headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
-    method: method,
-    headers,
-    body: body ? JSON.stringify(body) : null,
-  });
-  // TODO: error handling
-  const responseData = await response.json();
-  return responseData;
+  try {
+    const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
+      method: method,
+      headers,
+      body:
+        method === "GET" || method === "DELETE"
+          ? undefined
+          : JSON.stringify(body),
+    });
+
+    let responseData;
+    try {
+      responseData = await response.json();
+    } catch {
+      responseData = {
+        error: "Invalid JSON response",
+        status: response.status,
+      };
+    }
+
+    if (!response.ok) {
+      const error = {
+        status: response.status,
+        message:
+          responseData?.message || response.statusText || "Unknown error",
+        data: responseData,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error) {
+    console.error("API Error:", error);
+    return {
+      success: false,
+      status: error.status || 500,
+      message: error.message || "Network or server error",
+      error: error.data || error,
+    };
+  }
 };
 
-export const getErrorReason = apiResponse => {
+export const getErrorReason = (apiResponse) => {
   const errorsString = Array.isArray(apiResponse.errors)
     ? apiResponse.errors
-        .map(e => e?.msg)
+        .map((e) => e?.msg)
         .filter(Boolean)
-        .join(', ')
+        .join(", ")
     : undefined;
 
   return (
-    errorsString || apiResponse.error || apiResponse.name || apiResponse.message || 'Unknown error'
+    errorsString ||
+    apiResponse.error ||
+    apiResponse.name ||
+    apiResponse.message ||
+    "Unknown error"
   );
 };
