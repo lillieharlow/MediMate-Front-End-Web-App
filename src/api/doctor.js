@@ -11,7 +11,10 @@ import { getApiResponse } from './apiUtils';
 
 // Get all doctors
 export async function getAllDoctors() {
-  return await getApiResponse('GET', 'api/v1/doctors');
+  const res = await getApiResponse('GET', 'api/v1/doctors', undefined, true);
+
+  const returnArray = res.data;
+  return returnArray;
 }
 
 // Get one doctor by userId

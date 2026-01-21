@@ -1,5 +1,5 @@
 /* Staff Routes: Staff profile and management endpoints
- * 
+ *
  * - PATCH /api/v1/staff/userType/:userId       : Change user type (staff only)
  * - POST /api/v1/staff                         : Create staff profile (staff only)
  * - GET /api/v1/staff/:userId                  : Get staff by userId (staff only)
@@ -39,7 +39,10 @@ export async function getAllPatients(search = {}) {
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&');
   const endpoint = params ? `api/v1/staff/patients?${params}` : 'api/v1/staff/patients';
-  return await getApiResponse('GET', endpoint, undefined, true);
+  const res = await getApiResponse('GET', endpoint, undefined, true)
+
+  const returnArray = res.data
+  return returnArray;
 }
 
 // List all users of any type
@@ -54,7 +57,7 @@ export const populateUsersRequest = async () => {
   const returnObj = {
     users: profilesResData.data,
   };
-  
+
   return returnObj;
 };
 
