@@ -8,7 +8,19 @@ import PropTypes from "prop-types";
 
 function BookButton({ onBook }) {
   return (
-    <button type="button" onClick={onBook}>
+    <button
+      type="button"
+      onClick={onBook}
+      style={{
+        backgroundColor: "#008533",
+        fontWeight: "bold",
+        color: "white",
+        border: "none",
+        borderRadius: "50%",
+        width: "48px",
+        height: "48px",
+      }}
+    >
       BOOK
     </button>
   );

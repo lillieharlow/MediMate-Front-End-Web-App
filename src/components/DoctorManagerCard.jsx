@@ -8,8 +8,8 @@ DoctorManagerCard component
 // biome-ignore assist/source/organizeImports: false positive
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import { getAllDoctors } from "../api/doctors";
-import { getDoctorBookings } from "../api/bookings";
+import { getAllDoctors } from "../api/doctor";
+import { getDoctorBookings } from "../api/booking";
 
 function DoctorManagerListCard({ booking }) {
   return (
