@@ -21,8 +21,8 @@ import DoctorManagerCard, {
 import { DashboardCardRow } from "../style/componentStyles";
 
 import { useAuth } from "../contexts/AuthContext";
-import { getAllDoctors } from "../api/doctors";
-import { getPatientBookings, getDoctorBookings } from "../api/bookings";
+import { getAllDoctors } from "../api/doctor.js";
+import { getPatientBookings, getDoctorBookings } from "../api/booking.js";
 import {
   createBookHandler,
   manageBooking,
