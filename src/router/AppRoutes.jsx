@@ -1,13 +1,14 @@
 import { Routes, Route } from "react-router";
-import DashboardPage from "../pages/DashboardPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
-import LogoutPage from "../pages/LogoutPage";
 import SignupPage from "../pages/SignupPage";
+import DashboardPage from "../pages/DashboardPage";
 import UserAdminPage from "../pages/UserAdminPage";
+import ProfilePage from "../pages/ProfilePage";
 import PatientBookingsPage from "../pages/booking/PatientBookingsPage";
 import CreateBookingPage from "../pages/booking/CreateBookingPage";
 import BookingPage from "../pages/booking/BookingPage";
+import LogoutPage from "../pages/LogoutPage";
 
 export default function AppRoutes() {
   return (
@@ -17,10 +18,11 @@ export default function AppRoutes() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/useradmin" element={<UserAdminPage />} />
-      <Route path="/logout" element={<LogoutPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
       <Route path="/patients/:patientId/bookings" element={<PatientBookingsPage />} />
       <Route path="/patients/:patientId/bookings/create" element={<CreateBookingPage />} />
       <Route path="/bookings/:bookingId" element={<BookingPage />} />
+      <Route path="/logout" element={<LogoutPage />} />
     </Routes>
   );
 }
