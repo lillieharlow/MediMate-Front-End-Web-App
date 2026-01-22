@@ -1,20 +1,14 @@
 /*
-FindPatientButton component
-- Button for triggering patient search
-- Pass onFind handler as prop
+- "Find Patient" button for triggering patient search
 */
-import PropTypes from "prop-types";
+import ActionButton from "./ActionButton";
 
 function FindPatientButton({ onFind }) {
   return (
-    <button type="button" onClick={onFind}>
+    <ActionButton type="button" onClick={onFind}>
       Find Patient
-    </button>
+    </ActionButton>
   );
 }
-
-FindPatientButton.propTypes = {
-  onFind: PropTypes.func.isRequired,
-};
 
 export default FindPatientButton;

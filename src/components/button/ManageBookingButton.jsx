@@ -1,23 +1,19 @@
 /*
-ManageBookingButton component
 - "Manage Booking" button for booking management
-- Pass bookingId and onManage handler as props
 */
 
-import PropTypes from "prop-types";
+import ActionButton from "./ActionButton";
 
 function ManageBookingButton({ bookingId, onManage }) {
   return (
-    <button type="button" onClick={() => onManage(bookingId)}>
+    <ActionButton
+      $bg="#2393ca"
+      $color="#000000"
+      onClick={() => onManage(bookingId)}
+    >
       Manage Booking
-    </button>
+    </ActionButton>
   );
 }
-
-ManageBookingButton.propTypes = {
-  bookingId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired,
-  onManage: PropTypes.func.isRequired,
-};
 
 export default ManageBookingButton;
