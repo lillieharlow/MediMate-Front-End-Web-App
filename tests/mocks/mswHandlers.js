@@ -202,4 +202,16 @@ export const handlers = [
       return HttpResponse.json({ data: filtered });
     };
   }),
+
+  // Mock get patient profie request
+  http.get(`${API_BASE_URL}/api/v1/patients/1TestUserId`, () => {
+    return HttpResponse.json({
+      data: {
+        firstName: 'TestFirstName',
+        middleName: 'TestMiddleName',
+        lastName: 'TestLastName',
+        dateOfBirth: '01/01/2001',
+      },
+    });
+  }),
 ];
