@@ -23,7 +23,7 @@ export const getApiResponse = async (
   };
 
   if (sendToken) {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token").replace(/"/g, "");
     if (token) headers.Authorization = `Bearer ${token}`;
   }
 

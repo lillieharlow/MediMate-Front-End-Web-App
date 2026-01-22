@@ -19,12 +19,12 @@ export async function getAllBookings() {
 
 // Get all bookings for one patient
 export async function getPatientBookings(userId) {
-  return await getApiResponse('GET', `api/v1/bookings/patients/${userId}`);
+  return await getApiResponse('GET', `api/v1/bookings/patients/${userId}`, undefined, true);
 }
 
 // Get all bookings for one doctor
 export async function getDoctorBookings(userId) {
-  return await getApiResponse('GET', `api/v1/bookings/doctors/${userId}`);
+  return await getApiResponse('GET', `api/v1/bookings/doctors/${userId}`, undefined, true);
 }
 
 // Get one booking by bookingId
