@@ -21,6 +21,12 @@ export const renderWithRoutes = (ui, routerPath = "/") => {
   );
 };
 
+export const setTestToken = (userType) => {
+  const token = createTestJwt({ userId: "1testUser", userType });
+
+  localStorage.setItem("token", token);
+};
+
 export const createTestJwt = (payload) => {
   const base64Payload = Buffer.from(JSON.stringify(payload)).toString("base64");
   const fakeToken = `header.${base64Payload}.signature`;

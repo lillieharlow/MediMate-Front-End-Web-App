@@ -3,14 +3,13 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
 import LogoutPage from "../../src/pages/LogoutPage";
 import {
-  createTestJwt,
   renderWithoutRoutes,
   renderWithRoutes,
+  setTestToken,
 } from "../testUtils";
 
 beforeEach(() => {
-  const payload = { userId: "1", userType: "patient" };
-  localStorage.setItem("token", createTestJwt(payload));
+  setTestToken("patient");
 });
 
 describe("test /logout page", () => {
