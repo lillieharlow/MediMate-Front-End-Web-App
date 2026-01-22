@@ -1,21 +1,19 @@
 /*
-DeleteProfileButton component
-- Pass profile ID and onManage handler as props
+- "Delete Account" button for profile management
 */
 
-import PropTypes from "prop-types";
+import ActionButton from "./ActionButton";
 
-function DeleteProfileButton({ profileId, onManage }) {
+function DeleteProfileButton({ profileId, onDelete }) {
   return (
-    <button type="button" onClick={() => onManage(profileId)}>
-      Delete User
-    </button>
+    <ActionButton
+      $bg="#c90000"
+      $color="#ffffff"
+      onClick={() => onDelete(profileId)}
+    >
+      Delete Account
+    </ActionButton>
   );
 }
-
-DeleteProfileButton.propTypes = {
-  profileId: PropTypes.string.isRequired,
-  onManage: PropTypes.func.isRequired,
-};
 
 export default DeleteProfileButton;
