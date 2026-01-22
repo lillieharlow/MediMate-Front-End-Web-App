@@ -77,7 +77,7 @@ describe("Test /login page", () => {
     await user.click(submitButton);
 
     // Should have navigated to dashboard on successful login
-    expect(screen.getByTestId("app-dashboard-heading")).toBeInTheDocument();
+    expect(await screen.findByTestId("app-dashboard-heading")).toBeInTheDocument();
   });
 });
 
