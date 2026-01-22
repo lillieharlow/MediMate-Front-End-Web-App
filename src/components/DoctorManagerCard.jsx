@@ -49,7 +49,7 @@ function DoctorManagerCard() {
           setDoctors(result);
         } else {
           setDoctors([]);
-          setErrorDoctors(result?.message || "Failed to load doctors.");
+          setErrorDoctors(result.message || "Failed to load doctors.");
         }
       })
       .finally(() => setLoadingDoctors(false));
