@@ -107,5 +107,32 @@ export const ListSeparator = styled.hr`
   border: none;
   border-bottom: 1px solid #e0e0e0;
   width: 100%;
-  margin: 0.05rem 0 0.05rem 0;
+  margin: 1.2rem 0 0.05rem 0;
+`;
+
+export const StyledLabel = styled.label`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: 500;
+  min-width: 110px;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+`;
+
+export const StyledSelect = styled.select`
+  flex: 1 1 0;
+  min-width: 120px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 1rem;
+`;
+
+export const CenteredHeading = styled.h4`
+  text-align: center;
+  margin: 1.2rem 0 1.2rem 0;
 `;

@@ -10,6 +10,7 @@ import FindPatientButton from "./button/FindPatientButton.jsx";
 import ViewBookingsButton from "./button/ViewBookingsButton.jsx";
 import CreateBookingButton from "./button/CreateBookingButton.jsx";
 import styled from "styled-components";
+import { getPatientFullName } from "../utils/patientUtils";
 
 const PatientSearchFields = styled.div`
   display: flex;
@@ -118,13 +119,11 @@ function StaffPatientManager() {
                 ? patient.user
                 : {};
             const key = patient._id || patient.id || user._id || user.id || idx;
-            const firstName = patient.firstName || user.firstName || "";
-            const lastName = patient.lastName || user.lastName || "";
             const patientId = patient.id || patient._id || user._id || user.id;
             return (
               <div key={key} className="patient-list-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1.2rem', paddingBottom: '1.2rem', width: '100%' }}>
                 <NameBox bg="#80d09e">
-                  {firstName} {lastName}
+                  {getPatientFullName(patient)}
                 </NameBox>
                 <PatientListActions>
                   <ViewBookingsButton patientId={patientId} />
