@@ -4,7 +4,7 @@ CreateBookingButton component
 - Pass patientId as prop
 */
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 function CreateBookingButton({ patientId }) {
   const navigate = useNavigate();

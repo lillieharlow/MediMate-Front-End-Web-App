@@ -73,6 +73,6 @@ export const getErrorReason = apiResponse => {
     : undefined;
 
   return (
-    errorsString || apiResponse.error || apiResponse.name || apiResponse.message || 'Unknown error'
+    errorsString  || apiResponse.message || apiResponse.name || 'Unknown error'
   );
 };

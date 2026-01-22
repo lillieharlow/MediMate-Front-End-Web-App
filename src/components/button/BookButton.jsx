@@ -20,9 +20,7 @@ function BookButton({ onBook }) {
         width: "48px",
         height: "48px",
       }}
-    >
-      BOOK
-    </button>
+    >BOOK</button>
   );
 }
 

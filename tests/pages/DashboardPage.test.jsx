@@ -1,5 +1,5 @@
 // biome-ignore assist/source/organizeImports: false positive
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
 import { test, expect, vi, beforeEach, afterEach } from "vitest";
 import { http, HttpResponse } from "msw";
@@ -64,14 +64,14 @@ test("renders patient dashboard with doctor and booking cards using MSW", async 
     expect(screen.getByTestId("app-dashboard-heading")).toBeInTheDocument();
     expect(screen.getByText(/Our Doctors/i)).toBeInTheDocument();
     expect(screen.getByText(/My Bookings/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Dr. Smith/i)).toHaveLength(2);
-    expect(screen.getByText(/Checkup/i)).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: /Book/i })).toHaveLength(3);
+    expect(screen.getAllByText(/Dr. alice smith/i)).toHaveLength(2);
+    expect(screen.getByText(/follow-up/i)).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "BOOK" })).toHaveLength(3);
     expect(
-      screen.getByRole("button", { name: /Manage Booking/i }),
-    ).toBeInTheDocument();
+      screen.getAllByRole("button", { name: /Manage Booking/i }),
+    ).toHaveLength(2);
     expect(
-      screen.getByRole("button", { name: /Cancel Booking/i }),
-    ).toBeInTheDocument();
+      screen.getAllByRole("button", { name: /Cancel Booking/i }),
+    ).toHaveLength(2);
   });
 });
