@@ -7,23 +7,18 @@
  * - getErrorReason: user-friendly error message from API response.
  */
 
-import { API_BASE_URL } from "./apiConfig";
+import { API_BASE_URL } from './apiConfig';
 
-export const getApiResponse = async (
-  method,
-  endpoint,
-  body,
-  sendToken = false,
-) => {
-  const methods = ["GET", "POST", "PATCH", "DELETE"];
-  if (!methods.includes(method)) throw new Error("Method not recognised");
+export const getApiResponse = async (method, endpoint, body, sendToken = false) => {
+  const methods = ['GET', 'POST', 'PATCH', 'DELETE'];
+  if (!methods.includes(method)) throw new Error('Method not recognised');
 
   const headers = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
 
   if (sendToken) {
-    const token = localStorage.getItem("token").replace(/"/g, "");
+    const token = localStorage.getItem('token');
     if (token) headers.Authorization = `Bearer ${token}`;
   }
 
@@ -31,10 +26,7 @@ export const getApiResponse = async (
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method: method,
       headers,
-      body:
-        method === "GET" || method === "DELETE"
-          ? undefined
-          : JSON.stringify(body),
+      body: method === 'GET' || method === 'DELETE' ? undefined : JSON.stringify(body),
     });
 
     let responseData;
@@ -42,45 +34,45 @@ export const getApiResponse = async (
       responseData = await response.json();
     } catch {
       responseData = {
-        error: "Invalid JSON response",
+        error: 'Invalid JSON response',
         status: response.status,
       };
+    }
+
+    if (response.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/';
     }
 
     if (!response.ok) {
       const error = {
         status: response.status,
-        message:
-          responseData?.message || response.statusText || "Unknown error",
+        message: responseData?.message || response.statusText || 'Unknown error',
         data: responseData,
       };
       throw error;
     }
     return responseData;
   } catch (error) {
-    console.error("API Error:", error);
+    console.error('API Error:', error);
     return {
       success: false,
       status: error.status || 500,
-      message: error.message || "Network or server error",
+      message: error.message || 'Network or server error',
       error: error.data || error,
     };
   }
 };
 
-export const getErrorReason = (apiResponse) => {
+export const getErrorReason = apiResponse => {
   const errorsString = Array.isArray(apiResponse.errors)
     ? apiResponse.errors
-        .map((e) => e?.msg)
+        .map(e => e?.msg)
         .filter(Boolean)
-        .join(", ")
+        .join(', ')
     : undefined;
 
   return (
-    errorsString ||
-    apiResponse.error ||
-    apiResponse.name ||
-    apiResponse.message ||
-    "Unknown error"
+    errorsString || apiResponse.error || apiResponse.name || apiResponse.message || 'Unknown error'
   );
 };
