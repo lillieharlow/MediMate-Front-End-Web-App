@@ -35,10 +35,12 @@ const PatientSearchFields = styled.div`
     min-width: 120px;
     padding: 0.4rem 0.7rem;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
     font-size: 1rem;
   }
 `;
+
+import { NameBox, PatientListActions, ListSeparator } from '../style/componentStyles';
 
 function StaffPatientManager() {
   const [search, setSearch] = useState({
@@ -103,6 +105,7 @@ function StaffPatientManager() {
           <input name="phone" value={search.phone} onChange={handleChange} />
         </label>
         <FindPatientButton onFind={handleFindPatient} />
+        <ListSeparator />
       </PatientSearchFields>
       <div className="patient-list">
         {!Array.isArray(patients) || patients.length === 0 ? (
@@ -119,14 +122,15 @@ function StaffPatientManager() {
             const lastName = patient.lastName || user.lastName || "";
             const patientId = patient.id || patient._id || user._id || user.id;
             return (
-              <div key={key} className="patient-list-item">
-                <strong>
+              <div key={key} className="patient-list-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1.2rem', paddingBottom: '1.2rem', width: '100%' }}>
+                <NameBox bg="#80d09e">
                   {firstName} {lastName}
-                </strong>
-                <div className="patient-list-actions">
+                </NameBox>
+                <PatientListActions>
                   <ViewBookingsButton patientId={patientId} />
                   <CreateBookingButton patientId={patientId} />
-                </div>
+                </PatientListActions>
+                <ListSeparator />
               </div>
             );
           })
