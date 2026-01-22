@@ -1,10 +1,14 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 import { useEffect, useState } from "react";
-import { getDoctorById } from "../api/doctor";
-import { getPatientById } from "../api/patient";
-import { getStaffById } from "../api/staff";
+import { getDoctorById, updateDoctor } from "../api/doctor";
+import { getPatientById, updatePatient } from "../api/patient";
+import { getStaffById, updateStaff } from "../api/staff";
 import { useAuth } from "../contexts/AuthContext";
-import { StyledForm, StyledInput } from "../style/componentStyles";
+import {
+  FormErrorSpan,
+  StyledForm,
+  StyledInput,
+} from "../style/componentStyles";
 
 export default function ManageProfileCard({ userType }) {
   const [firstName, setFirstName] = useState("");
@@ -14,21 +18,63 @@ export default function ManageProfileCard({ userType }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [shiftStart, setShiftStart] = useState("");
   const [shiftEnd, setShiftEnd] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState("");
 
   const { userId } = useAuth();
 
-  const handleManageProfile = (event) => {
+  const handleManageProfile = async (event) => {
     event.preventDefault();
+    setIsError(false);
+    setMessage("");
+
+    // Validate inputs here
+
+    try {
+      let res;
+
+      if (userType === "patient") {
+        res = await updatePatient(userId, {
+          firstName,
+          middleName,
+          lastName,
+          dateOfBirth: dob,
+          phone: phoneNumber,
+        });
+      }
+
+      if (userType === "doctor") {
+        res = await updateDoctor(userId, {
+          firstName,
+          lastName,
+          shiftStart,
+          shiftEnd,
+        });
+      }
+
+      if (userType === "staff") {
+        res = await updateStaff(userId, {
+          firstName,
+          lastName,
+        });
+      }
+      if (!res) throw new Error("An unexpected error occured.");
+      if (!res.success) throw new Error(`${res.error.message}`);
+
+      setMessage("Profile updated succesfully!");
+    } catch (error) {
+      setIsError(true);
+      setMessage(error.message);
+    }
   };
 
   useEffect(() => {
-    // Get profile depending on userType
     const fetchData = async () => {
       let profileData = {};
       if (userType === "patient") {
         profileData = await getPatientById(userId);
         setDob(profileData.dateOfBirth);
-        setMiddleName(profileData.middleName);
+        setMiddleName(profileData.middleName ?? "");
         setPhoneNumber(profileData.phone);
       }
 
@@ -41,13 +87,13 @@ export default function ManageProfileCard({ userType }) {
       }
 
       if (!profileData) throw new Error("Error retrieving profile");
+
+      // Set common fields
       setFirstName(profileData.firstName);
       setLastName(profileData.lastName);
     };
 
     fetchData();
-
-    // set states also depending on userType
   }, [userType, userId]);
 
   return (
@@ -138,10 +184,9 @@ export default function ManageProfileCard({ userType }) {
           </>
         )}
 
-        {/* Re-enable if required */}
-        {/* <FormErrorSpan id="login-error-span" className={isError ? "error" : ""}>
+        <FormErrorSpan id="login-error-span" className={isError ? "error" : ""}>
           {message}
-        </FormErrorSpan> */}
+        </FormErrorSpan>
         <button type="submit" data-testid="app-profile-form-button-submit">
           Save Changes
         </button>

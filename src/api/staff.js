@@ -14,7 +14,9 @@ import { getApiResponse, getErrorReason } from './apiUtils';
 
 // Change user type
 export async function changeUserType(userId, userTypeData) {
-  return await getApiResponse('PATCH', `api/v1/staff/userType/${userId}`, userTypeData, true).then(res => res.data);
+  return await getApiResponse('PATCH', `api/v1/staff/userType/${userId}`, userTypeData, true).then(
+    res => res.data,
+  );
 }
 
 // Create staff profile
@@ -24,7 +26,9 @@ export async function createStaffProfile(staffData) {
 
 // Get staff by userId
 export async function getStaffById(userId) {
-  return await getApiResponse('GET', `api/v1/staff/${userId}`, undefined, true).then(res => res.data);
+  return await getApiResponse('GET', `api/v1/staff/${userId}`, undefined, true).then(
+    res => res.data,
+  );
 }
 
 // List all staff
@@ -39,9 +43,9 @@ export async function getAllPatients(search = {}) {
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&');
   const endpoint = params ? `api/v1/staff/patients?${params}` : 'api/v1/staff/patients';
-  const res = await getApiResponse('GET', endpoint, undefined, true)
+  const res = await getApiResponse('GET', endpoint, undefined, true);
 
-  const returnArray = res.data
+  const returnArray = res.data;
   return returnArray;
 }
 
@@ -63,7 +67,7 @@ export const populateUsersRequest = async () => {
 
 // Update staff profile
 export async function updateStaff(userId, updateData) {
-  return await getApiResponse('PATCH', `api/v1/staff/${userId}`, updateData, true).then(res => res.data);
+  return await getApiResponse('PATCH', `api/v1/staff/${userId}`, updateData, true);
 }
 
 // Delete staff
