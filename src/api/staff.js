@@ -42,19 +42,6 @@ export async function getAllStaff() {
   return await getApiResponse('GET', 'api/v1/staff', undefined, true).then(res => res.data);
 }
 
-// List all patients
-export async function getAllPatients(search = {}) {
-  const params = Object.entries(search)
-    .filter(([_, v]) => v)
-    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-    .join('&');
-  const endpoint = params ? `api/v1/staff/patients?${params}` : 'api/v1/staff/patients';
-  const res = await getApiResponse('GET', endpoint, undefined, true)
-
-  const returnArray = res.data
-  return returnArray;
-}
-
 // List all users of any type
 export const populateUsersRequest = async () => {
   const profilesResData = await getApiResponse('GET', 'api/v1/staff/users', null, true);
