@@ -21,7 +21,7 @@ export async function getPatientById(userId) {
 
 // Update patient profile
 export async function updatePatient(userId, updateData) {
-  return await getApiResponse('PATCH', `api/v1/patients/${userId}`, updateData, true).then(res => res.data);
+  return await getApiResponse('PATCH', `api/v1/patients/${userId}`, updateData, true);
 }
 
 // Delete patient

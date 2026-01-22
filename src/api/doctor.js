@@ -26,7 +26,7 @@ export async function createDoctorProfile(doctorData) {
 
 // Update doctor
 export async function updateDoctor(userId, updateData) {
-  return await getApiResponse('PATCH', `api/v1/doctors/${userId}`, updateData, true).then(res => res.data);
+  return await getApiResponse('PATCH', `api/v1/doctors/${userId}`, updateData, true);
 }
 
 // Delete doctor profile

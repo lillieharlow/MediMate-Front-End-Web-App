@@ -19,17 +19,23 @@ export async function getAllBookings() {
 
 // Get all bookings for one patient
 export async function getPatientBookings(userId) {
-  return await getApiResponse('GET', `api/v1/bookings/patients/${userId}`, undefined, true).then(res => res.data);
+  return await getApiResponse('GET', `api/v1/bookings/patients/${userId}`, undefined, true).then(
+    res => res.data,
+  );
 }
 
 // Get all bookings for one doctor
 export async function getDoctorBookings(userId) {
-  return await getApiResponse('GET', `api/v1/bookings/doctors/${userId}`, undefined, true).then(res => res.data);
+  return await getApiResponse('GET', `api/v1/bookings/doctors/${userId}`, undefined, true).then(
+    res => res.data,
+  );
 }
 
 // Get one booking by bookingId
 export async function getBookingById(bookingId) {
-  return await getApiResponse('GET', `api/v1/bookings/${bookingId}`, undefined, true).then(res => res.data);
+  return await getApiResponse('GET', `api/v1/bookings/${bookingId}`, undefined, true).then(
+    res => res.data,
+  );
 }
 
 // Create a booking
@@ -39,12 +45,12 @@ export async function createBooking(bookingData) {
 
 // Update a booking
 export async function updateBooking(bookingId, updateData) {
-  return await getApiResponse('PATCH', `api/v1/bookings/${bookingId}`, updateData, true).then(res => res.data);
+  return await getApiResponse('PATCH', `api/v1/bookings/${bookingId}`, updateData, true);
 }
 
 // Update doctor notes of a booking
 export async function updateDoctorNotes(bookingId, notesData) {
-  return await getApiResponse('PATCH', `api/v1/bookings/${bookingId}/doctorNotes`, notesData, true).then(res => res.data);
+  return await getApiResponse('PATCH', `api/v1/bookings/${bookingId}/doctorNotes`, notesData, true);
 }
 
 // Delete a booking
