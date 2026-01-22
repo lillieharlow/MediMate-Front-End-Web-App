@@ -56,7 +56,7 @@ function StaffPatientManager() {
           <input name="email" value={search.email} onChange={handleChange} />
         </label>
         <label>
-          DOB <input name="dateOfBirth" value={search.dateOfBirth} onChange={handleChange} />
+          DOB <input name="dob" value={search.dob} onChange={handleChange} />
         </label>
         <label>
           Phone #{" "}
@@ -65,14 +65,10 @@ function StaffPatientManager() {
         <FindPatientButton onFind={handleFindPatient} />
       </div>
       <div className="patient-list">
-        {(() => {
-          if (!Array.isArray(patients)) {
-            return <div className="error-message">No patients found or unauthorized.</div>;
-          }
-          if (patients.length === 0) {
-            return <div>No patients found.</div>;
-          }
-          return patients.map((patient) => (
+        {patients.length === 0 ? (
+          <div>No patients found.</div>
+        ) : (
+          patients.map((patient) => (
             <div key={patient.id} className="patient-list-item">
               <strong>
                 {patient.firstName} {patient.lastName}
@@ -82,8 +78,8 @@ function StaffPatientManager() {
                 <CreateBookingButton patientId={patient.id} />
               </div>
             </div>
-          ));
-        })()}
+          ))
+        )}
       </div>
     </div>
   );
