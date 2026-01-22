@@ -19,16 +19,13 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const parsedToken = JSON.parse(saved);
-
       // Validate token - this could refresh token too
 
-      const payload = getJwtPayload(parsedToken);
-
+      const payload = getJwtPayload(saved);
       return {
         userId: payload.userId,
         userType: payload.userType,
-        token: parsedToken,
+        token: saved,
         isAuthenticated: true,
       };
     } catch {
@@ -46,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
     const { token } = auth;
 
-    localStorage.setItem("token", JSON.stringify(token));
+    localStorage.setItem("token", token);
   }, [auth]);
 
   const login = ({ userId, userType, token }) => {

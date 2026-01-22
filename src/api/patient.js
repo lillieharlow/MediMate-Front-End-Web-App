@@ -16,12 +16,12 @@ export async function createPatientProfile(patientData) {
 
 // Get patient by userId
 export async function getPatientById(userId) {
-  return await getApiResponse('GET', `api/v1/patients/${userId}`, undefined, true);
+  return await getApiResponse('GET', `api/v1/patients/${userId}`, undefined, true).then(res => res.data);
 }
 
 // Update patient profile
 export async function updatePatient(userId, updateData) {
-  return await getApiResponse('PATCH', `api/v1/patients/${userId}`, updateData, true);
+  return await getApiResponse('PATCH', `api/v1/patients/${userId}`, updateData, true).then(res => res.data);
 }
 
 // Delete patient

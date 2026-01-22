@@ -25,5 +25,5 @@ export const createTestJwt = (payload) => {
   const base64Payload = Buffer.from(JSON.stringify(payload)).toString("base64");
   const fakeToken = `header.${base64Payload}.signature`;
 
-  return JSON.stringify(fakeToken);
+  return fakeToken;
 };
