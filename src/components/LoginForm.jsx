@@ -43,7 +43,6 @@ export default function LoginForm() {
 
       if (!payload) throw new Error("Invalid token");
 
-      localStorage.setItem("token", token);
       login({ userId: payload.userId, userType: payload.userType, token });
       navigate("/dashboard");
     } catch (error) {

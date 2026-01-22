@@ -44,14 +44,7 @@ function DoctorManagerCard() {
     setLoadingDoctors(true);
     setErrorDoctors("");
     getAllDoctors()
-      .then((result) => {
-        if (Array.isArray(result)) {
-          setDoctors(result);
-        } else {
-          setDoctors([]);
-          setErrorDoctors(result.message || "Failed to load doctors.");
-        }
-      })
+      .then(setDoctors)
       .finally(() => setLoadingDoctors(false));
   }, []);
 
@@ -79,12 +72,11 @@ function DoctorManagerCard() {
           {(() => {
             if (loadingDoctors) return <option disabled>Loading...</option>;
             if (errorDoctors) return <option disabled>{errorDoctors}</option>;
-            if (!Array.isArray(doctors)) return <option disabled>Failed to load doctors.</option>;
-              return doctors.map((doctor, idx) => (
-                <option key={doctor._id || idx} value={doctor._id}>
-                  {doctor.firstName} {doctor.lastName}
-                </option>
-              ));
+            return doctors.map((doctor) => (
+              <option key={doctor.id} value={doctor.id}>
+                {doctor.title}
+              </option>
+            ));
           })()}
         </select>
       </div>
@@ -93,11 +85,11 @@ function DoctorManagerCard() {
         {(() => {
           if (loadingBookings) return <div>Loading bookings...</div>;
           if (errorBookings) return <div>{errorBookings}</div>;
-            if (!Array.isArray(todaysBookings) || todaysBookings.length === 0)
-              return <div>No bookings for today.</div>;
-            return todaysBookings.map((booking) => (
-              <DoctorManagerListCard key={booking.id} booking={booking} />
-            ));
+          if (todaysBookings.length === 0)
+            return <div>No bookings for today.</div>;
+          return todaysBookings.map((booking) => (
+            <DoctorManagerListCard key={booking.id} booking={booking} />
+          ));
         })()}
       </div>
     </div>
