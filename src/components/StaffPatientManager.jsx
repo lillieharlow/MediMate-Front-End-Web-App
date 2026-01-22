@@ -9,13 +9,43 @@ import { getAllPatients } from "../api/staff.js";
 import FindPatientButton from "./button/FindPatientButton.jsx";
 import ViewBookingsButton from "./button/ViewBookingsButton.jsx";
 import CreateBookingButton from "./button/CreateBookingButton.jsx";
+import styled from "styled-components";
+
+const PatientSearchFields = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 500;
+    min-width: 110px;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  input {
+    flex: 1 1 0;
+    min-width: 120px;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+`;
 
 function StaffPatientManager() {
   const [search, setSearch] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    dob: "",
+    dateOfBirth: "",
     phone: "",
   });
   const [patients, setPatients] = useState([]);
@@ -29,14 +59,16 @@ function StaffPatientManager() {
   }
 
   function handleFindPatient() {
-    getAllPatients(search).then(setPatients);
+    getAllPatients(search).then((result) => {
+      setPatients(result);
+    });
   }
 
   return (
     <div>
-      <div className="patient-search-fields">
+      <PatientSearchFields>
         <label>
-          First Name{" "}
+          First Name
           <input
             name="firstName"
             value={search.firstName}
@@ -44,7 +76,7 @@ function StaffPatientManager() {
           />
         </label>
         <label>
-          Last Name{" "}
+          Last Name
           <input
             name="lastName"
             value={search.lastName}
@@ -52,33 +84,52 @@ function StaffPatientManager() {
           />
         </label>
         <label>
-          Email{" "}
+          Email
           <input name="email" value={search.email} onChange={handleChange} />
         </label>
         <label>
-          DOB <input name="dob" value={search.dob} onChange={handleChange} />
+          DOB
+          <input
+            name="dateOfBirth"
+            value={search.dateOfBirth}
+            onChange={handleChange}
+            placeholder="DD/MM/YYYY"
+            pattern="\\d{2}/\\d{2}/\\d{4}"
+            title="Format: DD/MM/YYYY"
+          />
         </label>
         <label>
-          Phone #{" "}
+          Phone #
           <input name="phone" value={search.phone} onChange={handleChange} />
         </label>
         <FindPatientButton onFind={handleFindPatient} />
-      </div>
+      </PatientSearchFields>
       <div className="patient-list">
-        {patients.length === 0 ? (
+        {!Array.isArray(patients) || patients.length === 0 ? (
           <div>No patients found.</div>
         ) : (
-          patients.map((patient) => (
-            <div key={patient.id} className="patient-list-item">
-              <strong>
-                {patient.firstName} {patient.lastName}
-              </strong>
-              <div className="patient-list-actions">
-                <ViewBookingsButton patientId={patient.id} />
-                <CreateBookingButton patientId={patient.id} />
+          patients.map((patient, idx) => {
+            // Support both direct and populated user fields
+            const user =
+              patient.user && typeof patient.user === "object"
+                ? patient.user
+                : {};
+            const key = patient._id || patient.id || user._id || user.id || idx;
+            const firstName = patient.firstName || user.firstName || "";
+            const lastName = patient.lastName || user.lastName || "";
+            const patientId = patient.id || patient._id || user._id || user.id;
+            return (
+              <div key={key} className="patient-list-item">
+                <strong>
+                  {firstName} {lastName}
+                </strong>
+                <div className="patient-list-actions">
+                  <ViewBookingsButton patientId={patientId} />
+                  <CreateBookingButton patientId={patientId} />
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>
