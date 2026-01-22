@@ -13,12 +13,13 @@ export const getApiResponse = async (method, endpoint, body, sendToken = false) 
   const methods = ['GET', 'POST', 'PATCH', 'DELETE'];
   if (!methods.includes(method)) throw new Error('Method not recognised');
 
-  const headers = {
-    'Content-Type': 'application/json',
+    const headers = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
   };
 
   if (sendToken) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')?.replace(/"/g, '');
     if (token) headers.Authorization = `Bearer ${token}`;
   }
 
