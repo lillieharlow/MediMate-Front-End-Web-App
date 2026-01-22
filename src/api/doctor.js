@@ -11,15 +11,12 @@ import { getApiResponse } from './apiUtils';
 
 // Get all doctors
 export async function getAllDoctors() {
-  const res = await getApiResponse('GET', 'api/v1/doctors', undefined, true);
-
-  const returnArray = res.data;
-  return returnArray;
+  return await getApiResponse('GET', 'api/v1/doctors', undefined, true).then(res => res.data);
 }
 
 // Get one doctor by userId
 export async function getDoctorById(userId) {
-  return await getApiResponse('GET', `api/v1/doctors/${userId}`, undefined, true);
+  return await getApiResponse('GET', `api/v1/doctors/${userId}`, undefined, true).then(res => res.data);
 }
 
 // Create doctor profile
@@ -29,7 +26,7 @@ export async function createDoctorProfile(doctorData) {
 
 // Update doctor
 export async function updateDoctor(userId, updateData) {
-  return await getApiResponse('PATCH', `api/v1/doctors/${userId}`, updateData, true);
+  return await getApiResponse('PATCH', `api/v1/doctors/${userId}`, updateData, true).then(res => res.data);
 }
 
 // Delete doctor profile
