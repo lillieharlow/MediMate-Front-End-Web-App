@@ -32,32 +32,6 @@ export const handlers = [
     );
   }),
 
-  // Mock doctors list
-  http.get(`${API_BASE_URL}/api/v1/doctors`, () => {
-    return HttpResponse.json([
-      {
-        id: "doc1",
-        title: "Dr. Alice Smith",
-        image: "",
-        subtitle: "Cardiologist",
-        info: "Expert in heart health.",
-      },
-      {
-        id: "doc2",
-        title: "Dr. Bob Jones",
-        image: "",
-        subtitle: "Dermatologist",
-        info: "Skin specialist.",
-      },
-      {
-        id: "doc3",
-        title: "Dr. Carol Lee",
-        image: "",
-        subtitle: "Pediatrician",
-        info: "Child health expert.",
-      },
-    ]);
-  }),
 
   // Mock patient bookings
   http.get(
