@@ -1,48 +1,64 @@
-import DeleteProfileButton from "./button/DeleteProfileButton";
-import ManageProfileButton from "./button/EditProfileButton";
+import AddUserButton from './button/AddUserButton';
+import DeleteProfileButton from './button/DeleteProfileButton';
+import EditUserTypeButton from './button/EditUserTypeButton';
+import ManageProfileButton from './button/ManageProfileButton';
 
-export default function UserAdminTable({ users }) {
-  const onManageProfile = (profileId) => {
-    console.log(`I will manage profile: ${profileId}`);
+export default function UserAdminTable({ users, onEditUser }) {
+  const onAddUser = () => {
+    console.log(`I will add a new user!`);
   };
 
-  const onDeleteProfile = (profileId) => {
+  const onManageProfile = (profileId, userType) => {
+    console.log(`I will manage profile: ${profileId}`);
+    console.log(`id: ${profileId}, type: ${userType}`);
+    onEditUser(profileId, userType);
+  };
+
+  const onEditUserType = profileId => {
+    console.log(`I will change type of profile: ${profileId}`);
+  };
+
+  const onDeleteProfile = profileId => {
     console.log(`I will delete profile: ${profileId}`);
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Functions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.map((user) => {
-          return (
-            <tr key={user._id}>
-              <td>{user.firstName}</td>
-              <td>{user.lastName}</td>
-              <td>{user.user.email}</td>
-              <td>{user.user.userType.typeName}</td>
-              <td>
-                <ManageProfileButton
-                  profileId={user._id}
-                  onManage={onManageProfile}
-                />
-                <DeleteProfileButton
-                  profileId={user._id}
-                  onManage={onDeleteProfile}
-                />
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div>
+      <div style={{ width: 'fit-content', marginLeft: 'auto' }}>
+        <AddUserButton onAddUser={onAddUser} />
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Functions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => {
+            return (
+              <tr key={user.user._id}>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{user.user.email}</td>
+                <td>{user.user.userType.typeName}</td>
+                <td>
+                  <ManageProfileButton
+                    profileId={user.user._id}
+                    userType={user.user.userType.typeName}
+                    onManage={onManageProfile}
+                  />
+                  <EditUserTypeButton profileId={user.user._id} onEditType={onEditUserType} />
+                  <DeleteProfileButton profileId={user.user._id} onDelete={onDeleteProfile} />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }

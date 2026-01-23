@@ -1,14 +1,14 @@
-import { useNavigate } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
-import { Card } from "../style/componentStyles";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../contexts/AuthContext';
+import { Card } from '../style/componentStyles';
 
 export default function LogoutCard() {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated) navigate("/");
+    if (!isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
 
   return (
@@ -19,7 +19,7 @@ export default function LogoutCard() {
         type="button"
         onClick={() => logout()}
         data-testid="app-logout-card-button"
-        style={{ backgroundColor: "#d66565", fontWeight: "bold" }}
+        style={{ backgroundColor: '#d66565', fontWeight: 'bold' }}
       >
         Yes, log out
       </button>
