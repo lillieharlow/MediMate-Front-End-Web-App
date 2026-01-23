@@ -10,6 +10,7 @@ function CancelBookingButton({ bookingId, onCancel }) {
       $bg="#c90000"
       $color="#ffffff"
       onClick={() => onCancel(bookingId)}
+      style={{ fontSize: "0.85rem" }}
     >
       Cancel Booking
     </ActionButton>

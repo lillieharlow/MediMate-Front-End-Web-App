@@ -25,7 +25,7 @@ const DoctorManagerListCard = ({ booking }) => {
     return () => {
       isMounted = false;
     };
-  }, [booking.patientId]);
+  }, [booking?.patientId]);
   const time = booking.datetimeStart
     ? new Date(booking.datetimeStart).toLocaleTimeString([], {
         hour: "2-digit",
@@ -33,11 +33,11 @@ const DoctorManagerListCard = ({ booking }) => {
       })
     : "";
   return (
-    <>
+    <div data-testid="doctor-manager-list-card">
       <FiClock style={{ marginRight: "0.7em", verticalAlign: "middle" }} />
       <span style={{ marginRight: "1.2em", fontWeight: 500 }}>{time}</span>
       <span>{patientName}</span>
-    </>
+    </div>
   );
 };
 

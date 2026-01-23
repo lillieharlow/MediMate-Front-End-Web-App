@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
 import DashboardCard from "../components/dashboard/DashboardCard.jsx";
-import ListCard from "../components/dashboard/ListCard.jsx";
-import BookButton from "../components/button/BookButton.jsx";
+import PatientOurDoctorsCardList from "../components/dashboard/PatientOurDoctorsCardList.jsx";
+import PatientMyBookingsCard from "../components/dashboard/PatientMyBookingsCard.jsx";
 import StaffPatientManager from "../components/dashboard/StaffPatientManager.jsx";
 import DoctorManagerCard from "../components/dashboard/DoctorManagerCard.jsx";
 import CurrentBookingCard from "../components/dashboard/DoctorCurrentBookingCard.jsx";
@@ -22,14 +22,12 @@ import { DashboardCardRow } from "../style/componentStyles";
 
 import { useAuth } from "../contexts/AuthContext";
 import { getAllDoctors } from "../api/doctor.js";
-import { getPatientBookings, getDoctorBookings } from "../api/booking.js";
 import {
-  createBookHandler,
-  manageBooking,
-  cancelBooking,
-} from "../utils/bookingUtils";
-import ManageBookingButton from "../components/button/ManageBookingButton.jsx";
-import CancelBookingButton from "../components/button/CancelBookingButton.jsx";
+  getPatientBookings,
+  getDoctorBookings,
+  getBookingById,
+} from "../api/booking.js";
+import { createBookHandler } from "../utils/bookingUtils";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -94,52 +92,10 @@ export default function DashboardPage() {
       {userType === "patient" && (
         <DashboardCardRow>
           <DashboardCard title="Our Doctors">
-            {doctors.map((doctor) => (
-              <ListCard
-                key={doctor.id}
-                image={doctor.image}
-                title={doctor.title}
-                subtitle={doctor.subtitle}
-                info={doctor.info}
-                actions={<BookButton onBook={handleBook} />}
-                layout="our-doctors"
-              />
-            ))}
+            <PatientOurDoctorsCardList doctors={doctors} onBook={handleBook} />
           </DashboardCard>
-          <DashboardCard
-            title="My Bookings"
-            actions={<BookButton onBook={handleBook} />}
-          >
-            {bookings.length === 0 ? (
-              <div className="no-bookings-message">
-                You don’t have any more bookings.
-              </div>
-            ) : (
-              bookings.map((booking) => (
-                <ListCard
-                  key={booking.id}
-                  icon={booking.icon}
-                  title={booking.title}
-                  info={booking.info}
-                  bookingDate={booking.date}
-                  bookingTime={booking.time}
-                  doctorName={booking.doctorName}
-                  actions={
-                    <>
-                      <ManageBookingButton
-                        bookingId={booking.id}
-                        onManage={manageBooking}
-                      />
-                      <CancelBookingButton
-                        bookingId={booking.id}
-                        onCancel={cancelBooking}
-                      />
-                    </>
-                  }
-                  layout="my-bookings"
-                />
-              ))
-            )}
+          <DashboardCard title="My Bookings">
+            <PatientMyBookingsCard bookings={bookings} doctors={doctors} />
           </DashboardCard>
         </DashboardCardRow>
       )}
@@ -161,7 +117,13 @@ export default function DashboardPage() {
           <TodaysBookingsCard
             doctorBookings={doctorBookings}
             containerClassName="doctor-manager-bookings"
-            onBookingSelect={setSelectedBooking}
+            onBookingSelect={async (booking) => {
+              if (booking?._id) {
+                setSelectedBooking(await getBookingById(booking._id));
+              } else {
+                setSelectedBooking(booking);
+              }
+            }}
             selectedBooking={selectedBooking}
           />
         </DashboardCardRow>

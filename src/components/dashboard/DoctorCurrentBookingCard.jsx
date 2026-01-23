@@ -9,41 +9,59 @@ import PropTypes from "prop-types";
 import DoctorManagerListCard from "./DoctorManagerListCard.jsx";
 import { NameBox, ColoredButton } from "../../style/componentStyles";
 
-import { useState } from "react";
-import { updateDoctorNotes } from "../../api/booking";
+import { useState, useEffect } from "react";
+import { updateDoctorNotes, getDoctorNotes } from "../../api/booking";
 import NotesSection from "../NotesSection.jsx";
 
 const CurrentBookingCard = ({ booking }) => {
-  const [appointmentNotes, setAppointmentNotes] = useState(
-    booking?.appointmentNotes || "",
-  );
+  const [appointmentNotes, setAppointmentNotes] = useState("");
+  const [currentBooking, setCurrentBooking] = useState(booking);
+
+  useEffect(() => {
+    setCurrentBooking(booking);
+    setSaveMsg(""); // Clear save message when booking changes
+    async function fetchDoctorNotes() {
+      if (booking?._id) {
+        const res = await getDoctorNotes(booking._id);
+        setAppointmentNotes(res?.data?.doctorNotes || "");
+      } else {
+        setAppointmentNotes("");
+      }
+    }
+    fetchDoctorNotes();
+  }, [booking]);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
 
   const handleSaveNotes = async () => {
-    if (!booking) return;
+    if (!currentBooking) return;
     setSaving(true);
     setSaveMsg("");
     try {
-      await updateDoctorNotes(booking._id, { notes: appointmentNotes });
+      await updateDoctorNotes(currentBooking._id, appointmentNotes);
+      // Fetch updated doctor notes
+      const notesRes = await getDoctorNotes(currentBooking._id);
+      setAppointmentNotes(notesRes?.data?.doctorNotes || "");
       setSaveMsg("Notes saved!");
+      setTimeout(() => setSaveMsg(""), 2000); // Hide message after 2 seconds
     } catch {
       setSaveMsg("Failed to save notes.");
+      setTimeout(() => setSaveMsg(""), 2000);
     } finally {
       setSaving(false);
     }
   };
 
-  if (!booking) return <div>No current booking.</div>;
+  if (!currentBooking) return <div data-testid="doctor-current-booking-card">No current booking.</div>;
 
   return (
-    <>
+    <div data-testid="doctor-current-booking-card">
       <NameBox>
-        <DoctorManagerListCard booking={booking} />
+        <DoctorManagerListCard booking={currentBooking} />
       </NameBox>
       <NotesSection
         label="Patient Notes"
-        value={booking?.patientNotes || "No notes."}
+        value={currentBooking?.patientNotes || "No notes."}
         readOnly
       />
       <NotesSection
@@ -88,7 +106,7 @@ const CurrentBookingCard = ({ booking }) => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

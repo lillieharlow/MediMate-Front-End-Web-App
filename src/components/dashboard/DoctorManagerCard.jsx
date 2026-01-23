@@ -63,7 +63,7 @@ function DoctorManagerCard() {
   }, [selectedDoctor]);
 
   return (
-    <div>
+    <div data-testid="doctor-manager-card">
       <div
         style={{
           display: "flex",

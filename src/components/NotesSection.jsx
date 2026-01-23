@@ -28,8 +28,7 @@ const NotesSection = ({
       <strong>{label}</strong>
     </div>
     <StyledTextarea
-      value={readOnly ? value : undefined}
-      defaultValue={!readOnly ? value : undefined}
+      value={value}
       readOnly={readOnly}
       placeholder={placeholder}
       onChange={onChange}

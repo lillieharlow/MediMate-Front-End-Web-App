@@ -7,6 +7,7 @@
  * - POST /api/v1/bookings                          : Create a booking (staff and patient only)
  * - PATCH /api/v1/bookings/:bookingId              : Update a booking (staff, doctor self, patient self)
  * - PATCH /api/v1/bookings/:bookingId/doctorNotes  : Update doctor notes of a booking (doctor self only)
+ * - GET /api/v1/bookings/:bookingId/doctorNotes    : Get doctor notes of a booking (doctor self only)
  * - DELETE /api/v1/bookings/:bookingId             : Delete a booking (staff and patient self)
  * */
 
@@ -49,8 +50,13 @@ export async function updateBooking(bookingId, updateData) {
 }
 
 // Update doctor notes of a booking
-export async function updateDoctorNotes(bookingId, notesData) {
-  return await getApiResponse('PATCH', `api/v1/bookings/${bookingId}/doctorNotes`, notesData, true);
+export async function updateDoctorNotes(bookingId, doctorNotes) {
+  return await getApiResponse('PATCH', `api/v1/bookings/${bookingId}/doctorNotes`, { doctorNotes }, true);
+}
+
+// Get doctor notes of a booking
+export async function getDoctorNotes(bookingId) {
+  return await getApiResponse('GET', `api/v1/bookings/${bookingId}/doctorNotes`, undefined, true);
 }
 
 // Delete a booking
