@@ -149,3 +149,14 @@ export const CenteredHeading = styled.h4`
   text-align: center;
   margin: 1.2rem 0 1.2rem 0;
 `;
+
+export const BlurOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.01);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+`;
