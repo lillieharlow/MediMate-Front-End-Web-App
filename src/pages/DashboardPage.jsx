@@ -9,7 +9,7 @@ Dashboard Page:
 
 // biome-ignore assist/source/organizeImports: false positive
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router";
 
 import DashboardCard from "../components/DashboardCard.jsx";
 import ListCard from "../components/ListCard.jsx";

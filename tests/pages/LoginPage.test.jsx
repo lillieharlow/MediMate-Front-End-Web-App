@@ -55,7 +55,7 @@ describe('Test /login page', () => {
   });
 
   it('Successful login navigates to /dashboard', async () => {
-    renderWithRoutes(<LoginPage />);
+    renderWithRoutes(<LoginPage />, '/login');
 
     const emailField = screen.getByTestId('app-login-form-input-email');
     const passwordField = screen.getByTestId('app-login-form-input-password');
@@ -64,12 +64,12 @@ describe('Test /login page', () => {
 
     expect(screen.getByTestId('app-login-form')).toBeInTheDocument();
 
-    await user.type(emailField, 'ok-email@example.com');
+    await user.type(emailField, 'patient@example.com');
     await user.type(passwordField, '123456');
     await user.click(submitButton);
 
     // Should have navigated to dashboard on successful login
-    expect(screen.getByTestId('app-dashboard-heading')).toBeInTheDocument();
+    expect(await screen.findByTestId('app-dashboard-heading')).toBeInTheDocument();
   });
 });
 
