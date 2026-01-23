@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Card = styled.div`
   flex: 1 1 350px;
@@ -22,6 +22,16 @@ export const Card = styled.div`
     max-width: 98vw;
     margin: 0;
   }
+`;
+
+export const DialogCard = styled.div`
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const DashboardCardRow = styled.div`
@@ -71,8 +81,8 @@ export const FormErrorSpan = styled.span`
 `;
 
 export const ColoredButton = styled.button`
-  background-color: ${({ $bg }) => $bg || "#008533"};
-  color: ${({ $color }) => $color || "#fff"};
+  background-color: ${({ $bg }) => $bg || '#008533'};
+  color: ${({ $color }) => $color || '#fff'};
   font-weight: bold;
   border: 2px solid #000000;
   border-radius: 6px;
@@ -91,7 +101,7 @@ export const ColoredButton = styled.button`
 `;
 
 export const NameBox = styled.div`
-  background: ${({ $bg }) => $bg || "#80d09e"};
+  background: ${({ $bg }) => $bg || '#80d09e'};
   display: flex;
   justify-content: center;
   align-items: center;

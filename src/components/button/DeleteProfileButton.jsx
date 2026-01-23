@@ -5,9 +5,9 @@
 import { FaUserLargeSlash } from 'react-icons/fa6';
 import ActionButton from './ActionButton';
 
-function DeleteProfileButton({ profileId, onDelete }) {
+function DeleteProfileButton({ profileId, userType, userInfo, onDelete }) {
   return (
-    <ActionButton $bg="#c90000" $color="#ffffff" onClick={() => onDelete(profileId)} title="Delete user">
+    <ActionButton $bg="#c90000" $color="#ffffff" onClick={() => onDelete(profileId, userType, userInfo)} title="Delete user">
       <FaUserLargeSlash />
     </ActionButton>
   );

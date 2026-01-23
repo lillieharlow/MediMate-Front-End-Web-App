@@ -3,14 +3,12 @@ import DeleteProfileButton from './button/DeleteProfileButton';
 import EditUserTypeButton from './button/EditUserTypeButton';
 import ManageProfileButton from './button/ManageProfileButton';
 
-export default function UserAdminTable({ users, onEditUser }) {
+export default function UserAdminTable({ users, onEditUser, onDeleteUser }) {
   const onAddUser = () => {
     console.log(`I will add a new user!`);
   };
 
   const onManageProfile = (profileId, userType) => {
-    console.log(`I will manage profile: ${profileId}`);
-    console.log(`id: ${profileId}, type: ${userType}`);
     onEditUser(profileId, userType);
   };
 
@@ -18,8 +16,8 @@ export default function UserAdminTable({ users, onEditUser }) {
     console.log(`I will change type of profile: ${profileId}`);
   };
 
-  const onDeleteProfile = profileId => {
-    console.log(`I will delete profile: ${profileId}`);
+  const onDeleteProfile = (profileId, userType, userInfo) => {
+    onDeleteUser(profileId, userType, userInfo);
   };
 
   return (
@@ -52,7 +50,16 @@ export default function UserAdminTable({ users, onEditUser }) {
                     onManage={onManageProfile}
                   />
                   <EditUserTypeButton profileId={user.user._id} onEditType={onEditUserType} />
-                  <DeleteProfileButton profileId={user.user._id} onDelete={onDeleteProfile} />
+                  <DeleteProfileButton
+                    profileId={user.user._id}
+                    userType={user.user.userType.typeName}
+                    userInfo={{
+                      email: user.user.email,
+                      firstName: user.firstName,
+                      lastName: user.lastName,
+                    }}
+                    onDelete={onDeleteProfile}
+                  />
                 </td>
               </tr>
             );

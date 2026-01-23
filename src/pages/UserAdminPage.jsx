@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router';
 import styled from 'styled-components';
 import { populateUsersRequest } from '../api/staff';
+import DeleteUserConfirmCard from '../components/DeleteUserConfirmCard';
 import ManageProfileCard from '../components/ManageProfileCard';
 import UserAdminTable from '../components/UserAdminTable';
 import { useAuth } from '../contexts/AuthContext';
@@ -15,9 +16,9 @@ const StaticCard = styled.div`
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
   padding: 2rem;
-  border: 2px solid #8b8b8b;
+  background-color: #ffffff;
+  border: 2px solid #7a7a7a;
   border-radius: 10px;
 `;
 
@@ -25,7 +26,8 @@ export default function UserAdminPage() {
   const [users, setUsers] = useState([]);
   const [renderOverlay, setRenderOverlay] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
-  const [targetUser, setTargetUser] = useState({ userId: null, userType: null });
+  const [deletingProfile, setDeletingProfile] = useState(false);
+  const [targetUser, setTargetUser] = useState({});
   const { isAuthenticated, userType } = useAuth();
 
   useEffect(() => {
@@ -43,10 +45,21 @@ export default function UserAdminPage() {
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (userType !== 'staff') return <Navigate to="/dashboard" replace />;
 
+  const updateUserTable = user => {
+    setUsers(prev => prev.map(u => (u._id === user._id ? user : u)));
+    setTimeout(() => closeCard(), 1000);
+  };
+
+  const deleteUserFromTable = userInfo => {
+    setUsers(prev => prev.filter(u => u.user._id !== userInfo.userId));
+    closeCard();
+  };
+
   const closeCard = () => {
     setRenderOverlay(false);
     setEditingProfile(false);
-    setTargetUser({ userId: null, userType: null });
+    setDeletingProfile(false);
+    setTargetUser({});
   };
 
   const editUser = (profileId, userType) => {
@@ -55,27 +68,29 @@ export default function UserAdminPage() {
     setTargetUser({ userId: profileId, userType });
   };
 
-  const updateUserTable = user => {
-    console.log(user);
-    setUsers(prev => prev.map(u => (u._id === user._id ? user : u)));
+  const promptDeleteUser = (profileId, userType, userInfo) => {
+    setRenderOverlay(true);
+    setDeletingProfile(true);
+    setTargetUser({ userId: profileId, userType, ...userInfo });
   };
 
   return (
     <main>
       <h1>User Administration</h1>
 
-      <UserAdminTable users={users} onEditUser={editUser} />
+      <UserAdminTable users={users} onEditUser={editUser} onDeleteUser={promptDeleteUser} />
       {renderOverlay && (
         <>
           <BlurOverlay onClick={closeCard} />
           {editingProfile && (
             <StaticCard>
               <h2>Edit User Profile</h2>
-              <ManageProfileCard
-                userType={targetUser.userType}
-                userId={targetUser.userId}
-                onProfileUpdated={updateUserTable}
-              />
+              <ManageProfileCard userInfo={targetUser} onProfileUpdated={updateUserTable} />
+            </StaticCard>
+          )}
+          {deletingProfile && (
+            <StaticCard>
+              <DeleteUserConfirmCard userInfo={targetUser} onConfirmDelete={deleteUserFromTable} />
             </StaticCard>
           )}
         </>

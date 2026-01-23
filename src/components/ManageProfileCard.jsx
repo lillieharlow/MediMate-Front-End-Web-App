@@ -5,7 +5,7 @@ import { getPatientById, updatePatient } from '../api/patient';
 import { getStaffById, updateStaff } from '../api/staff';
 import { FormErrorSpan, StyledForm, StyledInput } from '../style/componentStyles';
 
-export default function ManageProfileCard({ userType, userId, onProfileUpdated }) {
+export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [middleName, setMiddleName] = useState('');
@@ -26,8 +26,8 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
     try {
       let res;
 
-      if (userType === 'patient') {
-        res = await updatePatient(userId, {
+      if (userInfo.userType === 'patient') {
+        res = await updatePatient(userInfo.userId, {
           firstName,
           middleName,
           lastName,
@@ -36,8 +36,8 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
         });
       }
 
-      if (userType === 'doctor') {
-        res = await updateDoctor(userId, {
+      if (userInfo.userType === 'doctor') {
+        res = await updateDoctor(userInfo.userId, {
           firstName,
           lastName,
           shiftStart,
@@ -45,8 +45,8 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
         });
       }
 
-      if (userType === 'staff') {
-        res = await updateStaff(userId, {
+      if (userInfo.userType === 'staff') {
+        res = await updateStaff(userInfo.userId, {
           firstName,
           lastName,
         });
@@ -64,19 +64,19 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
   useEffect(() => {
     const fetchData = async () => {
       let profileData = {};
-      if (userType === 'patient') {
-        profileData = await getPatientById(userId);
+      if (userInfo.userType === 'patient') {
+        profileData = await getPatientById(userInfo.userId);
         setDob(profileData.dateOfBirth);
         setMiddleName(profileData.middleName ?? '');
         setPhoneNumber(profileData.phone);
       }
 
-      if (userType === 'doctor') {
-        profileData = await getDoctorById(userId);
+      if (userInfo.userType === 'doctor') {
+        profileData = await getDoctorById(userInfo.userId);
       }
 
-      if (userType === 'staff') {
-        profileData = await getStaffById(userId);
+      if (userInfo.userType === 'staff') {
+        profileData = await getStaffById(userInfo.userId);
       }
 
       if (!profileData) throw new Error('Error retrieving profile');
@@ -87,7 +87,7 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
     };
 
     fetchData();
-  }, [userType, userId]);
+  }, [userInfo]);
 
   return (
     <div data-testid="app-profile-card">
@@ -103,7 +103,7 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
             data-testid="app-profile-form-input-firstname"
           />
         </label>
-        {userType === 'patient' && (
+        {userInfo.userType === 'patient' && (
           <label>
             Middle Name:{' '}
             <StyledInput
@@ -126,7 +126,7 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
             data-testid="app-profile-form-input-lastname"
           />
         </label>
-        {userType === 'patient' && (
+        {userInfo.userType === 'patient' && (
           <>
             <label>
               Date of Birth:{' '}
@@ -151,7 +151,7 @@ export default function ManageProfileCard({ userType, userId, onProfileUpdated }
             </label>
           </>
         )}
-        {userType === 'doctor' && (
+        {userInfo.userType === 'doctor' && (
           <>
             <label>
               Shift Start:{' '}
