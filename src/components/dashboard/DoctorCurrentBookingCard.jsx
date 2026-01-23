@@ -19,6 +19,7 @@ const CurrentBookingCard = ({ booking }) => {
 
   useEffect(() => {
     setCurrentBooking(booking);
+    setSaveMsg(""); // Clear save message when booking changes
     async function fetchDoctorNotes() {
       if (booking?._id) {
         const res = await getDoctorNotes(booking._id);
@@ -42,17 +43,19 @@ const CurrentBookingCard = ({ booking }) => {
       const notesRes = await getDoctorNotes(currentBooking._id);
       setAppointmentNotes(notesRes?.data?.doctorNotes || "");
       setSaveMsg("Notes saved!");
+      setTimeout(() => setSaveMsg(""), 2000); // Hide message after 2 seconds
     } catch {
       setSaveMsg("Failed to save notes.");
+      setTimeout(() => setSaveMsg(""), 2000);
     } finally {
       setSaving(false);
     }
   };
 
-  if (!currentBooking) return <div>No current booking.</div>;
+  if (!currentBooking) return <div data-testid="doctor-current-booking-card">No current booking.</div>;
 
   return (
-    <>
+    <div data-testid="doctor-current-booking-card">
       <NameBox>
         <DoctorManagerListCard booking={currentBooking} />
       </NameBox>
@@ -103,7 +106,7 @@ const CurrentBookingCard = ({ booking }) => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

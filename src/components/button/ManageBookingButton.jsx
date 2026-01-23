@@ -10,6 +10,7 @@ function ManageBookingButton({ bookingId, onManage }) {
       $bg="#2393ca"
       $color="#000000"
       onClick={() => onManage(bookingId)}
+      style={{ fontSize: "0.85rem" }}
     >
       Manage Booking
     </ActionButton>

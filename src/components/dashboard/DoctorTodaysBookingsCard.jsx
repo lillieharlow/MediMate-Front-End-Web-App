@@ -19,47 +19,51 @@ const TodaysBookingsCard = ({
 }) => {
   const now = new Date();
   return (
-    <DashboardCard title="Today's Bookings" style={cardStyle}>
-      <div className={containerClassName}>
-        {doctorBookings.length === 0 ? null : (
-          <>
-            {doctorBookings.map((booking) => {
-              const bookingTime = new Date(booking.datetimeStart);
-              const isPast = bookingTime < now;
-              const isSelected =
-                selectedBooking && booking._id === selectedBooking._id;
-              let bgColor;
-              if (isPast) {
-                bgColor = "#e0e0e0";
-              } else {
-                bgColor = undefined;
-              }
-              return (
-                <NameBoxRow $selected={isSelected} key={booking._id}>
-                  <NameBox
-                    $bg={bgColor}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => onBookingSelect?.(booking)}
-                  >
-                    <DoctorManagerListCard booking={booking} />
-                  </NameBox>
-                </NameBoxRow>
-              );
-            })}
-            <div
-              style={{
-                textAlign: "center",
-                marginTop: "1.5em",
-                color: "#e0e0e0",
-                fontWeight: 500,
-              }}
-            >
-              ---------- No more bookings today ----------
-            </div>
-          </>
-        )}
-      </div>
-    </DashboardCard>
+    <div data-testid="doctor-todays-bookings-card">
+      <DashboardCard title="Today's Bookings" style={cardStyle}>
+        <div className={containerClassName}>
+          {doctorBookings.length === 0 ? (
+            <div />
+          ) : (
+            <>
+              {doctorBookings.map((booking) => {
+                const bookingTime = new Date(booking.datetimeStart);
+                const isPast = bookingTime < now;
+                const isSelected =
+                  selectedBooking && booking._id === selectedBooking._id;
+                let bgColor;
+                if (isPast) {
+                  bgColor = "#e0e0e0";
+                } else {
+                  bgColor = undefined;
+                }
+                return (
+                  <NameBoxRow $selected={isSelected} key={booking._id}>
+                    <NameBox
+                      $bg={bgColor}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => onBookingSelect?.(booking)}
+                    >
+                      <DoctorManagerListCard booking={booking} />
+                    </NameBox>
+                  </NameBoxRow>
+                );
+              })}
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "1.5em",
+                  color: "#e0e0e0",
+                  fontWeight: 500,
+                }}
+              >
+                ---------- No more bookings today ----------
+              </div>
+            </>
+          )}
+        </div>
+      </DashboardCard>
+    </div>
   );
 };
 
