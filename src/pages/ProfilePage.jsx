@@ -10,7 +10,7 @@ export default function ProfilePage() {
   return (
     <main>
       <h2>Manage Your Profile</h2>
-      <ManageProfileCard userType={userType} userId={userId} />
+      <ManageProfileCard userInfo={{userType, userId}} />
     </main>
   );
 }
