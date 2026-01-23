@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import ActionButton from './button/ActionButton';
-import { deletePatient } from '../api/patient';
 import { deleteDoctor } from '../api/doctor';
+import { deletePatient } from '../api/patient';
 import { deleteStaff } from '../api/staff';
+import ActionButton from './button/ActionButton';
 
 const StyledDiv = styled.div`
     display: flex;
