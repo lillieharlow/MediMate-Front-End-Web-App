@@ -1,7 +1,7 @@
 /*
 - "Create Booking" button for creating a booking for a patient
 */
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import ActionButton from "./ActionButton";
 
 function CreateBookingButton({ patientId }) {

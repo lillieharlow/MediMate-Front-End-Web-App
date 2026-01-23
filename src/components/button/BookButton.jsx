@@ -2,7 +2,7 @@
 - "BOOK" button for navigating to the booking page
 */
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import ActionButton from "./ActionButton";
 
 function BookButton({ patientId }) {

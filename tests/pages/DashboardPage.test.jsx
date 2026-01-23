@@ -66,7 +66,7 @@ test('renders patient dashboard with doctor and booking cards using MSW', async 
     expect(screen.getByText(/My Bookings/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Dr. alice smith/i)).toHaveLength(2);
     expect(screen.getByText(/follow-up/i)).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'BOOK' })).toHaveLength(3);
+    expect(screen.getAllByRole('button', { name: /create booking/i })).toHaveLength(3);
     expect(screen.getAllByRole('button', { name: /Manage Booking/i })).toHaveLength(2);
     expect(screen.getAllByRole('button', { name: /Cancel Booking/i })).toHaveLength(2);
   });
