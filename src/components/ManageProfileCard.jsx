@@ -1,40 +1,33 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
-import { useEffect, useState } from "react";
-import { getDoctorById, updateDoctor } from "../api/doctor";
-import { getPatientById, updatePatient } from "../api/patient";
-import { getStaffById, updateStaff } from "../api/staff";
-import { useAuth } from "../contexts/AuthContext";
-import {
-  FormErrorSpan,
-  StyledForm,
-  StyledInput,
-} from "../style/componentStyles";
+import { useEffect, useState } from 'react';
+import { getDoctorById, updateDoctor } from '../api/doctor';
+import { getPatientById, updatePatient } from '../api/patient';
+import { getStaffById, updateStaff } from '../api/staff';
+import { FormErrorSpan, StyledForm, StyledInput } from '../style/componentStyles';
 
-export default function ManageProfileCard({ userType }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [dob, setDob] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [shiftStart, setShiftStart] = useState("");
-  const [shiftEnd, setShiftEnd] = useState("");
+export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [dob, setDob] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [shiftStart, setShiftStart] = useState('');
+  const [shiftEnd, setShiftEnd] = useState('');
   const [isError, setIsError] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
-  const { userId } = useAuth();
-
-  const handleManageProfile = async (event) => {
+  const handleManageProfile = async event => {
     event.preventDefault();
     setIsError(false);
-    setMessage("");
+    setMessage('');
 
     // Validate inputs here
 
     try {
       let res;
 
-      if (userType === "patient") {
-        res = await updatePatient(userId, {
+      if (userInfo.userType === 'patient') {
+        res = await updatePatient(userInfo.userId, {
           firstName,
           middleName,
           lastName,
@@ -43,8 +36,8 @@ export default function ManageProfileCard({ userType }) {
         });
       }
 
-      if (userType === "doctor") {
-        res = await updateDoctor(userId, {
+      if (userInfo.userType === 'doctor') {
+        res = await updateDoctor(userInfo.userId, {
           firstName,
           lastName,
           shiftStart,
@@ -52,16 +45,16 @@ export default function ManageProfileCard({ userType }) {
         });
       }
 
-      if (userType === "staff") {
-        res = await updateStaff(userId, {
+      if (userInfo.userType === 'staff') {
+        res = await updateStaff(userInfo.userId, {
           firstName,
           lastName,
         });
       }
-      if (!res) throw new Error("An unexpected error occured.");
+      if (!res) throw new Error('An unexpected error occured.');
       if (!res.success) throw new Error(`${res.error.message}`);
-
-      setMessage("Profile updated succesfully!");
+      onProfileUpdated ? onProfileUpdated(res.data) : null;
+      setMessage('Profile updated succesfully!');
     } catch (error) {
       setIsError(true);
       setMessage(error.message);
@@ -71,22 +64,22 @@ export default function ManageProfileCard({ userType }) {
   useEffect(() => {
     const fetchData = async () => {
       let profileData = {};
-      if (userType === "patient") {
-        profileData = await getPatientById(userId);
+      if (userInfo.userType === 'patient') {
+        profileData = await getPatientById(userInfo.userId);
         setDob(profileData.dateOfBirth);
-        setMiddleName(profileData.middleName ?? "");
+        setMiddleName(profileData.middleName ?? '');
         setPhoneNumber(profileData.phone);
       }
 
-      if (userType === "doctor") {
-        profileData = await getDoctorById(userId);
+      if (userInfo.userType === 'doctor') {
+        profileData = await getDoctorById(userInfo.userId);
       }
 
-      if (userType === "staff") {
-        profileData = await getStaffById(userId);
+      if (userInfo.userType === 'staff') {
+        profileData = await getStaffById(userInfo.userId);
       }
 
-      if (!profileData) throw new Error("Error retrieving profile");
+      if (!profileData) throw new Error('Error retrieving profile');
 
       // Set common fields
       setFirstName(profileData.firstName);
@@ -94,63 +87,63 @@ export default function ManageProfileCard({ userType }) {
     };
 
     fetchData();
-  }, [userType, userId]);
+  }, [userInfo]);
 
   return (
     <div data-testid="app-profile-card">
       <StyledForm onSubmit={handleManageProfile}>
         <label>
-          First Name:{" "}
+          First Name:{' '}
           <StyledInput
             type="text"
             value={firstName}
-            onChange={(event) => setFirstName(event.target.value)}
+            onChange={event => setFirstName(event.target.value)}
             placeholder="First name"
             required
             data-testid="app-profile-form-input-firstname"
           />
         </label>
-        {userType === "patient" && (
+        {userInfo.userType === 'patient' && (
           <label>
-            Middle Name:{" "}
+            Middle Name:{' '}
             <StyledInput
               type="text"
               value={middleName}
-              onChange={(event) => setMiddleName(event.target.value)}
+              onChange={event => setMiddleName(event.target.value)}
               placeholder="Middle name"
               data-testid="app-profile-form-input-middlename"
             />
           </label>
         )}
         <label>
-          Last Name:{" "}
+          Last Name:{' '}
           <StyledInput
             type="text"
             value={lastName}
-            onChange={(event) => setLastName(event.target.value)}
+            onChange={event => setLastName(event.target.value)}
             placeholder="Last name"
             required
             data-testid="app-profile-form-input-lastname"
           />
         </label>
-        {userType === "patient" && (
+        {userInfo.userType === 'patient' && (
           <>
             <label>
-              Date of Birth:{" "}
+              Date of Birth:{' '}
               <StyledInput
                 type="date"
                 value={dob}
-                onChange={(event) => setDob(event.target.value)}
+                onChange={event => setDob(event.target.value)}
                 required
                 data-testid="app-profile-form-input-dob"
               />
             </label>
             <label>
-              Phone Number:{" "}
+              Phone Number:{' '}
               <StyledInput
                 type="tel"
                 value={phoneNumber}
-                onChange={(event) => setPhoneNumber(event.target.value)}
+                onChange={event => setPhoneNumber(event.target.value)}
                 placeholder="Phone #"
                 required
                 data-testid="app-profile-form-input-phone"
@@ -158,24 +151,24 @@ export default function ManageProfileCard({ userType }) {
             </label>
           </>
         )}
-        {userType === "doctor" && (
+        {userInfo.userType === 'doctor' && (
           <>
             <label>
-              Shift Start:{" "}
+              Shift Start:{' '}
               <StyledInput
                 type="time"
                 value={shiftStart}
-                onChange={(event) => setShiftStart(event.target.value)}
+                onChange={event => setShiftStart(event.target.value)}
                 required
                 data-testid="app-profile-form-input-shift-start"
               />
             </label>
             <label>
-              Shift End:{" "}
+              Shift End:{' '}
               <StyledInput
                 type="time"
                 value={shiftEnd}
-                onChange={(event) => setShiftEnd(event.target.value)}
+                onChange={event => setShiftEnd(event.target.value)}
                 placeholder="Phone #"
                 required
                 data-testid="app-profile-form-input-shift-end"
@@ -184,7 +177,7 @@ export default function ManageProfileCard({ userType }) {
           </>
         )}
 
-        <FormErrorSpan id="login-error-span" className={isError ? "error" : ""}>
+        <FormErrorSpan id="login-error-span" className={isError ? 'error' : ''}>
           {message}
         </FormErrorSpan>
         <button type="submit" data-testid="app-profile-form-button-submit">

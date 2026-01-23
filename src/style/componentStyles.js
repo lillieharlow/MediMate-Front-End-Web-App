@@ -1,5 +1,4 @@
-// Ensure dashboard-card-content fills the card and has no padding for full-width row highlights
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Card = styled.div`
   flex: 1 1 350px;
@@ -31,6 +30,16 @@ export const Card = styled.div`
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
+`;
+
+export const DialogCard = styled.div`
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const DashboardCardRow = styled.div`
@@ -87,8 +96,8 @@ export const FormErrorSpan = styled.span`
 `;
 
 export const ColoredButton = styled.button`
-  background-color: ${({ $bg }) => $bg || "#008533"};
-  color: ${({ $color }) => $color || "#fff"};
+  background-color: ${({ $bg }) => $bg || '#008533'};
+  color: ${({ $color }) => $color || '#fff'};
   font-weight: bold;
   border: 2px solid #000000;
   border-radius: 6px;
@@ -107,7 +116,7 @@ export const ColoredButton = styled.button`
 `;
 
 export const NameBox = styled.div`
-  background: ${({ $bg }) => $bg || "#80d09e"};
+  background: ${({ $bg }) => $bg || '#80d09e'};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,7 +137,7 @@ export const NameBoxRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ $selected }) => ($selected ? "#acacacba" : "transparent")};
+  background: ${({ $selected }) => ($selected ? '#acacacba' : 'transparent')};
   margin-bottom: 0.6rem;
   box-sizing: border-box;
   padding-left: 0;
@@ -175,6 +184,21 @@ export const StyledSelect = styled.select`
   font-size: 1rem;
 `;
 
+export const CenteredHeading = styled.h4`
+  text-align: center;
+  margin: 1.2rem 0 1.2rem 0;
+`;
+
+export const BlurOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.01);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+`;
 export const StyledTextarea = styled.textarea`
   min-width: 120px;
   max-width: 400px;

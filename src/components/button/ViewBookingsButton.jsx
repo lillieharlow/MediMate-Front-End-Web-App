@@ -1,7 +1,7 @@
 /*
 - "View Bookings" button for viewing a patient's bookings
 */
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import ActionButton from "./ActionButton";
 
 function ViewBookingsButton({ patientId }) {
