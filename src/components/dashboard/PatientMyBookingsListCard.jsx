@@ -5,7 +5,6 @@ MyBookingsListCard component
 - Child component of ListCard when layout is set to 'my-bookings'
 */
 
-
 function MyBookingsListCard({ bookingDate, bookingTime, doctorName, title, icon, actions, style }) {
   return (
     <div className="list-card booking-card" style={style}>

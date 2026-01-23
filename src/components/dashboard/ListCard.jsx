@@ -6,11 +6,10 @@ List Card component
 - Used inside DashboardCard component
 */
 
-
 // biome-ignore assist/source/organizeImports: false positive
-import  OurDoctorsListCard from "./OurDoctorsListCard.jsx";
-import MyBookingsListCard from "./MyBookingsListCard.jsx";
-import "../style/componentStyles.js";
+import OurDoctorsListCard from "./PatientOurDoctorsListCard.jsx";
+import MyBookingsListCard from "./PatientMyBookingsListCard.jsx";
+import "../../style/componentStyles.js";
 
 const ListCard = (props) => {
   const { layout } = props;
