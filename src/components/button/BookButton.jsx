@@ -12,7 +12,7 @@ function BookButton({ patientId }) {
       type="button"
       onClick={() => navigate(`/patients/${patientId}/bookings/create`)}
     >
-      Create Booking
+      BOOK
     </ActionButton>
   );
 }

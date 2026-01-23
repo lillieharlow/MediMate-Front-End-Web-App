@@ -5,50 +5,19 @@ DoctorManagerCard component
 - DoctorManagerListCard is a child component used to render each booking inside DoctorManagerCard
 */
 
-// biome-ignore assist/source/organizeImports: false positive
-import PropTypes from "prop-types";
-import { FiClock } from "react-icons/fi";
+// biome-ignore assist/source/organizeImports: manually ordered for clarity
 import { useState, useEffect } from "react";
-
-import { getAllDoctors } from "../api/doctor";
-import { getDoctorBookings } from "../api/booking";
-import { getPatientById } from "../api/patient";
-import { getPatientFullName, isToday } from "../utils/patientUtils";
-
-import { StyledLabel, StyledSelect, ListSeparator, NameBox, CenteredHeading } from '../style/componentStyles';
-
-function DoctorManagerListCard({ booking }) {
-  const [patientName, setPatientName] = useState("");
-  useEffect(() => {
-    let isMounted = true;
-    if (booking.patientId) {
-      getPatientById(booking.patientId).then((patient) => {
-        if (isMounted && patient) {
-          setPatientName(getPatientFullName(patient));
-        }
-      });
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, [booking.patientId]);
-  const time = booking.datetimeStart ? new Date(booking.datetimeStart).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
-  return (
-    <>
-      <FiClock style={{ marginRight: '0.7em', verticalAlign: 'middle' }} />
-      <span style={{ marginRight: '1.2em', fontWeight: 500 }}>{time}</span>
-      <span>{patientName}</span>
-    </>
-  );
-}
-
-DoctorManagerListCard.propTypes = {
-  booking: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    time: PropTypes.string.isRequired,
-    patientName: PropTypes.string.isRequired,
-  }).isRequired,
-};
+import { getAllDoctors } from "../../api/doctor";
+import { getDoctorBookings } from "../../api/booking";
+import { isToday } from "../../utils/patientUtils";
+import {
+  StyledLabel,
+  StyledSelect,
+  ListSeparator,
+  NameBox,
+} from "../../style/componentStyles";
+import DoctorManagerListCard from "./DoctorManagerListCard";
+import TodaysBookingsCard from "./DoctorTodaysBookingsCard";
 
 function DoctorManagerCard() {
   const [doctors, setDoctors] = useState([]);
@@ -94,10 +63,19 @@ function DoctorManagerCard() {
   }, [selectedDoctor]);
 
   return (
-    <div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+    <div data-testid="doctor-manager-card">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
         <StyledLabel>
-          <span style={{ minWidth: 110, textAlign: 'left' }}>Select doctor</span>
+          <span style={{ minWidth: 110, textAlign: "left" }}>
+            Select doctor
+          </span>
           <StyledSelect
             value={selectedDoctor}
             onChange={(e) => {
@@ -109,7 +87,10 @@ function DoctorManagerCard() {
               if (loadingDoctors) return <option disabled>Loading...</option>;
               if (errorDoctors) return <option disabled>{errorDoctors}</option>;
               return (doctors || []).map((doctor) => {
-                const userId = doctor.user && typeof doctor.user === 'object' ? doctor.user._id : doctor.user;
+                const userId =
+                  doctor.user && typeof doctor.user === "object"
+                    ? doctor.user._id
+                    : doctor.user;
                 return (
                   <option key={String(userId)} value={String(userId)}>
                     {doctor.firstName} {doctor.lastName}
@@ -121,29 +102,32 @@ function DoctorManagerCard() {
         </StyledLabel>
         <ListSeparator />
       </div>
-      <CenteredHeading>Today's bookings</CenteredHeading>
-      <div className="doctor-manager-bookings">
-        {(() => {
-          if (loadingBookings) return <div>Loading bookings...</div>;
-          if (errorBookings) return <div>{errorBookings}</div>;
-          if (!Array.isArray(todaysBookings) || todaysBookings.length === 0)
-            return <div>No bookings for today.</div>;
-          return todaysBookings.map((booking, idx) => {
-            const key =
-              booking._id || booking.id || `${idx}-${JSON.stringify(booking)}`;
-            return (
-              <NameBox $bg="#5cb9e7" key={key}>
+      {/* Simplified conditional rendering for bookings */}
+      {(() => {
+        if (loadingBookings) return <div>Loading bookings...</div>;
+        if (errorBookings) return <div>{errorBookings}</div>;
+        return (
+          <TodaysBookingsCard
+            doctorBookings={todaysBookings}
+            containerClassName="doctor-manager-bookings"
+            cardStyle={{
+              border: "none",
+              boxShadow: "none",
+              padding: 0,
+              background: "transparent",
+            }}
+            renderBooking={(booking) => (
+              <NameBox $bg="#5cb9e7" key={booking._id}>
                 <DoctorManagerListCard booking={booking} />
               </NameBox>
-            );
-          });
-        })()}
-      </div>
+            )}
+          />
+        );
+      })()}
     </div>
   );
 }
 
 DoctorManagerCard.propTypes = {};
 
-export { DoctorManagerListCard };
 export default DoctorManagerCard;

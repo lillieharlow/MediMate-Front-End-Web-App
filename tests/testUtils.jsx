@@ -15,9 +15,9 @@ export const renderWithRoutes = (ui, routerPath = '/') => {
   return render(
     <MemoryRouter initialEntries={[routerPath]}>
       <AuthProvider>
-        <AppRoutes>{ui}</AppRoutes>
+        <AppRoutes />
       </AuthProvider>
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 
