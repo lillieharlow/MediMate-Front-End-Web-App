@@ -1,26 +1,35 @@
+// Ensure dashboard-card-content fills the card and has no padding for full-width row highlights
 import styled from "styled-components";
 
 export const Card = styled.div`
   flex: 1 1 350px;
   min-width: 300px;
   max-width: 600px;
-  width: 100%;
+  width: auto;
   height: 60vh;
   max-height: 70vh;
   overflow-y: auto;
   border: 1px solid #ccc;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.5rem 2.5rem;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 1rem;
+  margin: 0;
   @media (max-width: 900px) {
     width: 90vw;
     min-width: unset;
     max-width: 98vw;
-    margin: 0;
+    margin: 0 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
 `;
 
@@ -33,11 +42,18 @@ export const DashboardCardRow = styled.div`
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  @media (max-width: 900px) {
+  @media (max-width: 1040px) {
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
   }
+`;
+
+export const DashboardCardContent = styled.div`
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 `;
 
 export const StyledForm = styled.form`
@@ -97,16 +113,30 @@ export const NameBox = styled.div`
   align-items: center;
   border: 1px solid #000000;
   border-radius: 24px;
-  margin-top: 0;
-  margin-right: 0;
-  margin-bottom: 0.5rem;
-  margin-left: 0;
+  margin-left: auto;
+  margin-right: auto;
   width: fit-content;
   min-width: 320px;
   max-width: 400px;
   padding: 0.3rem 2.5rem;
   font-weight: bold;
   font-size: 1.1rem;
+`;
+
+export const NameBoxRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${({ $selected }) => ($selected ? "#acacacba" : "transparent")};
+  margin-bottom: 0.6rem;
+  box-sizing: border-box;
+  padding-left: 0;
+  padding-right: 0;
+  transition: background 0.2s;
+  width: calc(100% + 5rem);
+  margin-left: -2.5rem;
+  margin-right: -2.5rem;
 `;
 
 export const PatientListActions = styled.div`
@@ -145,7 +175,15 @@ export const StyledSelect = styled.select`
   font-size: 1rem;
 `;
 
-export const CenteredHeading = styled.h4`
-  text-align: center;
-  margin: 1.2rem 0 1.2rem 0;
+export const StyledTextarea = styled.textarea`
+  min-width: 120px;
+  max-width: 400px;
+  width: 100%;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  margin-top: 0.3rem;
 `;

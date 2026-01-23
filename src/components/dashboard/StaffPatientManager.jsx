@@ -5,12 +5,12 @@ StaffPatientManager component
 
 // biome-ignore assist/source/organizeImports: false positive
 import { useState, useEffect } from "react";
-import { getAllPatients } from "../api/staff.js";
-import FindPatientButton from "./button/FindPatientButton.jsx";
-import ViewBookingsButton from "./button/ViewBookingsButton.jsx";
-import CreateBookingButton from "./button/CreateBookingButton.jsx";
+import { getAllPatients } from "../../api/staff.js";
+import FindPatientButton from "../button/FindPatientButton.jsx";
+import ViewBookingsButton from "../button/ViewBookingsButton.jsx";
+import CreateBookingButton from "../button/CreateBookingButton.jsx";
 import styled from "styled-components";
-import { getPatientFullName } from "../utils/patientUtils";
+import { getPatientFullName } from "../../utils/patientUtils.js";
 
 const PatientSearchFields = styled.div`
   display: flex;
@@ -41,7 +41,11 @@ const PatientSearchFields = styled.div`
   }
 `;
 
-import { NameBox, PatientListActions, ListSeparator } from '../style/componentStyles';
+import {
+  NameBox,
+  PatientListActions,
+  ListSeparator,
+} from "../../style/componentStyles.js";
 
 function StaffPatientManager() {
   const [search, setSearch] = useState({
@@ -121,10 +125,20 @@ function StaffPatientManager() {
             const key = patient._id || patient.id || user._id || user.id || idx;
             const patientId = patient.id || patient._id || user._id || user.id;
             return (
-              <div key={key} className="patient-list-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginBottom: '1.2rem', paddingBottom: '1.2rem', width: '100%' }}>
-                <NameBox bg="#80d09e">
-                  {getPatientFullName(patient)}
-                </NameBox>
+              <div
+                key={key}
+                className="patient-list-item"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  marginBottom: "1.2rem",
+                  paddingBottom: "1.2rem",
+                  width: "100%",
+                }}
+              >
+                <NameBox $bg="#80d09e">{getPatientFullName(patient)}</NameBox>
                 <PatientListActions>
                   <ViewBookingsButton patientId={patientId} />
                   <CreateBookingButton patientId={patientId} />

@@ -4,19 +4,25 @@ Dashboard Card component
 - title required, optional custom content and styles
 - For use on dashboard pages
 */
+
 import PropTypes from "prop-types";
-import { Card } from "../style/componentStyles.js";
+import { Card, DashboardCardContent } from "../../style/componentStyles.js";
 
 const DashboardCard = ({ title, children, style }) => {
   return (
     <Card style={style}>
       <div className="dashboard-card-header">
         <h3 className="dashboard-card-title">{title}</h3>
-        {typeof children === "object" && children && children.props && children.props.actions && (
-          <div className="dashboard-card-actions">{children.props.actions}</div>
-        )}
+        {typeof children === "object" &&
+          children &&
+          children.props &&
+          children.props.actions && (
+            <div className="dashboard-card-actions">
+              {children.props.actions}
+            </div>
+          )}
       </div>
-      <div className="dashboard-card-content">{children}</div>
+      <DashboardCardContent className="dashboard-card-content">{children}</DashboardCardContent>
     </Card>
   );
 };

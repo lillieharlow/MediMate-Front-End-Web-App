@@ -11,13 +11,13 @@ Dashboard Page:
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import DashboardCard from "../components/DashboardCard.jsx";
-import ListCard from "../components/ListCard.jsx";
+import DashboardCard from "../components/dashboard/DashboardCard.jsx";
+import ListCard from "../components/dashboard/ListCard.jsx";
 import BookButton from "../components/button/BookButton.jsx";
-import StaffPatientManager from "../components/StaffPatientManager.jsx";
-import DoctorManagerCard, {
-  DoctorManagerListCard,
-} from "../components/DoctorManagerCard.jsx";
+import StaffPatientManager from "../components/dashboard/StaffPatientManager.jsx";
+import DoctorManagerCard from "../components/dashboard/DoctorManagerCard.jsx";
+import CurrentBookingCard from "../components/dashboard/DoctorCurrentBookingCard.jsx";
+import TodaysBookingsCard from "../components/dashboard/DoctorTodaysBookingsCard.jsx";
 import { DashboardCardRow } from "../style/componentStyles";
 
 import { useAuth } from "../contexts/AuthContext";
@@ -38,6 +38,7 @@ export default function DashboardPage() {
   const [bookings, setBookings] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [doctorBookings, setDoctorBookings] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     if (userType !== "patient") return;
@@ -64,8 +65,12 @@ export default function DashboardPage() {
     if (userType === "doctor") {
       async function fetchDoctorBookings() {
         const bookingsData = await getDoctorBookings(userId);
-        console.log("Fetched doctor bookings:", bookingsData);
         setDoctorBookings(bookingsData);
+        if (bookingsData && bookingsData.length > 0) {
+          setSelectedBooking(bookingsData[0]);
+        } else {
+          setSelectedBooking(null);
+        }
       }
       fetchDoctorBookings();
     }
@@ -151,37 +156,14 @@ export default function DashboardPage() {
       {userType === "doctor" && (
         <DashboardCardRow>
           <DashboardCard title="Current Booking">
-            {/* Current booking list item */}
-            {doctorBookings.length > 0 ? (
-              <DoctorManagerListCard booking={doctorBookings[0]} />
-            ) : (
-              <div>No current booking.</div>
-            )}
-            <div>
-              <strong>Patient Notes</strong>
-              <div className="notes-block">
-                <div>{doctorBookings[0]?.patientNotes || "No notes."}</div>
-              </div>
-            </div>
-            <div>
-              <strong>Appointment Notes</strong>
-              <div className="notes-block">
-                <textarea
-                  placeholder="Add appointment notes..."
-                  defaultValue={doctorBookings[0]?.appointmentNotes || ""}
-                />
-              </div>
-            </div>
+            <CurrentBookingCard booking={selectedBooking} />
           </DashboardCard>
-          <DashboardCard title="Today's Bookings">
-            {doctorBookings.length === 0 ? (
-              <div>No bookings for today.</div>
-            ) : (
-              doctorBookings.map((booking) => (
-                <DoctorManagerListCard key={booking.id} booking={booking} />
-              ))
-            )}
-          </DashboardCard>
+          <TodaysBookingsCard
+            doctorBookings={doctorBookings}
+            containerClassName="doctor-manager-bookings"
+            onBookingSelect={setSelectedBooking}
+            selectedBooking={selectedBooking}
+          />
         </DashboardCardRow>
       )}
     </main>
