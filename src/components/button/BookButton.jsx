@@ -1,31 +1,20 @@
 /*
-BookButton component
 - "BOOK" button for navigating to the booking page
-- Pass onBook handler as prop
 */
 
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+import ActionButton from "./ActionButton";
 
-function BookButton({ onBook }) {
+function BookButton({ patientId }) {
+  const navigate = useNavigate();
   return (
-    <button
+    <ActionButton
       type="button"
-      onClick={onBook}
-      style={{
-        backgroundColor: "#008533",
-        fontWeight: "bold",
-        color: "white",
-        border: "none",
-        borderRadius: "50%",
-        width: "48px",
-        height: "48px",
-      }}
-    >BOOK</button>
+      onClick={() => navigate(`/patients/${patientId}/bookings/create`)}
+    >
+      Create Booking
+    </ActionButton>
   );
 }
-
-BookButton.propTypes = {
-  onBook: PropTypes.func.isRequired,
-};
 
 export default BookButton;

@@ -1,22 +1,21 @@
 /*
-ViewBookingsButton component
-- Button for viewing a patient's bookings
-- Pass patientId as prop
+- "View Bookings" button for viewing a patient's bookings
 */
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+import ActionButton from "./ActionButton";
 
 function ViewBookingsButton({ patientId }) {
   const navigate = useNavigate();
   return (
-    <button type="button" onClick={() => navigate(`/patients/${patientId}/bookings`)}>
+    <ActionButton
+      $bg="#388bff"
+      $color="#000000"
+      type="button"
+      onClick={() => navigate(`/patients/${patientId}/bookings`)}
+    >
       View Bookings
-    </button>
+    </ActionButton>
   );
 }
-
-ViewBookingsButton.propTypes = {
-  patientId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-};
 
 export default ViewBookingsButton;

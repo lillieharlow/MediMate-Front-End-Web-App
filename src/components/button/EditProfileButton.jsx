@@ -1,21 +1,19 @@
 /*
-EditProfileButton component
-- Pass profile ID and onManage handler as props
+- "Manage Profile" button for profile management
 */
 
-import PropTypes from "prop-types";
+import ActionButton from "./ActionButton";
 
 function ManageProfileButton({ profileId, onManage }) {
   return (
-    <button type="button" onClick={() => onManage(profileId)}>
+    <ActionButton
+      $bg="#2393ca"
+      $color="#000"
+      onClick={() => onManage(profileId)}
+    >
       Manage Profile
-    </button>
+    </ActionButton>
   );
 }
-
-ManageProfileButton.propTypes = {
-  profileId: PropTypes.string.isRequired,
-  onManage: PropTypes.func.isRequired,
-};
 
 export default ManageProfileButton;

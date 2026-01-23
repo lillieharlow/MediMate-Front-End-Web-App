@@ -7,47 +7,24 @@ DoctorManagerCard component
 
 // biome-ignore assist/source/organizeImports: false positive
 import PropTypes from "prop-types";
+import { FiClock } from "react-icons/fi";
 import { useState, useEffect } from "react";
 
 import { getAllDoctors } from "../api/doctor";
 import { getDoctorBookings } from "../api/booking";
 import { getPatientById } from "../api/patient";
+import { getPatientFullName, isToday } from "../utils/patientUtils";
 
-import styled from "styled-components";
-
-const BookingCard = styled.div`
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  background: #fafbfc;
-`;
-
-const BookingTime = styled.span`
-  font-weight: bold;
-  margin-right: 12px;
-  color: #000000;
-`;
-
-const BookingPatient = styled.span`
-  font-weight: bold;
-  color: #3d3c3c;
-`;
+import { StyledLabel, StyledSelect, ListSeparator, NameBox, CenteredHeading } from '../style/componentStyles';
 
 function DoctorManagerListCard({ booking }) {
-  const [patientName, setPatientName] = useState(booking.patientId || "");
+  const [patientName, setPatientName] = useState("");
   useEffect(() => {
     let isMounted = true;
     if (booking.patientId) {
       getPatientById(booking.patientId).then((patient) => {
         if (isMounted && patient) {
-          // Support both direct and populated user fields
-          const user = patient.user && typeof patient.user === 'object' ? patient.user : {};
-          const firstName = patient.firstName || user.firstName || '';
-          const lastName = patient.lastName || user.lastName || '';
-          setPatientName(`${firstName} ${lastName}`.trim());
+          setPatientName(getPatientFullName(patient));
         }
       });
     }
@@ -55,21 +32,13 @@ function DoctorManagerListCard({ booking }) {
       isMounted = false;
     };
   }, [booking.patientId]);
+  const time = booking.datetimeStart ? new Date(booking.datetimeStart).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
   return (
-    <BookingCard>
-      <span role="img" aria-label="clock">
-        ⏰
-      </span>
-      <BookingTime>
-        {booking.datetimeStart
-          ? new Date(booking.datetimeStart).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })
-          : ""}
-      </BookingTime>
-      <BookingPatient>{patientName}</BookingPatient>
-    </BookingCard>
+    <>
+      <FiClock style={{ marginRight: '0.7em', verticalAlign: 'middle' }} />
+      <span style={{ marginRight: '1.2em', fontWeight: 500 }}>{time}</span>
+      <span>{patientName}</span>
+    </>
   );
 }
 
@@ -115,16 +84,6 @@ function DoctorManagerCard() {
             bookingsArr = Object.values(bookings);
           }
           if (!Array.isArray(bookingsArr)) bookingsArr = [];
-          const today = new Date();
-          const isToday = (dateString) => {
-            if (!dateString) return false;
-            const date = new Date(dateString);
-            return (
-              date.getFullYear() === today.getFullYear() &&
-              date.getMonth() === today.getMonth() &&
-              date.getDate() === today.getDate()
-            );
-          };
           const todays = bookingsArr.filter((b) => isToday(b.datetimeStart));
           setTodaysBookings(todays);
         })
@@ -136,31 +95,33 @@ function DoctorManagerCard() {
 
   return (
     <div>
-      <div className="doctor-manager-select">
-        <div>Select doctor</div>
-        <select
-          value={selectedDoctor}
-          onChange={(e) => {
-            // Always set as string
-            setSelectedDoctor(e.target.value);
-          }}
-        >
-          <option value="">-- Select Doctor --</option>
-          {(() => {
-            if (loadingDoctors) return <option disabled>Loading...</option>;
-            if (errorDoctors) return <option disabled>{errorDoctors}</option>;
-            return (doctors || []).map((doctor) => {
-              const userId = doctor.user && typeof doctor.user === 'object' ? doctor.user._id : doctor.user;
-              return (
-                <option key={String(userId)} value={String(userId)}>
-                  {doctor.firstName} {doctor.lastName}
-                </option>
-              );
-            });
-          })()}
-        </select>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <StyledLabel>
+          <span style={{ minWidth: 110, textAlign: 'left' }}>Select doctor</span>
+          <StyledSelect
+            value={selectedDoctor}
+            onChange={(e) => {
+              setSelectedDoctor(e.target.value);
+            }}
+          >
+            <option value="">-- Select Doctor --</option>
+            {(() => {
+              if (loadingDoctors) return <option disabled>Loading...</option>;
+              if (errorDoctors) return <option disabled>{errorDoctors}</option>;
+              return (doctors || []).map((doctor) => {
+                const userId = doctor.user && typeof doctor.user === 'object' ? doctor.user._id : doctor.user;
+                return (
+                  <option key={String(userId)} value={String(userId)}>
+                    {doctor.firstName} {doctor.lastName}
+                  </option>
+                );
+              });
+            })()}
+          </StyledSelect>
+        </StyledLabel>
+        <ListSeparator />
       </div>
-      <h4>Today's bookings</h4>
+      <CenteredHeading>Today's bookings</CenteredHeading>
       <div className="doctor-manager-bookings">
         {(() => {
           if (loadingBookings) return <div>Loading bookings...</div>;
@@ -170,7 +131,11 @@ function DoctorManagerCard() {
           return todaysBookings.map((booking, idx) => {
             const key =
               booking._id || booking.id || `${idx}-${JSON.stringify(booking)}`;
-            return <DoctorManagerListCard key={key} booking={booking} />;
+            return (
+              <NameBox $bg="#5cb9e7" key={key}>
+                <DoctorManagerListCard booking={booking} />
+              </NameBox>
+            );
           });
         })()}
       </div>

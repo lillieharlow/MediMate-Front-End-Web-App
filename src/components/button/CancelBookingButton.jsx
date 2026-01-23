@@ -1,23 +1,19 @@
 /*
-CancelBookingButton component
 - "Cancel Booking" button for booking management
-- Pass bookingId and onCancel handler as props
 */
 
-import PropTypes from "prop-types";
+import ActionButton from "./ActionButton";
 
 function CancelBookingButton({ bookingId, onCancel }) {
   return (
-    <button type="button" onClick={() => onCancel(bookingId)}>
+    <ActionButton
+      $bg="#c90000"
+      $color="#ffffff"
+      onClick={() => onCancel(bookingId)}
+    >
       Cancel Booking
-    </button>
+    </ActionButton>
   );
 }
-
-CancelBookingButton.propTypes = {
-  bookingId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired,
-  onCancel: PropTypes.func.isRequired,
-};
 
 export default CancelBookingButton;
