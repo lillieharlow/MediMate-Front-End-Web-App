@@ -210,7 +210,47 @@ export const handlers = [
         firstName: 'TestFirstName',
         middleName: 'TestMiddleName',
         lastName: 'TestLastName',
-        dateOfBirth: '01/01/2001',
+        dateOfBirth: '2001-01-02',
+        phone: '0400111222',
+      },
+    });
+  }),
+
+  // Mock get doctor profie request
+  http.get(`${API_BASE_URL}/api/v1/doctors/1TestUserId`, () => {
+    return HttpResponse.json({
+      data: {
+        firstName: 'TestDoctorFirstName',
+        lastName: 'TestDoctorLastName',
+        shiftStartTime: '08:30',
+        shiftEndTime: '16:30',
+      },
+    });
+  }),
+
+  // Mock get staff profie request
+  http.get(`${API_BASE_URL}/api/v1/staff/1TestUserId`, () => {
+    return HttpResponse.json({
+      data: {
+        firstName: 'TestDoctorFirstName',
+        lastName: 'TestDoctorLastName',
+      },
+    });
+  }),
+
+  // Mock patch profile
+  http.patch(`${API_BASE_URL}/api/v1/patients/1TestUserId`, async ({ request }) => {
+    const reqJson = await request.clone().json();
+
+    if (reqJson.firstName === 'ValidFirstName')
+      return HttpResponse.json({
+        success: true,
+      });
+
+    return HttpResponse.json({
+      success: false,
+      error: {
+        message: 'Test profile update failed',
       },
     });
   }),
