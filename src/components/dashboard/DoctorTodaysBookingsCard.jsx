@@ -21,9 +21,7 @@ const TodaysBookingsCard = ({
   return (
     <DashboardCard title="Today's Bookings" style={cardStyle}>
       <div className={containerClassName}>
-        {doctorBookings.length === 0 ? (
-          <div>No bookings for today.</div>
-        ) : (
+        {doctorBookings.length === 0 ? null : (
           <>
             {doctorBookings.map((booking) => {
               const bookingTime = new Date(booking.datetimeStart);

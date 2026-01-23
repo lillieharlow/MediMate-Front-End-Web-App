@@ -22,7 +22,7 @@ import { DashboardCardRow } from "../style/componentStyles";
 
 import { useAuth } from "../contexts/AuthContext";
 import { getAllDoctors } from "../api/doctor.js";
-import { getPatientBookings, getDoctorBookings } from "../api/booking.js";
+import { getPatientBookings, getDoctorBookings, getBookingById } from "../api/booking.js";
 import {
   createBookHandler,
   manageBooking,
@@ -161,7 +161,13 @@ export default function DashboardPage() {
           <TodaysBookingsCard
             doctorBookings={doctorBookings}
             containerClassName="doctor-manager-bookings"
-            onBookingSelect={setSelectedBooking}
+            onBookingSelect={async (booking) => {
+              if (booking?._id) {
+                setSelectedBooking(await getBookingById(booking._id));
+              } else {
+                setSelectedBooking(booking);
+              }
+            }}
             selectedBooking={selectedBooking}
           />
         </DashboardCardRow>

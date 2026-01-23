@@ -11,6 +11,7 @@ import ViewBookingsButton from "../button/ViewBookingsButton.jsx";
 import CreateBookingButton from "../button/CreateBookingButton.jsx";
 import styled from "styled-components";
 import { getPatientFullName } from "../../utils/patientUtils.js";
+import { formatToYMD } from "../../utils/dateFormat.js";
 
 const PatientSearchFields = styled.div`
   display: flex;
@@ -66,7 +67,12 @@ function StaffPatientManager() {
   }
 
   function handleFindPatient() {
-    getAllPatients(search).then((result) => {
+    // Convert dateOfBirth to YYYY-MM-DD if present
+    const searchParams = { ...search };
+    if (searchParams.dateOfBirth) {
+      searchParams.dateOfBirth = formatToYMD(searchParams.dateOfBirth);
+    }
+    getAllPatients(searchParams).then((result) => {
       setPatients(result);
     });
   }
@@ -114,16 +120,16 @@ function StaffPatientManager() {
       </PatientSearchFields>
       <div className="patient-list">
         {!Array.isArray(patients) || patients.length === 0 ? (
-          <div>No patients found.</div>
+          <div style={{ textAlign: "center"}}>---------- No patients found ----------</div>
         ) : (
-          patients.map((patient, idx) => {
+          patients.map((patient) => {
             // Support both direct and populated user fields
             const user =
               patient.user && typeof patient.user === "object"
                 ? patient.user
                 : {};
-            const key = patient._id || patient.id || user._id || user.id || idx;
-            const patientId = patient.id || patient._id || user._id || user.id;
+            const key = user._id;
+            const patientId = user._id;
             return (
               <div
                 key={key}
