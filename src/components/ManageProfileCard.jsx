@@ -40,8 +40,8 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
         res = await updateDoctor(userInfo.userId, {
           firstName,
           lastName,
-          shiftStart,
-          shiftEnd,
+          shiftStartTime: shiftStart,
+          shiftEndTime: shiftEnd,
         });
       }
 
@@ -73,6 +73,8 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
 
       if (userInfo.userType === 'doctor') {
         profileData = await getDoctorById(userInfo.userId);
+        setShiftStart(profileData.shiftStartTime);
+        setShiftEnd(profileData.shiftEndTime);
       }
 
       if (userInfo.userType === 'staff') {
