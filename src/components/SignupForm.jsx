@@ -2,27 +2,28 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 import { signupRequest } from '../api/auth';
-import { DialogCard, FormErrorSpan, StyledForm } from '../style/componentStyles';
+import {
+  DialogCard,
+  FormErrorSpan,
+  InputGrid,
+  StyledForm,
+  StyledInput,
+} from '../style/componentStyles';
 
 // TODO: Update styling for input to reflect front-end validation once done
-const StyledInput = styled.input`
-  padding: 0.2rem;
-  border-radius: 4px;
-  outline: none;
-  border: 1px solid rgba(204, 204, 204, 0.5);
 
-  &:focus {
-    border: 1.5px solid rgba(0, 123, 255, 0.5);
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
-    color: black;
-  }
-`;
-
-export default function SignupForm() {
+export default function SignupForm({ userType = 'patient', staffCreated }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dob, setDob] = useState('');
+  const [phone, setPhone] = useState('');
+  const [shiftStart, setShiftStart] = useState('');
+  const [shiftEnd, setShiftEnd] = useState('');
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
@@ -33,11 +34,26 @@ export default function SignupForm() {
     setMessage('');
 
     try {
-      const signupSuccess = await signupRequest({ email, password });
+      if (password !== confirmPassword)
+        throw new Error('Confirm password must be the same as password!');
+
+      const signupSuccess = await signupRequest({
+        email,
+        password,
+        firstName,
+        middleName,
+        lastName,
+        dateOfBirth: dob,
+        phone,
+      });
 
       if (signupSuccess) {
-        setMessage('Patient account created! Redirecting to login page...');
-        // TODO: redirect to /login after timeout
+        setMessage(
+          staffCreated
+            ? 'Account created'
+            : 'Patient account created! Redirecting to login page...',
+        );
+        if (staffCreated) return;
         setTimeout(
           () => {
             navigate('/login');
@@ -54,28 +70,119 @@ export default function SignupForm() {
     <DialogCard>
       <h2 data-testid="app-signup-heading">Create Account</h2>
       <StyledForm onSubmit={handleSignupSubmit} data-testid="app-signup-form">
-        <label>
-          Email:{' '}
+        <InputGrid>
+          <label htmlFor="signup-email">Email:</label>
           <StyledInput
+            id="signup-email"
             type="email"
             value={email}
             onChange={event => setEmail(event.target.value)}
-            placeholder="Enter your email"
+            placeholder={staffCreated ? 'Enter email' : 'Enter your email'}
             required
             data-testid="app-signup-form-input-email"
           />
-        </label>
-        <label>
-          Password:{' '}
+
+          <label htmlFor="signup-password">Password:</label>
           <StyledInput
+            id="signup-password"
             type="password"
             value={password}
             onChange={event => setPassword(event.target.value)}
-            placeholder="Choose your password"
+            placeholder={staffCreated ? 'Enter password' : 'Choose your password'}
             required
             data-testid="app-signup-form-input-password"
           />
-        </label>
+
+          <label htmlFor="signup-confirm-password">Confirm Password:</label>
+          <StyledInput
+            id="signup-confirm-password"
+            type="password"
+            value={confirmPassword}
+            onChange={event => setConfirmPassword(event.target.value)}
+            placeholder={staffCreated ? 'Re-type password' : 'Re-type your password'}
+            required
+            data-testid="app-signup-form-input-password-confirm"
+          />
+
+          <label htmlFor="signup-firstname">First Name:</label>
+          <StyledInput
+            id="signup-firstname"
+            type="text"
+            value={firstName}
+            onChange={event => setFirstName(event.target.value)}
+            placeholder={staffCreated ? 'User first name' : 'Your first name'}
+            required
+            data-testid="app-signup-form-input-firstname"
+          />
+          {userType === 'patient' && (
+            <>
+              <label htmlFor="signup-middlename">Middle Name:</label>
+              <StyledInput
+                id="signup-middlename"
+                type="text"
+                value={middleName}
+                onChange={event => setMiddleName(event.target.value)}
+                placeholder={staffCreated ? 'User middle name' : 'Your middle name'}
+                data-testid="app-signup-form-input-middlename"
+              />
+            </>
+          )}
+
+          <label htmlFor="signup-lastname">Last Name:</label>
+          <StyledInput
+            id="signup-lastname"
+            type="text"
+            value={lastName}
+            onChange={event => setLastName(event.target.value)}
+            placeholder={staffCreated ? 'User last name' : 'Your last/family name'}
+            data-testid="app-signup-form-input-lastname"
+          />
+          {userType === 'patient' && (
+            <>
+              <label htmlFor="signup-dob">Date of Birth:</label>
+              <StyledInput
+                id="signup-dob"
+                type="date"
+                value={dob}
+                onChange={event => setDob(event.target.value)}
+                data-testid="app-signup-form-input-dob"
+              />
+
+              <label htmlFor="signup-phone">Phone Number:</label>
+              <StyledInput
+                id="signup-phone"
+                type="tel"
+                value={phone}
+                onChange={event => setPhone(event.target.value)}
+                placeholder={staffCreated ? 'Phone #' : 'Your mobile / landline'}
+                data-testid="app-signup-form-input-phone"
+              />
+            </>
+          )}
+          {userType === 'doctor' && (
+            <>
+              <label htmlFor="signup-shiftstart">Shift Start Time:</label>
+              <StyledInput
+                id="signup-shiftstart"
+                type="time"
+                value={shiftStart}
+                required
+                onChange={event => setShiftStart(event.target.value)}
+                data-testid="app-signup-form-input-shiftstart"
+              />
+              <label htmlFor="signup-shiftend">Shift End Time:</label>
+              <StyledInput
+                id="signup-shiftend"
+                type="time"
+                value={shiftEnd}
+                required
+                onChange={event => setShiftEnd(event.target.value)}
+                data-testid="app-signup-form-input-shiftend"
+              />
+            </>
+          )}
+        </InputGrid>
+
         <FormErrorSpan id="signup-error-span" className={isError ? 'error' : ''}>
           {message}
         </FormErrorSpan>

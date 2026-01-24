@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getDoctorById, updateDoctor } from '../api/doctor';
 import { getPatientById, updatePatient } from '../api/patient';
 import { getStaffById, updateStaff } from '../api/staff';
-import { FormErrorSpan, StyledForm, StyledInput } from '../style/componentStyles';
+import { FormErrorSpan, InputGrid, StyledForm, StyledInput } from '../style/componentStyles';
 
 export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
   const [firstName, setFirstName] = useState('');
@@ -92,9 +92,10 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
   return (
     <div data-testid="app-profile-card">
       <StyledForm onSubmit={handleManageProfile}>
-        <label>
-          First Name:{' '}
+        <InputGrid>
+          <label htmlFor="input-first-name">First Name:</label>
           <StyledInput
+            id="input-first-name"
             type="text"
             value={firstName}
             onChange={event => setFirstName(event.target.value)}
@@ -102,22 +103,24 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
             required
             data-testid="app-profile-form-input-firstname"
           />
-        </label>
-        {userInfo.userType === 'patient' && (
-          <label>
-            Middle Name:{' '}
-            <StyledInput
-              type="text"
-              value={middleName}
-              onChange={event => setMiddleName(event.target.value)}
-              placeholder="Middle name"
-              data-testid="app-profile-form-input-middlename"
-            />
-          </label>
-        )}
-        <label>
-          Last Name:{' '}
+
+          {userInfo.userType === 'patient' && (
+            <>
+              <label htmlFor="input-middle-name">Middle Name:</label>
+              <StyledInput
+                id="input-middle-name"
+                type="text"
+                value={middleName}
+                onChange={event => setMiddleName(event.target.value)}
+                placeholder="Middle name"
+                data-testid="app-profile-form-input-middlename"
+              />
+            </>
+          )}
+
+          <label htmlFor="input-last-name">Last Name:</label>
           <StyledInput
+            id="input-last-name"
             type="text"
             value={lastName}
             onChange={event => setLastName(event.target.value)}
@@ -125,22 +128,21 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
             required
             data-testid="app-profile-form-input-lastname"
           />
-        </label>
-        {userInfo.userType === 'patient' && (
-          <>
-            <label>
-              Date of Birth:{' '}
+
+          {userInfo.userType === 'patient' && (
+            <>
+              <label htmlFor="input-dob">Date of Birth:</label>
               <StyledInput
+                id="input-dob"
                 type="date"
                 value={dob}
                 onChange={event => setDob(event.target.value)}
                 required
                 data-testid="app-profile-form-input-dob"
               />
-            </label>
-            <label>
-              Phone Number:{' '}
+              <label htmlFor="input-phone">Phone Number:</label>
               <StyledInput
+                id="input-phone"
                 type="tel"
                 value={phoneNumber}
                 onChange={event => setPhoneNumber(event.target.value)}
@@ -148,24 +150,23 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
                 required
                 data-testid="app-profile-form-input-phone"
               />
-            </label>
-          </>
-        )}
-        {userInfo.userType === 'doctor' && (
-          <>
-            <label>
-              Shift Start:{' '}
+            </>
+          )}
+
+          {userInfo.userType === 'doctor' && (
+            <>
+              <label htmlFor="input-shift-start">Shift Start:</label>
               <StyledInput
+                id="input-shift-start"
                 type="time"
                 value={shiftStart}
                 onChange={event => setShiftStart(event.target.value)}
                 required
                 data-testid="app-profile-form-input-shift-start"
               />
-            </label>
-            <label>
-              Shift End:{' '}
+              <label htmlFor="input-shift-end">Shift End:</label>
               <StyledInput
+                id="input-shift-end"
                 type="time"
                 value={shiftEnd}
                 onChange={event => setShiftEnd(event.target.value)}
@@ -173,9 +174,9 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
                 required
                 data-testid="app-profile-form-input-shift-end"
               />
-            </label>
-          </>
-        )}
+            </>
+          )}
+        </InputGrid>
 
         <FormErrorSpan id="login-error-span" className={isError ? 'error' : ''}>
           {message}

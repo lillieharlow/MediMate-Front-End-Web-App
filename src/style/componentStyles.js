@@ -76,6 +76,18 @@ export const StyledForm = styled.form`
   }
 `;
 
+export const InputGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  align-items: start;
+  > label {
+    font-weight: bold;
+    text-align: right;
+  }
+`;
+
 export const StyledInput = styled.input`
   padding: 0.2rem;
   border-radius: 4px;
