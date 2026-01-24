@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { signupRequest } from '../api/auth';
-import { Card, FormErrorSpan, StyledForm } from '../style/componentStyles';
+import { DialogCard, FormErrorSpan, StyledForm } from '../style/componentStyles';
 
 // TODO: Update styling for input to reflect front-end validation once done
 const StyledInput = styled.input`
@@ -51,7 +51,7 @@ export default function SignupForm() {
     }
   };
   return (
-    <Card>
+    <DialogCard>
       <h2 data-testid="app-signup-heading">Create Account</h2>
       <StyledForm onSubmit={handleSignupSubmit} data-testid="app-signup-form">
         <label>
@@ -83,6 +83,6 @@ export default function SignupForm() {
           Create Account
         </button>
       </StyledForm>
-    </Card>
+    </DialogCard>
   );
 }

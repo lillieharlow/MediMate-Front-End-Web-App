@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Card = styled.div`
   flex: 1 1 350px;
@@ -35,6 +35,7 @@ export const Card = styled.div`
 export const DialogCard = styled.div`
   overflow-y: auto;
   border: 1px solid #ccc;
+  padding: 1.5rem 2.5rem;
   border-radius: 12px;
   background: #fff;
   display: flex;
@@ -96,17 +97,15 @@ export const FormErrorSpan = styled.span`
 `;
 
 export const ColoredButton = styled.button`
-  background-color: ${({ $bg }) => $bg || '#008533'};
-  color: ${({ $color }) => $color || '#fff'};
+  background-color: ${({ $bg }) => $bg || "#008533"};
+  color: ${({ $color }) => $color || "#fff"};
   font-weight: bold;
   border: 2px solid #000000;
   border-radius: 6px;
   box-shadow: 3px 3px 8px #0000002e;
   padding: 0.5rem 1.5rem;
   cursor: pointer;
-  transition:
-    box-shadow 0.2s,
-    transform 0.2s;
+  transition: box-shadow 0.2s, transform 0.2s;
   outline: none;
   &:hover {
     box-shadow: 8px 8px 16px #00000038;
@@ -116,7 +115,7 @@ export const ColoredButton = styled.button`
 `;
 
 export const NameBox = styled.div`
-  background: ${({ $bg }) => $bg || '#80d09e'};
+  background: ${({ $bg }) => $bg || "#80d09e"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,7 +136,7 @@ export const NameBoxRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ $selected }) => ($selected ? '#acacacba' : 'transparent')};
+  background: ${({ $selected }) => ($selected ? "#acacacba" : "transparent")};
   margin-bottom: 0.6rem;
   box-sizing: border-box;
   padding-left: 0;
