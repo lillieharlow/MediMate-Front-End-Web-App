@@ -72,7 +72,7 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
 
   return (
     <DialogCard>
-      <h2 data-testid="app-signup-heading">Create Account</h2>
+      {!staffCreated && <h2 data-testid="app-signup-heading">Create Account</h2>}
       <StyledForm onSubmit={handleSignupSubmit} data-testid="app-signup-form">
         <InputGrid>
           <label htmlFor="signup-email" className="is-required">

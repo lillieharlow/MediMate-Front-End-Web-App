@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { populateUsersRequest } from '../api/staff';
 import DeleteUserConfirmCard from '../components/DeleteUserConfirmCard';
 import ManageProfileCard from '../components/ManageProfileCard';
+import StaffCreateUserCard from '../components/StaffCreateUserCard';
 import UserAdminTable from '../components/UserAdminTable';
 import { useAuth } from '../contexts/AuthContext';
 import { BlurOverlay } from '../style/componentStyles';
@@ -13,7 +14,7 @@ const StaticCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 2rem;
@@ -25,6 +26,7 @@ const StaticCard = styled.div`
 export default function UserAdminPage() {
   const [users, setUsers] = useState([]);
   const [renderOverlay, setRenderOverlay] = useState(false);
+  const [creatingProfile, setCreatingProfile] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
   const [deletingProfile, setDeletingProfile] = useState(false);
   const [targetUser, setTargetUser] = useState({});
@@ -57,12 +59,18 @@ export default function UserAdminPage() {
 
   const closeCard = () => {
     setRenderOverlay(false);
+    setCreatingProfile(false);
     setEditingProfile(false);
     setDeletingProfile(false);
     setTargetUser({});
   };
 
-  const editUser = (profileId, userType) => {
+  const promptCreateUser = () => {
+    setRenderOverlay(true);
+    setCreatingProfile(true);
+  };
+
+  const promptEditUser = (profileId, userType) => {
     setRenderOverlay(true);
     setEditingProfile(true);
     setTargetUser({ userId: profileId, userType });
@@ -78,10 +86,21 @@ export default function UserAdminPage() {
     <main>
       <h1>User Administration</h1>
 
-      <UserAdminTable users={users} onEditUser={editUser} onDeleteUser={promptDeleteUser} />
+      <UserAdminTable
+        users={users}
+        onCreateUser={promptCreateUser}
+        onEditUser={promptEditUser}
+        onDeleteUser={promptDeleteUser}
+      />
       {renderOverlay && (
         <>
           <BlurOverlay onClick={closeCard} />
+          {creatingProfile && (
+            <StaticCard>
+              <h2>Create User Profile</h2>
+              <StaffCreateUserCard />
+            </StaticCard>
+          )}
           {editingProfile && (
             <StaticCard>
               <h2>Edit User Profile</h2>

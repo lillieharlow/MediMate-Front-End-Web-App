@@ -3,9 +3,9 @@ import DeleteProfileButton from './button/DeleteProfileButton';
 import EditUserTypeButton from './button/EditUserTypeButton';
 import ManageProfileButton from './button/ManageProfileButton';
 
-export default function UserAdminTable({ users, onEditUser, onDeleteUser }) {
+export default function UserAdminTable({ users, onCreateUser, onEditUser, onDeleteUser }) {
   const onAddUser = () => {
-    console.log(`I will add a new user!`);
+    onCreateUser();
   };
 
   const onManageProfile = (profileId, userType) => {
