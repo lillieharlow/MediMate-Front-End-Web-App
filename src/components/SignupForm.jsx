@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 
 import { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { signupRequest } from '../api/auth';
 import {
@@ -16,7 +17,7 @@ import {
 export default function SignupForm({ userType = 'patient', staffCreated }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -32,11 +33,9 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
     event.preventDefault();
     setIsError(false);
     setMessage('');
+    setShowPassword(false);
 
     try {
-      if (password !== confirmPassword)
-        throw new Error('Confirm password must be the same as password!');
-
       const signupSuccess = await signupRequest({
         email,
         password,
@@ -66,12 +65,19 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
       setMessage(error.message);
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <DialogCard>
       <h2 data-testid="app-signup-heading">Create Account</h2>
       <StyledForm onSubmit={handleSignupSubmit} data-testid="app-signup-form">
         <InputGrid>
-          <label htmlFor="signup-email">Email:</label>
+          <label htmlFor="signup-email" className="is-required">
+            Email:
+          </label>
           <StyledInput
             id="signup-email"
             type="email"
@@ -82,29 +88,37 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
             data-testid="app-signup-form-input-email"
           />
 
-          <label htmlFor="signup-password">Password:</label>
-          <StyledInput
-            id="signup-password"
-            type="password"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-            placeholder={staffCreated ? 'Enter password' : 'Choose your password'}
-            required
-            data-testid="app-signup-form-input-password"
-          />
+          <label htmlFor="signup-password" className="is-required">
+            Password:
+          </label>
+          <div>
+            <StyledInput
+              id="signup-password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+              placeholder={staffCreated ? 'Enter password' : 'Choose your password'}
+              required
+              data-testid="app-signup-form-input-password"
+            />
+            <button
+              onClick={togglePasswordVisibility}
+              type="button"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                padding: 0,
+                marginLeft: '10px',
+              }}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
 
-          <label htmlFor="signup-confirm-password">Confirm Password:</label>
-          <StyledInput
-            id="signup-confirm-password"
-            type="password"
-            value={confirmPassword}
-            onChange={event => setConfirmPassword(event.target.value)}
-            placeholder={staffCreated ? 'Re-type password' : 'Re-type your password'}
-            required
-            data-testid="app-signup-form-input-password-confirm"
-          />
-
-          <label htmlFor="signup-firstname">First Name:</label>
+          <label htmlFor="signup-firstname" className="is-required">
+            First Name:
+          </label>
           <StyledInput
             id="signup-firstname"
             type="text"
@@ -114,6 +128,7 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
             required
             data-testid="app-signup-form-input-firstname"
           />
+
           {userType === 'patient' && (
             <>
               <label htmlFor="signup-middlename">Middle Name:</label>
@@ -128,40 +143,53 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
             </>
           )}
 
-          <label htmlFor="signup-lastname">Last Name:</label>
+          <label htmlFor="signup-lastname" className="is-required">
+            Last Name:
+          </label>
           <StyledInput
             id="signup-lastname"
             type="text"
             value={lastName}
             onChange={event => setLastName(event.target.value)}
             placeholder={staffCreated ? 'User last name' : 'Your last/family name'}
+            required
             data-testid="app-signup-form-input-lastname"
           />
+
           {userType === 'patient' && (
             <>
-              <label htmlFor="signup-dob">Date of Birth:</label>
+              <label htmlFor="signup-dob" className="is-required">
+                Date of Birth:
+              </label>
               <StyledInput
                 id="signup-dob"
                 type="date"
                 value={dob}
                 onChange={event => setDob(event.target.value)}
+                required
                 data-testid="app-signup-form-input-dob"
               />
 
-              <label htmlFor="signup-phone">Phone Number:</label>
+              <label htmlFor="signup-phone" className="is-required">
+                Phone Number:
+              </label>
               <StyledInput
                 id="signup-phone"
                 type="tel"
                 value={phone}
                 onChange={event => setPhone(event.target.value)}
                 placeholder={staffCreated ? 'Phone #' : 'Your mobile / landline'}
+                required
                 data-testid="app-signup-form-input-phone"
               />
             </>
           )}
+
           {userType === 'doctor' && (
             <>
-              <label htmlFor="signup-shiftstart">Shift Start Time:</label>
+              <label htmlFor="signup-shiftstart" className="is-required">
+                Shift Start Time:
+              </label>
               <StyledInput
                 id="signup-shiftstart"
                 type="time"
@@ -170,7 +198,10 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
                 onChange={event => setShiftStart(event.target.value)}
                 data-testid="app-signup-form-input-shiftstart"
               />
-              <label htmlFor="signup-shiftend">Shift End Time:</label>
+
+              <label htmlFor="signup-shiftend" className="is-required">
+                Shift End Time:
+              </label>
               <StyledInput
                 id="signup-shiftend"
                 type="time"

@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { loginRequest } from '../api/auth';
 import { useAuth } from '../contexts/AuthContext';
-import { DialogCard, FormErrorSpan, StyledForm, StyledInput } from '../style/componentStyles';
+import {
+  DialogCard,
+  FormErrorSpan,
+  InputGrid,
+  StyledForm,
+  StyledInput,
+} from '../style/componentStyles';
 import { getJwtPayload } from '../utils/jwt';
 
 export default function LoginForm() {
@@ -42,9 +48,10 @@ export default function LoginForm() {
     <DialogCard>
       <h2>Log In</h2>
       <StyledForm onSubmit={handleLoginSubmit} data-testid="app-login-form">
-        <label>
-          Email:{' '}
+        <InputGrid>
+          <label htmlFor="login-email-input">Email:</label>
           <StyledInput
+            id="login-email-input"
             type="email"
             value={email}
             onChange={event => setEmail(event.target.value)}
@@ -52,18 +59,18 @@ export default function LoginForm() {
             required
             data-testid="app-login-form-input-email"
           />
-        </label>
-        <label>
-          Password:{' '}
+          <label htmlFor="login-password-input">Password:</label>
           <StyledInput
+            id="login-password-input"
             type="password"
             value={password}
             onChange={event => setPassword(event.target.value)}
             placeholder="Enter your password"
+            minLength={6}
             required
             data-testid="app-login-form-input-password"
           />
-        </label>
+        </InputGrid>
         <FormErrorSpan id="login-error-span" className={isError ? 'error' : ''}>
           {message}
         </FormErrorSpan>

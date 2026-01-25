@@ -81,6 +81,11 @@ export const InputGrid = styled.div`
   > label {
     font-weight: bold;
     text-align: right;
+
+    &.is-required::after {
+      content: " *";
+      color: red;
+    }
   }
 `;
 
