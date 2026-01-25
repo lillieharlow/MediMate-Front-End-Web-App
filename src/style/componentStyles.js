@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Card = styled.div`
   flex: 1 1 350px;
@@ -35,6 +35,7 @@ export const Card = styled.div`
 export const DialogCard = styled.div`
   overflow-y: auto;
   border: 1px solid #ccc;
+  padding: 1.5rem 2.5rem;
   border-radius: 12px;
   background: #fff;
   display: flex;
@@ -70,8 +71,21 @@ export const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+`;
+
+export const InputGrid = styled.div`
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 1rem;
+  align-items: center;
   > label {
     font-weight: bold;
+    text-align: right;
+
+    &.is-required::after {
+      content: " *";
+      color: red;
+    }
   }
 `;
 
@@ -86,6 +100,12 @@ export const StyledInput = styled.input`
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
     color: black;
   }
+
+  &:user-invalid {
+    border: 1.5px solid rgba(255, 0, 0, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+    color: black;
+  }
 `;
 
 export const FormErrorSpan = styled.span`
@@ -96,8 +116,8 @@ export const FormErrorSpan = styled.span`
 `;
 
 export const ColoredButton = styled.button`
-  background-color: ${({ $bg }) => $bg || '#008533'};
-  color: ${({ $color }) => $color || '#fff'};
+  background-color: ${({ $bg }) => $bg || "#008533"};
+  color: ${({ $color }) => $color || "#fff"};
   font-weight: bold;
   border: 2px solid #000000;
   border-radius: 6px;
@@ -116,7 +136,7 @@ export const ColoredButton = styled.button`
 `;
 
 export const NameBox = styled.div`
-  background: ${({ $bg }) => $bg || '#80d09e'};
+  background: ${({ $bg }) => $bg || "#80d09e"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,7 +157,7 @@ export const NameBoxRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ $selected }) => ($selected ? '#acacacba' : 'transparent')};
+  background: ${({ $selected }) => ($selected ? "#acacacba" : "transparent")};
   margin-bottom: 0.6rem;
   box-sizing: border-box;
   padding-left: 0;

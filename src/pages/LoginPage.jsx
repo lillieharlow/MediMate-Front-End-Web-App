@@ -1,7 +1,7 @@
-import { Navigate } from "react-router";
-import CreateAccountCard from "../components/CreateAccountCard";
-import LoginForm from "../components/LoginForm";
-import { useAuth } from "../contexts/AuthContext";
+import { Navigate } from 'react-router';
+import CreateAccountCard from '../components/CreateAccountCard';
+import LoginForm from '../components/LoginForm';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function LoginPage() {
   const { isAuthenticated } = useAuth();

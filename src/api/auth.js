@@ -1,7 +1,10 @@
-import { getApiResponse, getErrorReason } from './apiUtils';
+import { getApiResponse, getErrorReason } from "./apiUtils";
 
 export const loginRequest = async ({ email, password }) => {
-  const loginResData = await getApiResponse('POST', 'api/v1/auth/login', { email, password });
+  const loginResData = await getApiResponse("POST", "api/v1/auth/login", {
+    email,
+    password,
+  });
 
   if (!loginResData.success) {
     const errorsString = getErrorReason(loginResData);
@@ -17,8 +20,24 @@ export const loginRequest = async ({ email, password }) => {
   return returnObj;
 };
 
-export const signupRequest = async ({ email, password }) => {
-  const signupResData = await getApiResponse('POST', 'api/v1/auth/signup', { email, password });
+export const signupRequest = async ({
+  email,
+  password,
+  firstName,
+  middleName,
+  lastName,
+  dateOfBirth,
+  phone,
+}) => {
+  const signupResData = await getApiResponse("POST", "api/v1/auth/signup", {
+    email,
+    password,
+    firstName,
+    middleName,
+    lastName,
+    dateOfBirth,
+    phone,
+  });
 
   if (!signupResData.success) {
     const errorsString = getErrorReason(signupResData);

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { Card } from '../style/componentStyles';
+import { DialogCard } from '../style/componentStyles';
 
 export default function CreateAccountCard() {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export default function CreateAccountCard() {
   };
 
   return (
-    <Card data-testid="app-create-account-card">
+    <DialogCard data-testid="app-create-account-card">
       <h3 data-testid="app-create-account-card-heading">Don't have a MediMate account?</h3>
       <button
         type="button"
@@ -17,6 +17,6 @@ export default function CreateAccountCard() {
       >
         Create Patient Account
       </button>
-    </Card>
+    </DialogCard>
   );
 }
