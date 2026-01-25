@@ -71,17 +71,13 @@ export const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  > label {
-    font-weight: bold;
-  }
 `;
 
 export const InputGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: max-content 1fr;
   gap: 1rem;
-  width: 100%;
-  align-items: start;
+  align-items: center;
   > label {
     font-weight: bold;
     text-align: right;
@@ -97,6 +93,12 @@ export const StyledInput = styled.input`
   &:focus {
     border: 1.5px solid rgba(0, 123, 255, 0.5);
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    color: black;
+  }
+
+  &:user-invalid {
+    border: 1.5px solid rgba(255, 0, 0, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
     color: black;
   }
 `;
@@ -117,7 +119,9 @@ export const ColoredButton = styled.button`
   box-shadow: 3px 3px 8px #0000002e;
   padding: 0.5rem 1.5rem;
   cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
   outline: none;
   &:hover {
     box-shadow: 8px 8px 16px #00000038;
