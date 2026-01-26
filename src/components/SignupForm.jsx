@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import { signupRequest } from '../api/auth';
+import { createUserProfile } from '../api/staff';
 import {
   DialogCard,
   FormErrorSpan,
@@ -14,7 +15,7 @@ import {
 
 // TODO: Update styling for input to reflect front-end validation once done
 
-export default function SignupForm({ userType = 'patient', staffCreated }) {
+export default function SignupForm({ userType = 'patient', staffCreated, onUserAdded }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -36,22 +37,41 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
     setShowPassword(false);
 
     try {
-      const signupSuccess = await signupRequest({
-        email,
-        password,
-        firstName,
-        middleName,
-        lastName,
-        dateOfBirth: dob,
-        phone,
-      });
+      let signupRes;
 
-      if (signupSuccess) {
+      if (staffCreated) {
+        signupRes = await createUserProfile({
+          userType,
+          email,
+          password,
+          firstName,
+          middleName,
+          lastName,
+          dateOfBirth: dob,
+          phone,
+          shiftStartTime: shiftStart,
+          shiftEndTime: shiftEnd,
+        });
+      } else {
+        signupRes = await signupRequest({
+          email,
+          password,
+          firstName,
+          middleName,
+          lastName,
+          dateOfBirth: dob,
+          phone,
+        });
+      }
+
+      if (signupRes.success) {
         setMessage(
           staffCreated
             ? 'Account created'
             : 'Patient account created! Redirecting to login page...',
         );
+
+        staffCreated && onUserAdded(signupRes.data);
         if (staffCreated) return;
         setTimeout(
           () => {
@@ -61,6 +81,7 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
         );
       }
     } catch (error) {
+      console.log(`found a error ${error.message}`);
       setIsError(true);
       setMessage(error.message);
     }
@@ -72,7 +93,7 @@ export default function SignupForm({ userType = 'patient', staffCreated }) {
 
   return (
     <DialogCard>
-      <h2 data-testid="app-signup-heading">Create Account</h2>
+      {!staffCreated && <h2 data-testid="app-signup-heading">Create Account</h2>}
       <StyledForm onSubmit={handleSignupSubmit} data-testid="app-signup-form">
         <InputGrid>
           <label htmlFor="signup-email" className="is-required">
