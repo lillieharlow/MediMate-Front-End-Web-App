@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router';
 import styled from 'styled-components';
 import { populateUsersRequest } from '../api/staff';
-import DeleteUserConfirmCard from '../components/DeleteUserConfirmCard';
 import ManageProfileCard from '../components/ManageProfileCard';
-import StaffCreateUserCard from '../components/StaffCreateUserCard';
-import UserAdminTable from '../components/UserAdminTable';
+import DeleteUserConfirmCard from '../components/useradmin/DeleteUserConfirmCard';
+import StaffCreateUserCard from '../components/useradmin/StaffCreateUserCard';
+import UserAdminTable from '../components/useradmin/UserAdminTable';
 import { useAuth } from '../contexts/AuthContext';
 import { BlurOverlay } from '../style/componentStyles';
 
@@ -46,6 +46,10 @@ export default function UserAdminPage() {
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (userType !== 'staff') return <Navigate to="/dashboard" replace />;
+
+  const addUserToTable = user => {
+    setUsers(prev => [...prev, user]);
+  };
 
   const updateUserTable = user => {
     setUsers(prev => prev.map(u => (u._id === user._id ? user : u)));
@@ -98,7 +102,7 @@ export default function UserAdminPage() {
           {creatingProfile && (
             <StaticCard>
               <h2>Create User Profile</h2>
-              <StaffCreateUserCard />
+              <StaffCreateUserCard onUserAdded={addUserToTable} />
             </StaticCard>
           )}
           {editingProfile && (

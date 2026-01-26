@@ -19,6 +19,18 @@ export async function changeUserType(userId, userTypeData) {
   );
 }
 
+// Create user account
+export async function createUserProfile(userData) {
+  const res = await getApiResponse('POST', `api/v1/staff/createUser`, userData, true);
+
+  if (!res.success) {
+    const errorsString = getErrorReason(res);
+    throw new Error(`Signup failed: ${errorsString}`);
+  }
+
+  return res;
+}
+
 // Create staff profile
 export async function createStaffProfile(staffData) {
   return await getApiResponse('POST', 'api/v1/staff', staffData, true);

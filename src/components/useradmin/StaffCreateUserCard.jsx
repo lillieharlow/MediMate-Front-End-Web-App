@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import SignupForm from './SignupForm';
+import SignupForm from '../SignupForm';
 import StaffUserTypeSelector from './StaffUserTypeSelector';
 
-export default function StaffCreateUserCard() {
+export default function StaffCreateUserCard({ onUserAdded }) {
   const [createUserType, setCreateUserType] = useState('patient');
 
   const changeUserType = userType => {
@@ -12,7 +12,7 @@ export default function StaffCreateUserCard() {
   return (
     <>
       <StaffUserTypeSelector onChangeType={changeUserType} />
-      <SignupForm staffCreated userType={createUserType} />
+      <SignupForm staffCreated userType={createUserType} onUserAdded={onUserAdded} />
     </>
   );
 }

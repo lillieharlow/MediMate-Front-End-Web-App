@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { InputGrid } from '../style/componentStyles';
+import { InputGrid } from '../../style/componentStyles';
 
 const StyledSelect = styled.select`
   padding: 0.2rem;
