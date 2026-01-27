@@ -7,7 +7,7 @@ import ActionButton from './ActionButton';
 
 function AddUserButton({ profileId, onAddUser }) {
   return (
-    <ActionButton onClick={() => onAddUser(profileId)} title="Create new user">
+    <ActionButton onClick={() => onAddUser(profileId)} title="Create new user" data-testid='app-useradmin-button-add-user'>
       <FaUserPlus />
     </ActionButton>
   );

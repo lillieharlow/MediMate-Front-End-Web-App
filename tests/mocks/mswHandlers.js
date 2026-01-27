@@ -254,4 +254,114 @@ export const handlers = [
       },
     });
   }),
+
+  // Mock staff get users request
+  http.get(`${API_BASE_URL}/api/v1/staff/users`, () => {
+    return HttpResponse.json({
+      success: true,
+      data: [
+        {
+          user: {
+            _id: 'mockId1',
+            email: 'mock@email.com',
+            userType: {
+              typeName: 'patient',
+            },
+          },
+          firstName: 'mockFirstName',
+          lastName: 'mockLastName',
+          dateOfBirth: '2000-01-01',
+          phone: '0400111222',
+        },
+        {
+          user: {
+            _id: 'mockId2',
+            email: 'mockdoc@email.com',
+            userType: {
+              typeName: 'doctor',
+            },
+          },
+          firstName: 'mockDocName',
+          lastName: 'mockDocLName',
+          shiftStartTime: '08:00',
+          shiftEndTime: '16:00',
+        },
+        {
+          user: {
+            _id: 'mockId3',
+            email: 'mockstaff@email.com',
+            userType: {
+              typeName: 'staff',
+            },
+          },
+          firstName: 'mockStaffName',
+          lastName: 'mockStaffLName',
+        },
+      ],
+    });
+  }),
+
+  // Mock patient profile lookup
+  http.get(`${API_BASE_URL}/api/v1/patients/:userId`, ({ params }) => {
+    const { userId } = params;
+
+    if (userId === 'mockId1') {
+      return HttpResponse.json({
+        success: true,
+        data: {
+          user: {
+            _id: 'mockId1',
+            email: 'mock@email.com',
+            userType: {
+              typeName: 'patient',
+            },
+          },
+          firstName: 'mockFirstName',
+          lastName: 'mockLastName',
+          dateOfBirth: '2000-01-01',
+          phone: '0400111222',
+        },
+      });
+    }
+
+    return HttpResponse.json(
+      {
+        success: false,
+        message: 'Mock user not found',
+      },
+      { status: 404 },
+    );
+  }),
+
+  // Mock PATCH patient profile
+  http.patch(`${API_BASE_URL}/api/v1/patients/:userId`, async ({ request }) => {
+    const reqJson = await request.clone().json();
+
+    if (reqJson.firstName && reqJson.firstName === 'errorName') {
+      return HttpResponse.json(
+        {
+          success: false,
+          message: 'Mock error reason',
+        },
+        { status: 400 },
+      );
+    }
+
+    return HttpResponse.json({
+      success: true,
+      data: {
+        user: {
+          _id: 'mockId1',
+          email: 'mock@email.com',
+          userType: {
+            typeName: 'patient',
+          },
+        },
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
+        dateOfBirth: '2000-01-01',
+        phone: '0400111222',
+      },
+    });
+  }),
 ];
