@@ -1,16 +1,13 @@
 /*
 - "Create Booking" button for creating a booking for a patient
 */
-import { useNavigate } from "react-router-dom";
-import ActionButton from "./ActionButton";
 
-function CreateBookingButton({ patientId }) {
-  const navigate = useNavigate();
+// biome-ignore assist/source/organizeImports: keeping import order for clarity
+import ActionButton from "./ActionButton";
+// TODO: Implement modal popup for staff booking creation
+function CreateBookingButton() {
   return (
-    <ActionButton
-      type="button"
-      onClick={() => navigate(`/patients/${patientId}/bookings/create`)}
-    >
+    <ActionButton type="button" disabled>
       Create Booking
     </ActionButton>
   );

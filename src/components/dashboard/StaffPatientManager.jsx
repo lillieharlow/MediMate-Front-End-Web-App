@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { getAllPatients } from "../../api/staff.js";
 import FindPatientButton from "../button/FindPatientButton.jsx";
 import ViewBookingsButton from "../button/ViewBookingsButton.jsx";
-import CreateBookingButton from "../button/CreateBookingButton.jsx";
+import BookButton from "../button/BookButton.jsx";
 import styled from "styled-components";
 import { StyledInput } from "../../style/componentStyles.js";
 import { getPatientFullName } from "../../utils/patientUtils.js";
@@ -143,7 +143,7 @@ function StaffPatientManager() {
                   <NameBox $bg="#80d09e">{getPatientFullName(patient)}</NameBox>
                   <PatientListActions>
                     <ViewBookingsButton patientId={patientId} />
-                    <CreateBookingButton patientId={patientId} />
+                    <BookButton patientId={patientId} />
                   </PatientListActions>
                   <ListSeparator />
                 </div>

@@ -9,7 +9,7 @@ Dashboard Page:
 
 // biome-ignore assist/source/organizeImports: false positive
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate } from "react-router";
 
 import DashboardCard from "../components/dashboard/DashboardCard.jsx";
 import PatientOurDoctorsCardList from "../components/dashboard/PatientOurDoctorsCardList.jsx";
@@ -27,12 +27,9 @@ import {
   getDoctorBookings,
   getBookingById,
 } from "../api/booking.js";
-import { createBookHandler } from "../utils/bookingUtils";
 
 export default function DashboardPage() {
-  const navigate = useNavigate();
   const { userId, userType, isAuthenticated } = useAuth();
-  const handleBook = createBookHandler(navigate, userId);
   const [bookings, setBookings] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [doctorBookings, setDoctorBookings] = useState([]);
@@ -82,6 +79,22 @@ export default function DashboardPage() {
     return "Dashboard";
   }
 
+  // Handler to refresh bookings after a new booking is created
+  async function handleBookingCreated() {
+    if (userType === "patient") {
+      const bookingsData = await getPatientBookings(userId);
+      setBookings(bookingsData);
+    } else if (userType === "doctor") {
+      const bookingsData = await getDoctorBookings(userId);
+      setDoctorBookings(bookingsData);
+      if (bookingsData && bookingsData.length > 0) {
+        setSelectedBooking(bookingsData[0]);
+      } else {
+        setSelectedBooking(null);
+      }
+    }
+  }
+
   return !isAuthenticated ? (
     <Navigate to="/login" replace />
   ) : (
@@ -92,7 +105,12 @@ export default function DashboardPage() {
       {userType === "patient" && (
         <DashboardCardRow>
           <DashboardCard title="Our Doctors">
-            <PatientOurDoctorsCardList doctors={doctors} onBook={handleBook} />
+            <PatientOurDoctorsCardList
+              doctors={doctors}
+              patientId={userId}
+              bookings={bookings}
+              onBookingCreated={handleBookingCreated}
+            />
           </DashboardCard>
           <DashboardCard title="My Bookings">
             <PatientMyBookingsCard bookings={bookings} doctors={doctors} />
@@ -117,6 +135,7 @@ export default function DashboardPage() {
           <TodaysBookingsCard
             doctorBookings={doctorBookings}
             containerClassName="doctor-manager-bookings"
+            onBookingCreated={handleBookingCreated}
             onBookingSelect={async (booking) => {
               if (booking?._id) {
                 setSelectedBooking(await getBookingById(booking._id));

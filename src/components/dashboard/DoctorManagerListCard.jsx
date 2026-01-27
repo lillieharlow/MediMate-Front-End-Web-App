@@ -28,8 +28,9 @@ const DoctorManagerListCard = ({ booking }) => {
   }, [booking?.patientId]);
   const time = booking.datetimeStart
     ? new Date(booking.datetimeStart).toLocaleTimeString([], {
-        hour: "2-digit",
+        hour: "numeric",
         minute: "2-digit",
+        hour12: true,
       })
     : "";
   return (

@@ -28,6 +28,15 @@ function DoctorManagerCard() {
   const [errorDoctors, setErrorDoctors] = useState("");
   const [errorBookings, setErrorBookings] = useState("");
 
+  // Add a new booking to today's bookings instantly
+  const addBookingToList = (newBooking) => {
+    if (!newBooking) return;
+    if (isToday(newBooking.datetimeStart) &&
+        !todaysBookings.some((b) => b._id === newBooking._id)) {
+      setTodaysBookings((prev) => [...prev, newBooking]);
+    }
+  };
+
   useEffect(() => {
     setLoadingDoctors(true);
     setErrorDoctors("");
@@ -39,6 +48,7 @@ function DoctorManagerCard() {
   }, []);
 
   useEffect(() => {
+    // Only depends on selectedDoctor, which is stable
     if (selectedDoctor) {
       setLoadingBookings(true);
       setErrorBookings("");
@@ -60,6 +70,7 @@ function DoctorManagerCard() {
     } else {
       setTodaysBookings([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDoctor]);
 
   return (
@@ -87,12 +98,9 @@ function DoctorManagerCard() {
               if (loadingDoctors) return <option disabled>Loading...</option>;
               if (errorDoctors) return <option disabled>{errorDoctors}</option>;
               return (doctors || []).map((doctor) => {
-                const userId =
-                  doctor.user && typeof doctor.user === "object"
-                    ? doctor.user._id
-                    : doctor.user;
+                // Always use doctor._id for value
                 return (
-                  <option key={String(userId)} value={String(userId)}>
+                  <option key={String(doctor._id)} value={String(doctor._id)}>
                     {doctor.firstName} {doctor.lastName}
                   </option>
                 );
@@ -102,7 +110,6 @@ function DoctorManagerCard() {
         </StyledLabel>
         <ListSeparator />
       </div>
-      {/* Simplified conditional rendering for bookings */}
       {(() => {
         if (loadingBookings) return <div>Loading bookings...</div>;
         if (errorBookings) return <div>{errorBookings}</div>;
@@ -117,10 +124,15 @@ function DoctorManagerCard() {
               background: "transparent",
             }}
             renderBooking={(booking) => (
-              <NameBox $bg="#5cb9e7" key={booking._id}>
+              <NameBox
+                $bg="#5cb9e7"
+                key={booking._id}
+                style={{ cursor: "default" }}
+              >
                 <DoctorManagerListCard booking={booking} />
               </NameBox>
             )}
+            addBookingToList={addBookingToList}
           />
         );
       })()}

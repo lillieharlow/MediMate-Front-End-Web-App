@@ -187,3 +187,89 @@ export const StyledTextarea = styled.textarea`
   resize: vertical;
   margin-top: 0.3rem;
 `;
+
+// Modal overlay for popups for booking creation/cancellation/update
+export const PopupCard = styled.div`
+  flex: 1 1 350px;
+  min-width: 300px;
+  max-width: 420px;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  padding: 1.5rem 2.5rem 1.2rem 2.5rem;
+  background: #fff;
+    padding: 2.2rem 3.2rem 2rem 3.2rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  > h3 {
+    margin-bottom: 0.8rem;
+    width: 100%;
+    text-align: center;
+  }
+  > p {
+    margin-bottom: 1.2rem;
+    width: 100%;
+    text-align: center;
+  }
+  > button {
+    min-width: 140px;
+    margin: 0 auto;
+    display: block;
+  }
+  margin: 0;
+  position: relative;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  @media (max-width: 900px) {
+    width: 90vw;
+    min-width: unset;
+    max-width: 98vw;
+    margin: 0 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+`;
+
+export const StyledCloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: -10px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  &:focus, &:active {
+    outline: none;
+    box-shadow: none;
+    border: none;
+    background: none;
+  }
+`;
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #fffdfd70;
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+export const ErrorMessage = styled.div`
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+  text-align: center;
+`;

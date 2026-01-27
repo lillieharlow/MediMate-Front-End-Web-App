@@ -29,14 +29,6 @@ export default function HeaderMenu({ onClickItem }) {
             <span>Dashboard</span>
           </HeaderMenuLink>
         </li>
-        {/* Render /book conditionally for patients & staff */}
-        {["patient", "staff"].includes(userType) && (
-          <li>
-            <HeaderMenuLink to="/book">
-              <span>New Booking</span>
-            </HeaderMenuLink>
-          </li>
-        )}
         {/* Render /useradmin conditionally for staff */}
         {userType === "staff" && (
           <li>
