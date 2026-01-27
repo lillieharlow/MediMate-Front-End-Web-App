@@ -13,6 +13,7 @@ function ManageProfileButton({ profileId, userType, onManage }) {
       alt="atatat"
       onClick={() => onManage(profileId, userType)}
       title="Edit user profile"
+      data-testid="app-useradmin-button-manage-user"
     >
       <FaUserEdit />
     </ActionButton>

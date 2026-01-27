@@ -25,7 +25,7 @@ export default function UserAdminTable({ users, onCreateUser, onEditUser, onDele
       <div style={{ width: 'fit-content', marginLeft: 'auto' }}>
         <AddUserButton onAddUser={onAddUser} />
       </div>
-      <table>
+      <table data-testid="app-useradmin-table">
         <thead>
           <tr>
             <th>First Name</th>

@@ -30,7 +30,11 @@ export default function StaffUserTypeSelector({ onChangeType }) {
   return (
     <InputGrid>
       <label htmlFor="create-account-select-type">Account Type: </label>
-      <StyledSelect id="create-account-select-type" onChange={handleChangeType}>
+      <StyledSelect
+        id="create-account-select-type"
+        onChange={handleChangeType}
+        data-testid="app-useradmin-select-usertype"
+      >
         {userTypeOptions.map(option => {
           return (
             <option key={option.value} value={option.value}>

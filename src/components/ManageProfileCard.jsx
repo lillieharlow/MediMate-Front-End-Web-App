@@ -54,7 +54,7 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
       if (!res) throw new Error('An unexpected error occured.');
       if (!res.success) throw new Error(`${res.error.message}`);
       onProfileUpdated ? onProfileUpdated(res.data) : null;
-      setMessage('Profile updated succesfully!');
+      setMessage('Profile updated successfully!');
     } catch (error) {
       setIsError(true);
       setMessage(error.message);
