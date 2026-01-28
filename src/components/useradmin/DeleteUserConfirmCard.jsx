@@ -46,7 +46,7 @@ export default function DeleteUserConfirmCard({ userInfo, onConfirmDelete }) {
     onConfirmDelete(userInfo);
   };
   return (
-    <StyledDiv>
+    <StyledDiv data-testid="app-delete-user-card">
       <h3>Delete User</h3>
       <p>
         Are you sure? This action <strong>cannot be reversed</strong>. Pending bookings for this
@@ -71,7 +71,12 @@ export default function DeleteUserConfirmCard({ userInfo, onConfirmDelete }) {
           </tr>
         </tbody>
       </UserTable>
-      <ActionButton $bg="#c90000" style={{ marginTop: '1rem' }} onClick={handleConfirmDelete}>
+      <ActionButton
+        $bg="#c90000"
+        style={{ marginTop: '1rem' }}
+        onClick={handleConfirmDelete}
+        data-testid="app-delete-user-confirm-button"
+      >
         Yes, delete user
       </ActionButton>
     </StyledDiv>
