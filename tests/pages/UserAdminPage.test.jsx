@@ -82,4 +82,20 @@ describe('Test /useradmin page', () => {
 
     expect(await screen.findByText(/mock error reason/i)).toBeInTheDocument();
   });
+
+  it('Delete user button renders DeleteUserConfirmCard with correct user details', async () => {
+    setTestToken('staff');
+    renderWithoutRoutes(<UserAdminPage />);
+
+    const user = userEvent.setup();
+    const patientRow = await screen.findByRole('row', { name: /patient/i });
+    const deleteProfileButton = within(patientRow).getByTestId('app-useradmin-button-delete-user');
+    
+    await user.click(deleteProfileButton);
+
+    expect(await screen.findByTestId('app-delete-user-card')).toBeInTheDocument();
+
+    expect(screen.getByRole('row', { name: /email: mock@email.com/i })).toBeInTheDocument();
+    expect(screen.getByRole('row', { name: /first name: mockfirstname/i })).toBeInTheDocument();
+  });
 });
