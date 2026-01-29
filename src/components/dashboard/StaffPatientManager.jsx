@@ -12,6 +12,12 @@ import BookButton from "../button/BookButton.jsx";
 import styled from "styled-components";
 import { StyledInput } from "../../style/componentStyles.js";
 import { getPatientFullName } from "../../utils/patientUtils.js";
+import ViewBookingsModal from "../booking/ViewBookingsModal.jsx";
+import {
+  NameBox,
+  PatientListActions,
+  ListSeparator,
+} from "../../style/componentStyles.js";
 
 const PatientSearchFields = styled.div`
   display: flex;
@@ -25,15 +31,12 @@ const PatientSearchFields = styled.div`
     flex-direction: row;
     align-items: center;
     font-weight: 500;
-    min-width: 110px;
-    justify-content: center;
     gap: 0.5rem;
     width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
+    max-width: 350px;
   }
   input {
-    flex: 1 1 0;
+    flex: 1 1;
     min-width: 120px;
     padding: 0.4rem 0.7rem;
     border-radius: 6px;
@@ -42,13 +45,8 @@ const PatientSearchFields = styled.div`
   }
 `;
 
-import {
-  NameBox,
-  PatientListActions,
-  ListSeparator,
-} from "../../style/componentStyles.js";
-
-function StaffPatientManager() {
+function StaffPatientManager({ doctors, onBookingCreated, staffSelectedDoctor }) {
+  const [patients, setPatients] = useState([]);
   const [search, setSearch] = useState({
     firstName: "",
     lastName: "",
@@ -56,7 +54,13 @@ function StaffPatientManager() {
     dateOfBirth: "",
     phone: "",
   });
-  const [patients, setPatients] = useState([]);
+  const [showBookingsModal, setShowBookingsModal] = useState(false);
+  const [selectedPatientId, setSelectedPatientId] = useState(null);
+
+  const handleViewBookings = (patientId) => {
+    setSelectedPatientId(patientId);
+    setShowBookingsModal(true);
+  };
 
   useEffect(() => {
     getAllPatients().then(setPatients);
@@ -114,43 +118,58 @@ function StaffPatientManager() {
         <ListSeparator />
       </PatientSearchFields>
       <div className="patient-list">
-          {patients.length === 0 ? (
-            <div data-testid="staff-patient-manager" style={{ textAlign: "center" }}>
-              ---------- No patients found ----------
-            </div>
-          ) : (
-            patients.map((patient) => {
-              // Support both direct and populated user fields
-              const user =
-                patient.user && typeof patient.user === "object"
-                  ? patient.user
-                  : {};
-              const patientId = user._id;
-              return (
-                <div
-                  key={patientId}
-                  data-testid="staff-patient-manager"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    marginBottom: "1.2rem",
-                    paddingBottom: "1.2rem",
-                    width: "100%",
-                  }}
-                >
-                  <NameBox $bg="#80d09e">{getPatientFullName(patient)}</NameBox>
-                  <PatientListActions>
-                    <ViewBookingsButton patientId={patientId} />
-                    <BookButton patientId={patientId} />
-                  </PatientListActions>
-                  <ListSeparator />
-                </div>
-              );
-            })
-          )}
+        {patients.length === 0 ? (
+          <div
+            data-testid="staff-patient-manager"
+            style={{ textAlign: "center", color: "#e0e0e0" }}
+          >
+            ---------- No patients found ----------
+          </div>
+        ) : (
+          patients.map((patient) => {
+            const user =
+              patient.user && typeof patient.user === "object"
+                ? patient.user
+                : {};
+            const patientId = user._id;
+            return (
+              <div
+                key={patientId}
+                data-testid="staff-patient-manager"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  marginBottom: "1.2rem",
+                  paddingBottom: "1.2rem",
+                  width: "100%",
+                }}
+              >
+                <NameBox $bg="#80d09e">{getPatientFullName(patient)}</NameBox>
+                <PatientListActions>
+                  <ViewBookingsButton
+                    onClick={() => handleViewBookings(patientId)}
+                  />
+                  <BookButton
+                    patientId={patientId}
+                    onBookingCreated={onBookingCreated}
+                    doctor={undefined}
+                    staffSelectedDoctor={staffSelectedDoctor}
+                  />
+                </PatientListActions>
+                <ListSeparator />
+              </div>
+            );
+          })
+        )}
       </div>
+      <ViewBookingsModal
+        open={showBookingsModal}
+        onClose={() => setShowBookingsModal(false)}
+        patientId={selectedPatientId}
+        doctors={doctors}
+      />
     </div>
   );
 }

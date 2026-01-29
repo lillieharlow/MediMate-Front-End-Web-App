@@ -27,6 +27,7 @@ import {
   getDoctorBookings,
   getBookingById,
 } from "../api/booking.js";
+import { isToday } from "../utils/patientUtils";
 
 export default function DashboardPage() {
   const { userId, userType, isAuthenticated } = useAuth();
@@ -34,27 +35,26 @@ export default function DashboardPage() {
   const [doctors, setDoctors] = useState([]);
   const [doctorBookings, setDoctorBookings] = useState([]);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [staffSelectedDoctor, setStaffSelectedDoctor] = useState("");
+  const [staffDoctorBookings, setStaffDoctorBookings] = useState([]);
 
-  useEffect(() => {
-    if (userType !== "patient") return;
-
+useEffect(() => {
+  if (userType === "patient") {
     async function fetchData() {
       try {
         const [doctorsData, bookingsData] = await Promise.all([
           getAllDoctors(),
           getPatientBookings(userId),
         ]);
-        console.log("Fetched doctors:", doctorsData);
-        console.log("Fetched patient bookings:", bookingsData);
         setDoctors(doctorsData);
         setBookings(bookingsData);
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-      }
+      } catch {}
     }
-
     fetchData();
-  }, [userType, userId]);
+  } else if (userType === "staff") {
+    getAllDoctors().then(setDoctors);
+  }
+}, [userType, userId]);
 
   useEffect(() => {
     if (userType === "doctor") {
@@ -71,6 +71,18 @@ export default function DashboardPage() {
     }
   }, [userType, userId]);
 
+  useEffect(() => {
+    if (userType === "staff" && staffSelectedDoctor) {
+      async function fetchStaffDoctorBookings() {
+        const bookingsData = await getDoctorBookings(staffSelectedDoctor);
+        setStaffDoctorBookings(bookingsData || []);
+      }
+      fetchStaffDoctorBookings();
+    } else if (userType === "staff") {
+      setStaffDoctorBookings([]);
+    }
+  }, [userType, staffSelectedDoctor]);
+
   // Helper function to get dashboard heading based on user type
   function getDashboardHeading(type) {
     if (type === "patient") return "Patient Dashboard";
@@ -80,7 +92,7 @@ export default function DashboardPage() {
   }
 
   // Handler to refresh bookings after a new booking is created
-  async function handleBookingCreated() {
+  async function handleBookingCreated(createdDoctorId) {
     if (userType === "patient") {
       const bookingsData = await getPatientBookings(userId);
       setBookings(bookingsData);
@@ -91,6 +103,17 @@ export default function DashboardPage() {
         setSelectedBooking(bookingsData[0]);
       } else {
         setSelectedBooking(null);
+      }
+    } else if (
+      userType === "staff" &&
+      (createdDoctorId || staffSelectedDoctor)
+    ) {
+      // Refetch bookings for the relevant doctor after staff creates a booking
+      const doctorId = createdDoctorId || staffSelectedDoctor;
+      if (doctorId) {
+        setStaffSelectedDoctor(doctorId);
+        const bookingsData = await getDoctorBookings(doctorId);
+        setStaffDoctorBookings(bookingsData || []);
       }
     }
   }
@@ -113,17 +136,31 @@ export default function DashboardPage() {
             />
           </DashboardCard>
           <DashboardCard title="My Bookings">
-            <PatientMyBookingsCard bookings={bookings} doctors={doctors} />
+            <PatientMyBookingsCard
+              bookings={bookings}
+              doctors={doctors}
+              onBookingsRefresh={handleBookingCreated}
+            />
           </DashboardCard>
         </DashboardCardRow>
       )}
       {userType === "staff" && (
         <DashboardCardRow>
           <DashboardCard title="Patient Manager">
-            <StaffPatientManager />
+            <StaffPatientManager
+              onBookingCreated={handleBookingCreated}
+              staffSelectedDoctor={staffSelectedDoctor}
+              doctors={doctors}
+            />
           </DashboardCard>
           <DashboardCard title="Doctor Manager">
-            <DoctorManagerCard />
+            <DoctorManagerCard
+              selectedDoctor={staffSelectedDoctor}
+              setSelectedDoctor={setStaffSelectedDoctor}
+              doctorBookings={staffDoctorBookings}
+              onBookingCreated={handleBookingCreated}
+              disablePointer={true}
+            />
           </DashboardCard>
         </DashboardCardRow>
       )}
@@ -132,9 +169,15 @@ export default function DashboardPage() {
           <DashboardCard title="Current Booking">
             <CurrentBookingCard booking={selectedBooking} />
           </DashboardCard>
+          {(() => {
+            return null;
+          })()}
           <TodaysBookingsCard
-            doctorBookings={doctorBookings}
+            doctorBookings={doctorBookings.filter((b) =>
+              isToday(b.datetimeStart),
+            )}
             containerClassName="doctor-manager-bookings"
+            disablePointer={false}
             onBookingCreated={handleBookingCreated}
             onBookingSelect={async (booking) => {
               if (booking?._id) {
