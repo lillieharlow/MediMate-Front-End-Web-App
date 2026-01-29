@@ -8,34 +8,23 @@ DoctorManagerCard component
 // biome-ignore assist/source/organizeImports: manually ordered for clarity
 import { useState, useEffect } from "react";
 import { getAllDoctors } from "../../api/doctor";
-import { getDoctorBookings } from "../../api/booking";
-import { isToday } from "../../utils/patientUtils";
 import {
   StyledLabel,
   StyledSelect,
   ListSeparator,
-  NameBox,
 } from "../../style/componentStyles";
-import DoctorManagerListCard from "./DoctorManagerListCard";
 import TodaysBookingsCard from "./DoctorTodaysBookingsCard";
+import { isToday } from "../../utils/patientUtils";
 
-function DoctorManagerCard() {
+function DoctorManagerCard({
+  selectedDoctor,
+  setSelectedDoctor,
+  doctorBookings,
+  disablePointer,
+}) {
   const [doctors, setDoctors] = useState([]);
-  const [selectedDoctor, setSelectedDoctor] = useState("");
-  const [todaysBookings, setTodaysBookings] = useState([]);
   const [loadingDoctors, setLoadingDoctors] = useState(true);
-  const [loadingBookings, setLoadingBookings] = useState(false);
   const [errorDoctors, setErrorDoctors] = useState("");
-  const [errorBookings, setErrorBookings] = useState("");
-
-  // Add a new booking to today's bookings instantly
-  const addBookingToList = (newBooking) => {
-    if (!newBooking) return;
-    if (isToday(newBooking.datetimeStart) &&
-        !todaysBookings.some((b) => b._id === newBooking._id)) {
-      setTodaysBookings((prev) => [...prev, newBooking]);
-    }
-  };
 
   useEffect(() => {
     setLoadingDoctors(true);
@@ -44,102 +33,81 @@ function DoctorManagerCard() {
       .then((res) => {
         setDoctors(res);
       })
+      .catch(() => {
+        setErrorDoctors("Failed to load doctors");
+      })
       .finally(() => setLoadingDoctors(false));
   }, []);
 
-  useEffect(() => {
-    // Only depends on selectedDoctor, which is stable
-    if (selectedDoctor) {
-      setLoadingBookings(true);
-      setErrorBookings("");
-      getDoctorBookings(selectedDoctor)
-        .then((bookings) => {
-          let bookingsArr = bookings;
-          if (
-            bookings &&
-            typeof bookings === "object" &&
-            !Array.isArray(bookings)
-          ) {
-            bookingsArr = Object.values(bookings);
-          }
-          if (!Array.isArray(bookingsArr)) bookingsArr = [];
-          const todays = bookingsArr.filter((b) => isToday(b.datetimeStart));
-          setTodaysBookings(todays);
-        })
-        .finally(() => setLoadingBookings(false));
-    } else {
-      setTodaysBookings([]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDoctor]);
+  // Only show today's bookings
+  const todaysBookings = Array.isArray(doctorBookings)
+    ? doctorBookings.filter((b) => isToday(b.datetimeStart))
+    : [];
 
   return (
-    <div data-testid="doctor-manager-card">
-      <div
+    <div>
+      <StyledLabel
         style={{
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width: "100%",
         }}
       >
-        <StyledLabel>
-          <span style={{ minWidth: 110, textAlign: "left" }}>
-            Select doctor
-          </span>
-          <StyledSelect
-            value={selectedDoctor}
-            onChange={(e) => {
-              setSelectedDoctor(e.target.value);
-            }}
-          >
-            <option value="">-- Select Doctor --</option>
-            {(() => {
-              if (loadingDoctors) return <option disabled>Loading...</option>;
-              if (errorDoctors) return <option disabled>{errorDoctors}</option>;
-              return (doctors || []).map((doctor) => {
-                // Always use doctor._id for value
-                return (
-                  <option key={String(doctor._id)} value={String(doctor._id)}>
-                    {doctor.firstName} {doctor.lastName}
-                  </option>
-                );
-              });
-            })()}
-          </StyledSelect>
-        </StyledLabel>
-        <ListSeparator />
-      </div>
-      {(() => {
-        if (loadingBookings) return <div>Loading bookings...</div>;
-        if (errorBookings) return <div>{errorBookings}</div>;
-        return (
-          <TodaysBookingsCard
-            doctorBookings={todaysBookings}
-            containerClassName="doctor-manager-bookings"
-            cardStyle={{
-              border: "none",
-              boxShadow: "none",
-              padding: 0,
-              background: "transparent",
-            }}
-            renderBooking={(booking) => (
-              <NameBox
-                $bg="#5cb9e7"
-                key={booking._id}
-                style={{ cursor: "default" }}
-              >
-                <DoctorManagerListCard booking={booking} />
-              </NameBox>
-            )}
-            addBookingToList={addBookingToList}
-          />
-        );
-      })()}
+        <span style={{ minWidth: 110, textAlign: "center", marginBottom: 4 }}>
+          Select doctor
+        </span>
+        <StyledSelect
+          id="doctor-manager-select"
+          name="doctor-manager-select"
+          autoComplete="off"
+          value={selectedDoctor}
+          onChange={(e) => {
+            setSelectedDoctor(e.target.value);
+          }}
+          style={{
+            width: 240,
+            maxWidth: "90%",
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <option value="">-- Select Doctor --</option>
+          {loadingDoctors && <option disabled>Loading...</option>}
+          {!loadingDoctors && errorDoctors && (
+            <option disabled>{errorDoctors}</option>
+          )}
+          {!(loadingDoctors || errorDoctors) &&
+            (doctors || []).map((doctor) => (
+              <option key={String(doctor._id)} value={String(doctor.user?._id)}>
+                {doctor.firstName} {doctor.lastName}
+              </option>
+            ))}
+        </StyledSelect>
+      </StyledLabel>
+      <ListSeparator />
+      <TodaysBookingsCard
+        doctorBookings={todaysBookings}
+        containerClassName="doctor-manager-bookings"
+        cardStyle={{
+          border: "none",
+          boxShadow: "none",
+          padding: 0,
+          background: "transparent",
+        }}
+        disablePointer={disablePointer}
+      />
     </div>
   );
 }
 
-DoctorManagerCard.propTypes = {};
+import PropTypes from "prop-types";
+DoctorManagerCard.propTypes = {
+  selectedDoctor: PropTypes.string.isRequired,
+  setSelectedDoctor: PropTypes.func.isRequired,
+  doctorBookings: PropTypes.array.isRequired,
+  onBookingCreated: PropTypes.func,
+  disablePointer: PropTypes.bool,
+};
 
 export default DoctorManagerCard;
