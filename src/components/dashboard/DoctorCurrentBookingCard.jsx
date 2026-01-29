@@ -43,7 +43,7 @@ const CurrentBookingCard = ({ booking }) => {
       const notesRes = await getDoctorNotes(currentBooking._id);
       setAppointmentNotes(notesRes?.data?.doctorNotes || "");
       setSaveMsg("Notes saved!");
-      setTimeout(() => setSaveMsg(""), 2000); // Hide message after 2 seconds
+      setTimeout(() => setSaveMsg(""), 2000); // Hide message after 2 sec
     } catch {
       setSaveMsg("Failed to save notes.");
       setTimeout(() => setSaveMsg(""), 2000);
@@ -52,7 +52,21 @@ const CurrentBookingCard = ({ booking }) => {
     }
   };
 
-  if (!currentBooking) return <div data-testid="doctor-current-booking-card">No current booking.</div>;
+  if (!currentBooking)
+    return (
+      <div data-testid="doctor-current-booking-card">
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: "1.5em",
+            color: "#e0e0e0",
+            fontWeight: 500,
+          }}
+        >
+          ---------- No current booking ----------
+        </div>
+      </div>
+    );
 
   return (
     <div data-testid="doctor-current-booking-card">
@@ -97,7 +111,7 @@ const CurrentBookingCard = ({ booking }) => {
         {saveMsg && (
           <div
             style={{
-              color: saveMsg.includes("saved") ? "#111" : "red",
+              color: saveMsg.includes("saved") ? "#000000" : "red",
               marginTop: 4,
               textAlign: "center",
             }}

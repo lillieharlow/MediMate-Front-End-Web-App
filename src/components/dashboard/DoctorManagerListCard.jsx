@@ -4,34 +4,20 @@ DoctorManagerListCard component
 - Used in staff and doctor dashboards for today's bookings
 */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
 import PropTypes from "prop-types";
 import { FiClock } from "react-icons/fi";
-import { useState, useEffect } from "react";
-import { getPatientById } from "../../api/patient";
 import { getPatientFullName } from "../../utils/patientUtils";
 
 const DoctorManagerListCard = ({ booking }) => {
-  const [patientName, setPatientName] = useState("");
-  useEffect(() => {
-    let isMounted = true;
-    if (booking.patientId) {
-      getPatientById(booking.patientId).then((patient) => {
-        if (isMounted && patient) {
-          setPatientName(getPatientFullName(patient));
-        }
-      });
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, [booking?.patientId]);
   const time = booking.datetimeStart
     ? new Date(booking.datetimeStart).toLocaleTimeString([], {
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
       })
+    : "";
+  const patientName = booking.patientProfile
+    ? getPatientFullName(booking.patientProfile)
     : "";
   return (
     <div data-testid="doctor-manager-list-card">

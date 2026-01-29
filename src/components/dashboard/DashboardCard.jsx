@@ -22,7 +22,9 @@ const DashboardCard = ({ title, children, style }) => {
             </div>
           )}
       </div>
-      <DashboardCardContent className="dashboard-card-content">{children}</DashboardCardContent>
+      <DashboardCardContent className="dashboard-card-content">
+        {children}
+      </DashboardCardContent>
     </Card>
   );
 };

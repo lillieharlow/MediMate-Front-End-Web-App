@@ -11,9 +11,12 @@ import { FaUserMd } from "react-icons/fa";
 import BookButton from "../button/BookButton.jsx";
 import { getDoctorBookings } from "../../api/booking";
 
-function PatientOurDoctorsCardList({ doctors = [], patientId, onBookingCreated }) {
-
-  // Handler to force refresh bookings for a doctor from backend, always returns a Promise
+function PatientOurDoctorsCardList({
+  doctors = [],
+  patientId,
+  onBookingCreated,
+}) {
+  // Handler to force refresh bookings for a doctor from API
   const handleBookButtonClick = async (doctorId) => {
     if (!doctorId) return [];
     const freshBookings = await getDoctorBookings(doctorId);
@@ -23,12 +26,14 @@ function PatientOurDoctorsCardList({ doctors = [], patientId, onBookingCreated }
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       {doctors.length === 0 ? (
-        <div data-testid="no-doctors-found" style={{ textAlign: "center", color: "#e0e0e0" }}>
+        <div
+          data-testid="no-doctors-found"
+          style={{ textAlign: "center", color: "#e0e0e0" }}
+        >
           ---------- No doctors found ----------
         </div>
       ) : (
         doctors.map((doctor) => {
-          // Filter bookings for this doctor
           return (
             <NameBox
               key={doctor._id}
@@ -62,7 +67,9 @@ function PatientOurDoctorsCardList({ doctors = [], patientId, onBookingCreated }
                   lineHeight: 1.1,
                 }}
               >
-                <span>Dr. {doctor.firstName} {doctor.lastName}</span>
+                <span>
+                  Dr. {doctor.firstName} {doctor.lastName}
+                </span>
               </span>
               <span
                 style={{
@@ -77,7 +84,7 @@ function PatientOurDoctorsCardList({ doctors = [], patientId, onBookingCreated }
                   patientId={patientId}
                   existingBookings={[]}
                   onBookingCreated={onBookingCreated}
-                  onBookButtonClick={() => handleBookButtonClick(doctor._id)}
+                  onBookButtonClick={() => handleBookButtonClick(doctor.user)}
                 />
               </span>
             </NameBox>
