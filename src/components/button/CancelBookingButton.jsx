@@ -5,7 +5,7 @@
 // biome-ignore assist/source/organizeImports: keeping import order for clarity
 import { useState } from "react";
 import ActionButton from "./ActionButton";
-import CancelBookingCard from "../booking/CancelBookingCard";
+import CancelBookingCard from "../booking/CancelBookingModal";
 
 function CancelBookingButton({ bookingId, onCancel }) {
   const [showConfirm, setShowConfirm] = useState(false);

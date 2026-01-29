@@ -6,13 +6,13 @@
 import  { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import ActionButton from "./ActionButton";
-import CreateBookingModal from "../booking/CreateBookingCard";
+import CreateBookingModal from "../booking/CreateBookingModal";
 import { getAllDoctors } from "../../api/doctor";
 import { getDoctorBookings } from "../../api/booking";
 
 
 
-function BookButton({ doctor, patientId, onBookingCreated, existingBookings, onBookButtonClick, onModalClose }) {
+function BookButton({ doctor, patientId, onBookingCreated, existingBookings, onBookButtonClick, onModalClose, staffSelectedDoctor = null }) {
   const [open, setOpen] = useState(false);
   const [latestBookings, setLatestBookings] = useState(existingBookings || []);
   const [doctors, setDoctors] = useState([]);
@@ -25,9 +25,9 @@ function BookButton({ doctor, patientId, onBookingCreated, existingBookings, onB
       const allDocs = await getAllDoctors();
       setDoctors(allDocs || []);
     } else if (userType === "doctor") {
-      if (doctor?._id) {
+      if (typeof doctor?.user === 'string') {
         try {
-          const bookings = await getDoctorBookings(doctor._id);
+          const bookings = await getDoctorBookings(doctor.user);
           setLatestBookings(bookings || []);
         } catch {
           setLatestBookings(existingBookings || []);
@@ -36,8 +36,8 @@ function BookButton({ doctor, patientId, onBookingCreated, existingBookings, onB
       setOpen(true);
     } else {
       // For patients, force refresh all bookings for the doctor before opening modal
-      if (onBookButtonClick && doctor?._id) {
-        const freshBookings = await onBookButtonClick(doctor._id);
+      if (onBookButtonClick && typeof doctor?.user === 'string') {
+        const freshBookings = await onBookButtonClick(doctor.user);
         setLatestBookings(freshBookings || []);
       } else {
         setLatestBookings(existingBookings || []);
@@ -59,6 +59,12 @@ function BookButton({ doctor, patientId, onBookingCreated, existingBookings, onB
     setOpen(false);
     if (onModalClose) onModalClose();
   };
+  // For patients, always pass doctor and disable doctor select
+  const isStaff = userType === "staff";
+  const isPatient = userType === "patient";
+  const selectedDoctor = isStaff && staffSelectedDoctor
+    ? doctors.find(d => d.user && d.user._id === staffSelectedDoctor)
+    : doctor;
   return (
     <>
       <ActionButton
@@ -70,11 +76,12 @@ function BookButton({ doctor, patientId, onBookingCreated, existingBookings, onB
       <CreateBookingModal
         open={open}
         onClose={handleModalClose}
-        doctor={doctor}
+        doctor={selectedDoctor}
         patientId={patientId}
         onBookingCreated={handleBookingCreated}
         existingBookings={latestBookings}
-        doctors={userType === "staff" ? doctors : undefined}
+        doctors={isStaff ? doctors : undefined}
+        disableDoctorSelect={isPatient}
       />
     </>
   );
