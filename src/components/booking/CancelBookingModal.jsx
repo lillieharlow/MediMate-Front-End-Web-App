@@ -31,43 +31,45 @@ export default function CancelBookingCard({ open, onConfirm, onClose }) {
         zIndex: 1000,
       }}
       onClick={onClose}
-      onKeyDown={e => {
-        if (e.key === 'Escape') {
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
           e.preventDefault();
           onClose();
         }
       }}
-      onKeyUp={e => {
-        if (e.key === 'Escape') {
+      onKeyUp={(e) => {
+        if (e.key === "Escape") {
           e.preventDefault();
           onClose();
         }
       }}
     >
-      <PopupCard onClick={e => e.stopPropagation()}>
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+      <PopupCard onClick={(e) => e.stopPropagation()}>
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+        >
           <CloseButton onClick={onClose} />
         </div>
-        <p style={{ textAlign: 'center', margin: '2rem 0 0 0' }}>
+        <p style={{ textAlign: "center", margin: "2rem 0 0 0" }}>
           Are you sure you want to cancel your appointment?
         </p>
         <ActionButton
           $bg="#c90000"
           $color="#fff"
           onClick={onConfirm}
-          onKeyDown={e => {
-            if (e.key === 'Enter' || e.key === ' ') {
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               onConfirm();
             }
           }}
-          onKeyUp={e => {
-            if (e.key === 'Enter' || e.key === ' ') {
+          onKeyUp={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               onConfirm();
             }
           }}
-          style={{ marginTop: '2rem', fontWeight: 'bold', alignSelf: 'center' }}
+          style={{ marginTop: "2rem", fontWeight: "bold", alignSelf: "center" }}
         >
           Yes, cancel appointment
         </ActionButton>
