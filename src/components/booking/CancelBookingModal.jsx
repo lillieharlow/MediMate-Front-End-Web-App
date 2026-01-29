@@ -1,17 +1,21 @@
+/**
+ * CancelBookingModal.jsx
+ *
+ * Modal dialog to confirm booking cancellation.
+ * Used in booking flows to let users confirm or abort cancelling an appointment.
+ *
+ * Props:
+ *   open (bool): Whether the modal is open
+ *   onConfirm (func): Called when user confirms cancellation
+ *   onClose (func): Called when user cancels or closes the modal
+ */
+
+// biome-ignore assist/source/organizeImports: manually ordered
 import { PopupCard } from "../../style/componentStyles";
 import CloseButton from "../button/CloseButton";
 import ActionButton from "../button/ActionButton";
 
-/**
- * Cancel Booking Card
- * Modal dialog to confirm booking cancellation.
- * Props:
- *   open (bool): Whether modal is open
- *   onConfirm (func): Called when user confirms
- *   onClose (func): Called when user cancels/backs out
- */
-
-export default function CancelBookingCard({ open, onConfirm, onClose }) {
+export default function CancelBookingModal({ open, onConfirm, onClose }) {
   if (!open) return null;
   return (
     <div

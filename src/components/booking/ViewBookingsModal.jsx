@@ -1,12 +1,29 @@
+/*
+ * ViewBookingsModal.jsx
+ *
+ * Modal dialog for viewing all bookings for a patient.
+ * Fetches and displays bookings using PatientMyBookingsCard.
+ * Allows refreshing bookings from within the modal.
+ *
+ * Props:
+ *   open (bool): Whether the modal is open
+ *   onClose (func): Called when the modal is closed
+ *   patientId (string): The patient's ID whose bookings are shown
+ *   doctors (array): List of doctor objects for display
+ */
+
+// biome-ignore assist/source/organizeImports: manually ordered
 import { useEffect, useState } from "react";
+
 import {
   ModalOverlay,
   ModalTitle,
   PopupCard,
 } from "../../style/componentStyles";
 import CloseButton from "../button/CloseButton";
-import { getPatientBookings } from "../../api/booking";
 import PatientMyBookingsCard from "../dashboard/PatientMyBookingsCard";
+
+import { getPatientBookings } from "../../api/booking";
 
 export default function ViewBookingsModal({
   open,
@@ -15,14 +32,11 @@ export default function ViewBookingsModal({
   doctors,
 }) {
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!(open && patientId)) return;
-    setLoading(true);
     getPatientBookings(patientId)
-      .then((data) => setBookings(data || []))
-      .finally(() => setLoading(false));
+      .then((data) => setBookings(data || []));
   }, [open, patientId]);
 
   if (!open) return null;
@@ -30,10 +44,10 @@ export default function ViewBookingsModal({
   return (
     <ModalOverlay>
       <PopupCard style={{ minWidth: 400 }}>
-        <CloseButton onClick={onClose} />
+        <CloseButton aria-label="Close" onClick={onClose} />
         <ModalTitle>View Bookings</ModalTitle>
-        {loading ? (
-          <div>Loading...</div>
+        {bookings.length === 0 ? (
+          <div>---------- No bookings ----------</div>
         ) : (
           <PatientMyBookingsCard
             bookings={bookings}

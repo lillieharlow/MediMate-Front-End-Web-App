@@ -2,21 +2,100 @@
  * BookingFormCard.jsx
  *
  * Shared form logic and UI for creating or updating a booking.
- * Used by CreateBookingCard and UpdateBookingCard.
+ * Used by CreateBookingModal and UpdateBookingModal.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import {
   StyledForm,
   StyledInput,
   StyledSelect,
   ColoredButton,
+  FormFieldRow,
+  FormFieldLabel,
   PopupCard,
   ModalOverlay,
   ModalTitle,
   ErrorMessage,
 } from "../../style/componentStyles";
 import CloseButton from "../button/CloseButton";
+
+// Doctor selection section extracted for DRYness
+function DoctorSelectSection({
+  doctors,
+  doctor,
+  setDoctor,
+  setDate,
+  setTime,
+  setNotes,
+  setDuration,
+  externalLoading,
+  disableDoctorSelect,
+}) {
+  if (doctors && !disableDoctorSelect) {
+    return (
+      <FormFieldRow>
+        <FormFieldLabel htmlFor="doctor-select">Doctor:</FormFieldLabel>
+        <StyledSelect
+          id="doctor-select"
+          name="doctor-select"
+          autoComplete="organization"
+          value={doctor?.user?._id || ""}
+          onChange={(e) => {
+            const selected = doctors.find(
+              (d) => d.user && d.user._id === e.target.value,
+            );
+            setDate("");
+            setTime("");
+            setNotes("");
+            setDuration("15");
+            if (selected && setDoctor) {
+              setDoctor(selected);
+            }
+          }}
+          required
+          style={{
+            width: 180,
+            textAlign: "center",
+          }}
+          disabled={externalLoading || doctors.length === 0}
+        >
+          <option value="">Select doctor</option>
+          {doctors.map((d) => (
+            <option key={d._id} value={d.user?._id}>
+              Dr. {d.firstName} {d.lastName}
+            </option>
+          ))}
+        </StyledSelect>
+      </FormFieldRow>
+    );
+  }
+  if (doctor) {
+    return (
+      <FormFieldRow>
+        <FormFieldLabel htmlFor="doctor-select-disabled">
+          Doctor:
+        </FormFieldLabel>
+        <StyledSelect
+          id="doctor-select-disabled"
+          value={doctor._id}
+          disabled
+          style={{
+            width: 180,
+            textAlign: "center",
+            background: "#f8f8f8",
+            color: "#333",
+          }}
+        >
+          <option value={doctor.user}>
+            Dr. {doctor.firstName} {doctor.lastName}
+          </option>
+        </StyledSelect>
+      </FormFieldRow>
+    );
+  }
+  return null;
+}
 
 export default function BookingFormCard({
   open,
@@ -56,17 +135,9 @@ export default function BookingFormCard({
       <PopupCard>
         <CloseButton onClick={onClose} />
         {title && (
-          <div
-            style={{
-              marginBottom: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}
-          >
+          <FormFieldRow style={{ marginBottom: 10 }}>
             <ModalTitle>{title}</ModalTitle>
-          </div>
+          </FormFieldRow>
         )}
         <StyledForm
           onSubmit={(e) => {
@@ -77,120 +148,19 @@ export default function BookingFormCard({
             }
           }}
         >
-          {/* Doctor selection */}
-          {(() => {
-            if (doctors && !disableDoctorSelect) {
-              return (
-                <div
-                  style={{
-                    marginTop: 10,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <label
-                    htmlFor="doctor-select"
-                    style={{
-                      fontWeight: "normal",
-                      marginRight: 0,
-                      minWidth: 0,
-                    }}
-                  >
-                    Doctor:
-                  </label>
-                  <StyledSelect
-                    id="doctor-select"
-                    name="doctor-select"
-                    autoComplete="organization"
-                    value={doctor?.user?._id || ""}
-                    onChange={(e) => {
-                      const selected = doctors.find(
-                        (d) => d.user && d.user._id === e.target.value,
-                      );
-                      setDate("");
-                      setTime("");
-                      setNotes("");
-                      setDuration("15");
-                      if (selected && setDoctor) {
-                        setDoctor(selected);
-                      }
-                    }}
-                    required
-                    style={{
-                      width: 180,
-                      textAlign: "center",
-                    }}
-                    disabled={externalLoading || doctors.length === 0}
-                  >
-                    <option value="">Select doctor</option>
-                    {doctors.map((d) => (
-                      <option key={d._id} value={d.user?._id}>
-                        Dr. {d.firstName} {d.lastName}
-                      </option>
-                    ))}
-                  </StyledSelect>
-                </div>
-              );
-            }if (doctor) {
-              return (
-                <div
-                  style={{
-                    marginTop: 10,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <label
-                    htmlFor="doctor-select-disabled"
-                    style={{
-                      fontWeight: "normal",
-                      marginRight: 0,
-                      minWidth: 0,
-                    }}
-                  >
-                    Doctor:
-                  </label>
-                  <StyledSelect
-                    id="doctor-select-disabled"
-                    value={doctor._id}
-                    disabled
-                    style={{
-                      width: 180,
-                      textAlign: "center",
-                      background: "#f8f8f8",
-                      color: "#333",
-                    }}
-                  >
-                    <option value={doctor.user}>
-                      Dr. {doctor.firstName} {doctor.lastName}
-                    </option>
-                  </StyledSelect>
-                </div>
-              );
-            }
-              return null;
-          })()}
-
-          {/* Date selection */}
-          <div
-            style={{
-              marginBottom: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}
-          >
-            <label
-              htmlFor="booking-date"
-              style={{ fontWeight: "normal", marginRight: 0, minWidth: 0 }}
-            >
-              Date:
-            </label>
+          <DoctorSelectSection
+            doctors={doctors}
+            doctor={doctor}
+            setDoctor={setDoctor}
+            setDate={setDate}
+            setTime={setTime}
+            setNotes={setNotes}
+            setDuration={setDuration}
+            externalLoading={externalLoading}
+            disableDoctorSelect={disableDoctorSelect}
+          />
+          <FormFieldRow>
+            <FormFieldLabel htmlFor="booking-date">Date:</FormFieldLabel>
             <StyledInput
               id="booking-date"
               name="booking-date"
@@ -202,24 +172,11 @@ export default function BookingFormCard({
               required
               style={{ marginBottom: 0, width: 180 }}
             />
-          </div>
-
-          {/* Duration selection */}
-          <div
-            style={{
-              marginBottom: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}
-          >
-            <label
-              htmlFor="booking-duration"
-              style={{ fontWeight: "normal", marginRight: 0, minWidth: 0 }}
-            >
+          </FormFieldRow>
+          <FormFieldRow>
+            <FormFieldLabel htmlFor="booking-duration">
               Duration:
-            </label>
+            </FormFieldLabel>
             <StyledSelect
               id="booking-duration"
               name="booking-duration"
@@ -231,24 +188,9 @@ export default function BookingFormCard({
               <option value="15">15 min</option>
               <option value="30">30 min</option>
             </StyledSelect>
-          </div>
-
-          {/* Time selection */}
-          <div
-            style={{
-              marginBottom: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}
-          >
-            <label
-              htmlFor="booking-time"
-              style={{ fontWeight: "normal", marginRight: 0, minWidth: 0 }}
-            >
-              Time:
-            </label>
+          </FormFieldRow>
+          <FormFieldRow>
+            <FormFieldLabel htmlFor="booking-time">Time:</FormFieldLabel>
             <StyledSelect
               id="booking-time"
               name="booking-time"
@@ -295,24 +237,17 @@ export default function BookingFormCard({
                 </>
               )}
             </StyledSelect>
-          </div>
-
-          {/* Notes for the doctor */}
-          <div
+          </FormFieldRow>
+          <FormFieldRow
             style={{
-              marginBottom: 10,
-              display: "flex",
               flexDirection: "column",
               alignItems: "center",
               width: "100%",
             }}
           >
-            <label
-              htmlFor="booking-notes"
-              style={{ fontWeight: "normal", marginBottom: 4 }}
-            >
+            <FormFieldLabel htmlFor="booking-notes" style={{ marginBottom: 4 }}>
               Notes for Doctor:
-            </label>
+            </FormFieldLabel>
             <textarea
               id="booking-notes"
               name="booking-notes"
@@ -328,9 +263,7 @@ export default function BookingFormCard({
                 boxSizing: "border-box",
               }}
             />
-          </div>
-
-          {/* Submit button */}
+          </FormFieldRow>
           <ColoredButton
             type="submit"
             disabled={

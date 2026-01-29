@@ -1,7 +1,7 @@
 /*
- * CreateBookingCard.jsx
+ * CreateBookingModal.jsx
  *
- * Shows a popup form for patients or staff to book an appointment with a doctor.
+ * Shows a popup modal form for patients or staff to book an appointment with a doctor.
  * - Loads available doctors and their bookings.
  * - Only shows time slots that are not already booked.
  * - Only allows booking for future times within the doctor's working hours.
@@ -9,21 +9,32 @@
  * - Uses styled-components for styling.
  *
  * Usage:
- * <CreateBookingCard open={true} doctor={doctorObj} patientId={patientId} onClose={closeFn} onBookingCreated={refreshFn} />
+ * <CreateBookingModal
+ *   open={true}
+ *   doctor={doctorObj}
+ *   patientId={patientId}
+ *   onClose={closeFn}
+ *   onBookingCreated={refreshFn}
+ *   doctors={doctorsArray}
+ *   disableDoctorSelect={false}
+ * />
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import { useState, useEffect } from "react";
+
 import BookingFormCard from "./BookingFormCard";
+
+import {
+  generateSlots,
+  filterAvailableSlots,
+} from "../../utils/bookingSlotUtils";
+
 import {
   getDoctorBookings,
   getPatientBookings,
   createBooking,
 } from "../../api/booking";
-import {
-  generateSlots,
-  filterAvailableSlots,
-} from "../../utils/bookingSlotUtils";
 
 export default function CreateBookingCard({
   open,

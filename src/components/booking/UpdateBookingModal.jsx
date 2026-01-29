@@ -1,24 +1,27 @@
 /*
- * UpdateBookingCard.jsx
+ * UpdateBookingModal.jsx
  *
  * Popup form for patients to update an existing booking.
- * UI and logic are based on CreateBookingCard, but pre-fills fields and updates booking via API.
+ * UI and logic are based on CreateBookingModal, but pre-fills fields and updates booking via API.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import { useState, useEffect } from "react";
+
 import BookingFormCard from "./BookingFormCard";
-import {
-  getDoctorBookings,
-  getPatientBookings,
-  updateBooking,
-} from "../../api/booking";
+
 import {
   generateSlots,
   filterAvailableSlots,
 } from "../../utils/bookingSlotUtils";
 
-export default function UpdateBookingCard({
+import {
+  getDoctorBookings,
+  getPatientBookings,
+  updateBooking,
+} from "../../api/booking";
+
+export default function UpdateBookingModal({
   open,
   onClose,
   booking,

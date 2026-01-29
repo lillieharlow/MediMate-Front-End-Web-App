@@ -1,11 +1,15 @@
 /*
-DoctorManagerListCard component
-- Displays a single booking for a doctor in a compact row style
-- Used in staff and doctor dashboards for today's bookings
-*/
+ * DoctorManagerListCard.jsx
+ *
+ * Displays a single booking for a doctor in a row style.
+ * Shows the clock icon, booking time and patient name.
+ * Used in staff and doctor dashboards for today's bookings.
+ */
 
 import PropTypes from "prop-types";
+
 import { FiClock } from "react-icons/fi";
+
 import { getPatientFullName } from "../../utils/patientUtils";
 
 const DoctorManagerListCard = ({ booking }) => {

@@ -1,7 +1,14 @@
-// Used in: DoctorManagerListCard.jsx, DoctorManagerCard.jsx, StaffPatientManager.jsx
-// Provides: getPatientFullName, isToday
-//
-// Utility to extract a patient's full name from a patient object (with possible nested user)
+/**
+ * patientUtils.js
+ *
+ * Shared utility functions for patient-related data.
+ * Used in: DoctorManagerListCard.jsx, DoctorManagerCard.jsx, StaffPatientManager.jsx
+ * Exports:
+ *   - getPatientFullName: Extracts a patient's full name from a patient object (handles nested user).
+ *   - isToday: Checks if a date string is today.
+ */
+
+// Extract a patient's full name from a patient object (handles nested user)
 export function getPatientFullName(patient) {
   if (!patient) return '';
   const user = patient.user && typeof patient.user === 'object' ? patient.user : {};
@@ -10,7 +17,7 @@ export function getPatientFullName(patient) {
   return `${firstName} ${lastName}`.trim();
 }
 
-// Utility to check if a date string is today
+// Check if a date string is today
 export function isToday(dateString) {
   if (!dateString) return false;
   const today = new Date();

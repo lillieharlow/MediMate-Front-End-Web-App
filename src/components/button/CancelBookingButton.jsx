@@ -1,11 +1,16 @@
 /*
-- "Cancel Booking" button for booking management
-*/
+ * CancelBookingButton.jsx
+ *
+ * Renders a "Cancel Booking" action button.
+ * When clicked, opens the CancelBookingModal for confirmation.
+ * Calls onCancel(bookingId) if the user confirms.
+ */
 
-// biome-ignore assist/source/organizeImports: keeping import order for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import { useState } from "react";
+
 import ActionButton from "./ActionButton";
-import CancelBookingCard from "../booking/CancelBookingModal";
+import CancelBookingModal from "../booking/CancelBookingModal";
 
 function CancelBookingButton({ bookingId, onCancel }) {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -35,7 +40,7 @@ function CancelBookingButton({ bookingId, onCancel }) {
       >
         Cancel Booking
       </ActionButton>
-      <CancelBookingCard
+      <CancelBookingModal
         open={showConfirm}
         onConfirm={handleConfirm}
         onClose={handleClose}

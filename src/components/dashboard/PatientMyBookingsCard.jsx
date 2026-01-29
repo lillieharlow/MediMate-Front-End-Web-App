@@ -1,17 +1,21 @@
 /*
-PatientMyBookingsCard component
-- Displays a list of the patient's future bookings
-- Shows appointment date, time, doctor name, duration, status, and action buttons
-- Used in the patient dashboard
-*/
+ * PatientMyBookingsCard.jsx
+ *
+ * Displays a list of the patient's future bookings in the dashboard.
+ * Shows appointment date, time, doctor name, duration, status, and action buttons.
+ * Allows updating or cancelling bookings via modals.
+ * Used in the patient and staff dashboards.
+ */
 
-// biome-ignore assist/source/organizeImports: keeping import order for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import { useState } from "react";
+
 import { NameBox } from "../../style/componentStyles.js";
 import { FaRegCalendarAlt, FaRegClock, FaUserMd } from "react-icons/fa";
 import ManageBookingButton from "../button/ManageBookingButton.jsx";
-import UpdateBookingCard from "../booking/UpdateBookingModal.jsx";
+import UpdateBookingModal from "../booking/UpdateBookingModal.jsx";
 import CancelBookingButton from "../button/CancelBookingButton.jsx";
+
 import { deleteBooking } from "../../api/booking";
 
 function PatientMyBookingsCard({
@@ -23,14 +27,12 @@ function PatientMyBookingsCard({
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
-  // Filter to only future bookings
   const now = new Date();
   const futureBookings = bookings.filter((b) => {
     const bookingDate = b.datetimeStart ? new Date(b.datetimeStart) : null;
     return bookingDate && bookingDate > now;
   });
 
-  // Sort bookings by soonest appointment first
   const sortedBookings = [...futureBookings].sort((a, b) => {
     const aDate = a.datetimeStart ? new Date(a.datetimeStart) : new Date(0);
     const bDate = b.datetimeStart ? new Date(b.datetimeStart) : new Date(0);
@@ -114,11 +116,10 @@ function PatientMyBookingsCard({
                     <span style={{ fontSize: 18, marginRight: 2 }}>
                       <FaUserMd />
                     </span>
-                    {doctor ? (
-                      <span>
-                        Dr. {doctor.firstName} {doctor.lastName}
-                      </span>
-                    ) : null}
+                    <span style={{ fontSize: 18, marginRight: 2 }}>
+                      <FaUserMd />
+                    </span>
+                    <span>{`Dr. ${doctor.firstName} ${doctor.lastName}`}</span>
                   </div>
                   <div
                     style={{
@@ -195,7 +196,7 @@ function PatientMyBookingsCard({
         )}
       </div>
       {showUpdate && selectedBooking && selectedDoctor && (
-        <UpdateBookingCard
+        <UpdateBookingModal
           open={showUpdate}
           onClose={() => setShowUpdate(false)}
           booking={selectedBooking}

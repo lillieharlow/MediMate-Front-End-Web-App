@@ -1,6 +1,10 @@
 /*
-- "Manage Booking" button for booking management
-*/
+ * ManageBookingButton.jsx
+ *
+ * Renders a "Manage Booking" action button for booking management.
+ * Calls onManage(bookingId) when clicked.
+ * ActionButton for styling.
+ */
 
 import ActionButton from "./ActionButton";
 

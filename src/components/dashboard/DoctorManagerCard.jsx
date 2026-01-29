@@ -1,20 +1,25 @@
 /*
-DoctorManagerCard component
-- Child component of DashboardCard for staff user type
-- Card for staff to select a doctor and view the doctor's bookings for the day
-- DoctorManagerListCard is a child component used to render each booking inside DoctorManagerCard
-*/
+ * DoctorManagerCard.jsx
+ *
+ * Dashboard card for staff users to select a doctor and view that doctor's bookings for today.
+ * Fetches all doctors on mount and displays a select dropdown.
+ * Uses TodaysBookingsCard to render the selected doctor's bookings.
+ */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import { getAllDoctors } from "../../api/doctor";
+
 import {
   StyledLabel,
   StyledSelect,
   ListSeparator,
 } from "../../style/componentStyles";
 import TodaysBookingsCard from "./DoctorTodaysBookingsCard";
+
 import { isToday } from "../../utils/patientUtils";
+
+import { getAllDoctors } from "../../api/doctor";
 
 function DoctorManagerCard({
   selectedDoctor,
@@ -39,13 +44,12 @@ function DoctorManagerCard({
       .finally(() => setLoadingDoctors(false));
   }, []);
 
-  // Only show today's bookings
   const todaysBookings = Array.isArray(doctorBookings)
     ? doctorBookings.filter((b) => isToday(b.datetimeStart))
     : [];
 
   return (
-    <div>
+    <div data-testid="doctor-manager-card">
       <StyledLabel
         style={{
           width: "100%",
@@ -101,7 +105,6 @@ function DoctorManagerCard({
   );
 }
 
-import PropTypes from "prop-types";
 DoctorManagerCard.propTypes = {
   selectedDoctor: PropTypes.string.isRequired,
   setSelectedDoctor: PropTypes.func.isRequired,

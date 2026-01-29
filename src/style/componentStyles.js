@@ -1,4 +1,3 @@
-// Ensure dashboard-card-content fills the card and has no padding for full-width row highlights
 import styled from "styled-components";
 
 export const Card = styled.div`
@@ -90,6 +89,21 @@ export const FormErrorSpan = styled.span`
   &.error {
     color: red;
   }
+`;
+
+export const FormFieldRow = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;
+
+export const FormFieldLabel = styled.label`
+  font-weight: normal;
+  margin-right: 0;
+  min-width: 0;
+  margin-bottom: 0;
 `;
 
 export const ColoredButton = styled.button`
@@ -198,7 +212,6 @@ export const StyledTextarea = styled.textarea`
   margin-top: 0.3rem;
 `;
 
-// Modal overlay for popups - booking creation/cancellation/update
 export const PopupCard = styled.div`
   flex: 1 1 350px;
   min-width: 300px;

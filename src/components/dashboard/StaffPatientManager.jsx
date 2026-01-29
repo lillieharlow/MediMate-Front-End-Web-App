@@ -1,23 +1,31 @@
 /*
-StaffPatientManager component
-- Card for staff to search and manage patients
-*/
+ * StaffPatientManager.jsx
+ *
+ * Dashboard card for staff to search, view, and manage patients.
+ * - Provides search fields for filtering patients by name, email, DOB, or phone.
+ * - Lists matching patients with actions to view bookings or book an appointment.
+ * - Opens a modal to view all bookings for a selected patient.
+ * Used in staff dashboard.
+ */
 
-// biome-ignore assist/source/organizeImports: false positive
+// biome-ignore assist/source/organizeImports: manually ordered
 import { useState, useEffect } from "react";
-import { getAllPatients } from "../../api/staff.js";
+import styled from "styled-components";
+
 import FindPatientButton from "../button/FindPatientButton.jsx";
 import ViewBookingsButton from "../button/ViewBookingsButton.jsx";
 import BookButton from "../button/BookButton.jsx";
-import styled from "styled-components";
-import { StyledInput } from "../../style/componentStyles.js";
-import { getPatientFullName } from "../../utils/patientUtils.js";
 import ViewBookingsModal from "../booking/ViewBookingsModal.jsx";
 import {
+  StyledInput,
   NameBox,
   PatientListActions,
   ListSeparator,
 } from "../../style/componentStyles.js";
+
+import { getPatientFullName } from "../../utils/patientUtils.js";
+
+import { getAllPatients } from "../../api/staff.js";
 
 const PatientSearchFields = styled.div`
   display: flex;
@@ -45,7 +53,11 @@ const PatientSearchFields = styled.div`
   }
 `;
 
-function StaffPatientManager({ doctors, onBookingCreated, staffSelectedDoctor }) {
+function StaffPatientManager({
+  doctors,
+  onBookingCreated,
+  staffSelectedDoctor,
+}) {
   const [patients, setPatients] = useState([]);
   const [search, setSearch] = useState({
     firstName: "",

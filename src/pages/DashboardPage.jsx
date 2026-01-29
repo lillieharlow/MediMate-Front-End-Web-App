@@ -1,15 +1,19 @@
 /*
-Dashboard Page:
-- Displays 2 different dashboard cards based on user type (patient, staff, doctor)
-- Patients: shows "Our Doctos" and "My Bookings"
-- Staff: shows "Patient Manager" and Doctor Manager"
-- Doctor: shows "Current Booking" and "Todays Bookings"
-- Uses shared booking logic from bookingUtils.js
-*/
+ * DashboardPage.jsx
+ *
+ * Main dashboard page that displays different dashboard cards based on user type:
+ * - Patients: "Our Doctors" and "My Bookings"
+ * - Staff: "Patient Manager" and "Doctor Manager"
+ * - Doctors: "Current Booking" and "Today's Bookings"
+ *
+ * Handles data fetching and refresh logic for doctors and bookings.
+ */
 
-// biome-ignore assist/source/organizeImports: false positive
+// biome-ignore assist/source/organizeImports: manually ordered
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
+
+import { useAuth } from "../contexts/AuthContext";
 
 import DashboardCard from "../components/dashboard/DashboardCard.jsx";
 import PatientOurDoctorsCardList from "../components/dashboard/PatientOurDoctorsCardList.jsx";
@@ -20,14 +24,14 @@ import CurrentBookingCard from "../components/dashboard/DoctorCurrentBookingCard
 import TodaysBookingsCard from "../components/dashboard/DoctorTodaysBookingsCard.jsx";
 import { DashboardCardRow } from "../style/componentStyles";
 
-import { useAuth } from "../contexts/AuthContext";
+import { isToday } from "../utils/patientUtils";
+
 import { getAllDoctors } from "../api/doctor.js";
 import {
   getPatientBookings,
   getDoctorBookings,
   getBookingById,
 } from "../api/booking.js";
-import { isToday } from "../utils/patientUtils";
 
 export default function DashboardPage() {
   const { userId, userType, isAuthenticated } = useAuth();

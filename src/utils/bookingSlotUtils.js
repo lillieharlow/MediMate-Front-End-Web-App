@@ -1,6 +1,13 @@
-// Shared logic for generating and filtering booking slots
-// Used in: CreateBookingCard.jsx, UpdateBookingCard.jsx
-// Provides: formatTime12Hour, generateSlots, filterAvailableSlots
+/**
+ * bookingSlotUtils.js
+ *
+ * Shared utility functions for generating and filtering booking slots.
+ * Used in: CreateBookingModal.jsx, UpdateBookingModal.jsx
+ * Exports:
+ *   - formatTime12Hour: Format a Date object as a 12-hour time string.
+ *   - generateSlots: Generate all possible slots for a doctor's shift.
+ *   - filterAvailableSlots: Remove slots that overlap with bookings or are in the past.
+ */
 
 // Format a Date object as 12-hour time string (e.g., 1:30 pm)
 export function formatTime12Hour(dateObj) {
@@ -38,7 +45,6 @@ export function generateSlots(date, shiftStart, shiftEnd, slotDuration) {
  * @param {string} [excludeBookingId] - booking _id to exclude (for update)
  * @returns {Array}
  */
-
 export function filterAvailableSlots(
   slots,
   bookings,

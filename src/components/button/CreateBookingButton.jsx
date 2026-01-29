@@ -1,10 +1,13 @@
 /*
-- "Create Booking" button for creating a booking for a patient
-*/
+ * CreateBookingButton.jsx
+ *
+ * Renders a disabled "Create Booking" action button.
+ * Intended for future use (e.g., staff booking creation modal).
+ * Uses ActionButton for consistent styling.
+ */
 
-// biome-ignore assist/source/organizeImports: keeping import order for clarity
 import ActionButton from "./ActionButton";
-// TODO: Implement modal popup for staff booking creation
+
 function CreateBookingButton() {
   return (
     <ActionButton type="button" disabled>

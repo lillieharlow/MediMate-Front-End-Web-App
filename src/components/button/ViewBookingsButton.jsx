@@ -1,6 +1,11 @@
 /*
-- "View Bookings" button for viewing a patient's bookings
-*/
+ * ViewBookingsButton.jsx
+ *
+ * Renders a "View Bookings" action button for viewing a patient's bookings.
+ * Calls onClick() when clicked.
+ * ActionButton for styling.
+ */
+
 import ActionButton from "./ActionButton";
 
 function ViewBookingsButton({ onClick }) {

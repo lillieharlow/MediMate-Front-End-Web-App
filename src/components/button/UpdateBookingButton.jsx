@@ -1,4 +1,11 @@
-// Button to open the update booking popup for a booking
+/*
+ * UpdateBookingButton.jsx
+ *
+ * Renders an "Update Booking" action button for booking management.
+ * Calls onUpdate(bookingId) when clicked.
+ * ActionButton for styling.
+ */
+
 import ActionButton from "./ActionButton";
 
 function UpdateBookingButton({ bookingId, onUpdate }) {

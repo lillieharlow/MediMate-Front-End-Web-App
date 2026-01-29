@@ -1,11 +1,15 @@
 /*
-DoctorTodaysBookingsCard component
-- Displays today's bookings for a doctor or staff user
-- Colors past bookings grey, centers the list, and shows a message when all bookings are done
-*/
+ * DoctorTodaysBookingsCard.jsx
+ *
+ * Displays today's bookings for a doctor or staff user in a dashboard card.
+ * - Colors past bookings grey.
+ * - Allows selecting a booking via click (doctor only).
+ * Used in doctor and staff dashboards.
+ */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import PropTypes from "prop-types";
+
 import DashboardCard from "./DashboardCard";
 import DoctorManagerListCard from "./DoctorManagerListCard";
 import { NameBox, NameBoxRow } from "../../style/componentStyles";
