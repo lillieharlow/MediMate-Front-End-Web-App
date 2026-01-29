@@ -13,10 +13,8 @@
 import { getApiResponse, getErrorReason } from './apiUtils';
 
 // Change user type
-export async function changeUserType(userId, userTypeData) {
-  return await getApiResponse('PATCH', `api/v1/staff/userType/${userId}`, userTypeData, true).then(
-    res => res.data,
-  );
+export async function changeUserType(userId, updateUserData) {
+  return await getApiResponse('PATCH', `api/v1/staff/userType/${userId}`, updateUserData, true);
 }
 
 // Create user account

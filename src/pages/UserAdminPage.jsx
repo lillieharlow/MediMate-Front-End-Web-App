@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router';
 import styled from 'styled-components';
 import { populateUsersRequest } from '../api/staff';
-import ManageProfileCard from '../components/ManageProfileCard';
 import DeleteUserConfirmCard from '../components/useradmin/DeleteUserConfirmCard';
 import StaffCreateUserCard from '../components/useradmin/StaffCreateUserCard';
+import StaffManageProfileCard from '../components/useradmin/StaffManageProfileCard';
 import UserAdminTable from '../components/useradmin/UserAdminTable';
 import { useAuth } from '../contexts/AuthContext';
 import { BlurOverlay } from '../style/componentStyles';
@@ -52,7 +52,8 @@ export default function UserAdminPage() {
   };
 
   const updateUserTable = user => {
-    setUsers(prev => prev.map(u => (u._id === user._id ? user : u)));
+    console.log(`new user is ${JSON.stringify(user)}`);
+    setUsers(prev => prev.map(u => (u.user._id === user.user._id ? user : u)));
     setTimeout(() => closeCard(), 1000);
   };
 
@@ -107,8 +108,7 @@ export default function UserAdminPage() {
           )}
           {editingProfile && (
             <StaticCard>
-              <h2>Edit User Profile</h2>
-              <ManageProfileCard userInfo={targetUser} onProfileUpdated={updateUserTable} />
+              <StaffManageProfileCard userInfo={targetUser} onProfileUpdated={updateUserTable} />
             </StaticCard>
           )}
           {deletingProfile && (

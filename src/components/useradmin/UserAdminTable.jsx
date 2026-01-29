@@ -1,6 +1,5 @@
 import AddUserButton from '../button/AddUserButton';
 import DeleteProfileButton from '../button/DeleteProfileButton';
-import EditUserTypeButton from '../button/EditUserTypeButton';
 import ManageProfileButton from '../button/ManageProfileButton';
 
 export default function UserAdminTable({ users, onCreateUser, onEditUser, onDeleteUser }) {
@@ -10,10 +9,6 @@ export default function UserAdminTable({ users, onCreateUser, onEditUser, onDele
 
   const onManageProfile = (profileId, userType) => {
     onEditUser(profileId, userType);
-  };
-
-  const onEditUserType = profileId => {
-    console.log(`I will change type of profile: ${profileId}`);
   };
 
   const onDeleteProfile = (profileId, userType, userInfo) => {
@@ -49,7 +44,6 @@ export default function UserAdminTable({ users, onCreateUser, onEditUser, onDele
                     userType={user.user.userType.typeName}
                     onManage={onManageProfile}
                   />
-                  <EditUserTypeButton profileId={user.user._id} onEditType={onEditUserType} />
                   <DeleteProfileButton
                     profileId={user.user._id}
                     userType={user.user.userType.typeName}

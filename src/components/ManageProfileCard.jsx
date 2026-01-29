@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react';
 import { getDoctorById, updateDoctor } from '../api/doctor';
 import { getPatientById, updatePatient } from '../api/patient';
-import { getStaffById, updateStaff } from '../api/staff';
+import { changeUserType, getStaffById, updateStaff } from '../api/staff';
 import { FormErrorSpan, InputGrid, StyledForm, StyledInput } from '../style/componentStyles';
 
-export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
+export default function ManageProfileCard({ userInfo, onProfileUpdated, userTypeChanged }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [middleName, setMiddleName] = useState('');
@@ -21,36 +21,46 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
     setIsError(false);
     setMessage('');
 
-    // Validate inputs here
-
     try {
-      let res;
-
-      if (userInfo.userType === 'patient') {
-        res = await updatePatient(userInfo.userId, {
+      const requiredData = {
+        patient: {
           firstName,
           middleName,
           lastName,
           dateOfBirth: dob,
           phone: phoneNumber,
-        });
-      }
-
-      if (userInfo.userType === 'doctor') {
-        res = await updateDoctor(userInfo.userId, {
+        },
+        doctor: {
           firstName,
           lastName,
           shiftStartTime: shiftStart,
           shiftEndTime: shiftEnd,
-        });
-      }
-
-      if (userInfo.userType === 'staff') {
-        res = await updateStaff(userInfo.userId, {
+        },
+        staff: {
           firstName,
           lastName,
+        },
+      };
+
+      let res;
+      if (userTypeChanged) {
+        res = await changeUserType(userInfo.userId, {
+          typeName: userInfo.userType,
+          profileData: requiredData[userInfo.userType],
         });
+      } else {
+        const updateFunction = {
+          patient: updatePatient,
+          doctor: updateDoctor,
+          staff: updateStaff,
+        };
+
+        res = await updateFunction[userInfo.userType](
+          userInfo.userId,
+          requiredData[userInfo.userType],
+        );
       }
+
       if (!res) throw new Error('An unexpected error occured.');
       if (!res.success) throw new Error(`${res.error.message}`);
       onProfileUpdated ? onProfileUpdated(res.data) : null;
@@ -87,9 +97,9 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated }) {
       setFirstName(profileData.firstName);
       setLastName(profileData.lastName);
     };
-
-    fetchData();
-  }, [userInfo]);
+    // Fetch data only if userType not changed, otherwise don't send request as no profile will exist
+    !userTypeChanged && fetchData();
+  }, [userInfo, userTypeChanged]);
 
   return (
     <div data-testid="app-profile-card">
