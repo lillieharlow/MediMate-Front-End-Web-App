@@ -168,18 +168,21 @@ export const NameBox = styled.div`
   align-items: center;
   border: 1px solid #000000;
   border-radius: 24px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  max-width: 100%;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  width: auto;
+  max-width: 700px;
   padding: 0.3rem 2.5rem;
   font-weight: bold;
   font-size: 1.1rem;
   box-sizing: border-box;
   @media (max-width: 600px) {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     font-size: 1rem;
+    max-width: 98vw;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
 `;
 
@@ -194,7 +197,7 @@ export const NameBoxRow = styled.div`
   padding-left: 0;
   padding-right: 0;
   transition: background 0.2s;
-  width: calc(100% + 5rem);
+  width: auto;
   margin-left: -2.5rem;
   margin-right: -2.5rem;
 `;
@@ -268,13 +271,20 @@ export const StyledTextarea = styled.textarea`
 `;
 
 export const PopupCard = styled.div`
-  flex: 1 1 350px;
-  min-width: 300px;
-  max-width: 420px;
-  width: auto;
+  flex: 1 1 500px;
+  min-width: 420px;
+  max-width: 700px;
+  width: 100%;
   height: auto;
   border-radius: 12px;
   padding: 2.2rem 3.2rem 2rem 3.2rem;
+  box-sizing: border-box;
+  @media (max-width: 800px) {
+    min-width: 0;
+    max-width: 98vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
   background: #fff;
   display: flex;
   flex-direction: column;

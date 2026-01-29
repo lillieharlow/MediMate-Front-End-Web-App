@@ -116,9 +116,6 @@ function PatientMyBookingsCard({
                     <span style={{ fontSize: 18, marginRight: 2 }}>
                       <FaUserMd />
                     </span>
-                    <span style={{ fontSize: 18, marginRight: 2 }}>
-                      <FaUserMd />
-                    </span>
                     <span>{`Dr. ${doctor.firstName} ${doctor.lastName}`}</span>
                   </div>
                   <div

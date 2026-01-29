@@ -15,26 +15,37 @@ import NotesSection from "../NotesSection.jsx";
 import { NameBox, ColoredButton } from "../../style/componentStyles";
 
 import { updateDoctorNotes, getDoctorNotes } from "../../api/booking";
+import { getPatientById } from "../../api/patient";
 
 const CurrentBookingCard = ({ booking }) => {
   const [appointmentNotes, setAppointmentNotes] = useState("");
   const [currentBooking, setCurrentBooking] = useState(booking);
+  const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState("");
 
   useEffect(() => {
     setCurrentBooking(booking);
     setSaveMsg("");
-    async function fetchDoctorNotes() {
+    async function fetchDoctorNotesAndProfile() {
       if (booking?._id) {
         const res = await getDoctorNotes(booking._id);
         setAppointmentNotes(res?.data?.doctorNotes || "");
       } else {
         setAppointmentNotes("");
       }
+      if (booking && !booking.patientProfile && booking.patientId) {
+        try {
+          const profile = await getPatientById(booking.patientId);
+          setCurrentBooking((prev) =>
+            prev ? { ...prev, patientProfile: profile } : prev,
+          );
+        } catch (e) {
+          console.error("Failed to fetch patient profile:", e);
+        }
+      }
     }
-    fetchDoctorNotes();
+    fetchDoctorNotesAndProfile();
   }, [booking]);
-  const [saving, setSaving] = useState(false);
-  const [saveMsg, setSaveMsg] = useState("");
 
   const handleSaveNotes = async () => {
     if (!currentBooking) return;

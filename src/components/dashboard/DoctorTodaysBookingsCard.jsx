@@ -62,7 +62,10 @@ const TodaysBookingsCard = ({
                 }
                 style={{ cursor: disablePointer ? "default" : "pointer" }}
               >
-                <NameBox $bg={bgColor}>
+                <NameBox
+                  $bg={bgColor}
+                  style={{ width: '80%', margin: '0 auto' }}
+                >
                   <DoctorManagerListCard booking={booking} />
                 </NameBox>
               </NameBoxRow>
