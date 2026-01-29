@@ -3,11 +3,9 @@ import ManageProfileButton from "./button/EditProfileButton";
 
 export default function UserAdminTable({ users }) {
   const onManageProfile = (profileId) => {
-    console.log(`I will manage profile: ${profileId}`);
   };
 
   const onDeleteProfile = (profileId) => {
-    console.log(`I will delete profile: ${profileId}`);
   };
 
   return (

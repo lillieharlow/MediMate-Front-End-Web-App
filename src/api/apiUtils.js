@@ -54,7 +54,6 @@ export const getApiResponse = async (method, endpoint, body, sendToken = false) 
     }
     return responseData;
   } catch (error) {
-    console.error('API Error:', error);
     return {
       success: false,
       status: error.status || 500,
