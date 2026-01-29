@@ -1,26 +1,26 @@
-import { HttpResponse, http } from 'msw';
-import { API_BASE_URL } from '../../src/api/apiConfig';
+import { HttpResponse, http } from "msw";
+import { API_BASE_URL } from "../../src/api/apiConfig";
 
 export const handlers = [
   // Login route success & fail state
   http.post(`${API_BASE_URL}/api/v1/auth/login`, async ({ request }) => {
     const reqJson = await request.clone().json();
     let mockJwt;
-    if (reqJson.email === 'patient@example.com') {
+    if (reqJson.email === "patient@example.com") {
       // Patient user
       mockJwt =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjMiLCJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwidXNlclR5cGUiOiJwYXRpZW50In0.mock-signature';
-    } else if (reqJson.email === 'staff@email.com') {
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjMiLCJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwidXNlclR5cGUiOiJwYXRpZW50In0.mock-signature";
+    } else if (reqJson.email === "staff@email.com") {
       // Staff user
       mockJwt =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzdGFmZiIsImVtYWlsIjoic3RhZmZAZW1haWwuY29tIiwidXNlclR5cGUiOiJzdGFmZiJ9.mock-signature';
-    } else if (reqJson.email === 'doctor@email.com') {
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJzdGFmZiIsImVtYWlsIjoic3RhZmZAZW1haWwuY29tIiwidXNlclR5cGUiOiJzdGFmZiJ9.mock-signature";
+    } else if (reqJson.email === "doctor@email.com") {
       // Doctor user
       mockJwt =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkb2MxIiwiZW1haWwiOiJkb2N0b3JAZW1haWwuY29tIiwidXNlclR5cGUiOiJkb2N0b3IifQ.mock-signature';
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkb2MxIiwiZW1haWwiOiJkb2N0b3JAZW1haWwuY29tIiwidXNlclR5cGUiOiJkb2N0b3IifQ.mock-signature";
     } else {
       throw HttpResponse.json(
-        { success: false, message: 'Invalid test credentials' },
+        { success: false, message: "Invalid test credentials" },
         { status: 401 },
       );
     }
@@ -37,13 +37,16 @@ export const handlers = [
 
   http.post(`${API_BASE_URL}/api/v1/auth/signup`, async ({ request }) => {
     const reqJson = await request.clone().json();
-    if (reqJson.email === 'bad-email@example.com') {
-      throw HttpResponse.json({ success: false, message: 'Invalid test signup' }, { status: 401 });
+    if (reqJson.email === "bad-email@example.com") {
+      throw HttpResponse.json(
+        { success: false, message: "Invalid test signup" },
+        { status: 401 },
+      );
     }
 
-    if (reqJson.email === 'duplicate@example.com') {
+    if (reqJson.email === "duplicate@example.com") {
       throw HttpResponse.json(
-        { success: false, message: 'Test email already in use' },
+        { success: false, message: "Test email already in use" },
         { status: 409 },
       );
     }
@@ -58,310 +61,132 @@ export const handlers = [
 
   // Mock doctors list
   http.get(`${API_BASE_URL}/api/v1/doctors`, () => {
-    return HttpResponse.json({
-      data: [
-        {
-          id: 'doc1',
-          title: 'Dr. Alice Smith',
-          image: '',
-          subtitle: 'Cardiologist',
-          info: 'Expert in heart health.',
-        },
-        {
-          id: 'doc2',
-          title: 'Dr. Bob Jones',
-          image: '',
-          subtitle: 'Dermatologist',
-          info: 'Skin specialist.',
-        },
-        {
-          id: 'doc3',
-          title: 'Dr. Carol Lee',
-          image: '',
-          subtitle: 'Pediatrician',
-          info: 'Child health expert.',
-        },
-      ],
-    });
-  }),
+  return HttpResponse.json({
+    data: [
+      { _id: "doc1", firstName: "Alice", lastName: "Smith", user: { _id: "doc1" } },
+      { _id: "doc2", firstName: "Bob", lastName: "Jones", user: { _id: "doc2" } },
+      { _id: "doc3", firstName: "Carol", lastName: "Lee", user: { _id: "doc3" } },
+    ],
+  });
+}),
 
   // Mock patient bookings
   http.get(`${API_BASE_URL}/api/v1/bookings/patients/:patientId`, () => {
-    return HttpResponse.json({
-      data: [
-        {
-          id: 'b1',
-          icon: '',
-          title: 'Consultation',
-          info: 'Routine checkup.',
-          date: '2026-01-22',
-          time: '09:00',
-          doctorName: 'Dr. Alice Smith',
-        },
-        {
-          id: 'b2',
-          icon: '',
-          title: 'Follow-up',
-          info: 'Review test results.',
-          date: '2026-01-23',
-          time: '10:30',
-          doctorName: 'Dr. Bob Jones',
-        },
-      ],
-    });
-  }),
+  return HttpResponse.json({
+    data: [
+      {
+        _id: "b1",
+        info: "Routine checkup.",
+        date: "2026-01-22",
+        time: "09:00",
+        doctor: { _id: "doc1", firstName: "Alice", lastName: "Smith" },
+      },
+      {
+        _id: "b2",
+        info: "Review test results.",
+        date: "2026-01-23",
+        time: "10:30",
+        doctor: { _id: "doc2", firstName: "Bob", lastName: "Jones" },
+      }
+    ],
+  });
+}),
 
   // Mock doctor bookings
-  http.get(`${API_BASE_URL}/api/v1/bookings/doctors/:doctorId`, function handler(req) {
-    const { doctorId } = req.params;
-    const today = '2026-01-21';
-    // Always return two bookings for doc1 for demo/testing
-    if (doctorId === 'doc1') {
-      return HttpResponse.json({
-        data: [
-          {
-            id: 'b_today',
-            time: '08:30',
-            patientName: 'Test Patient',
-            patientNotes: 'Needs follow-up.',
-            appointmentNotes: 'Review new symptoms.',
-            doctorId: 'doc1',
-            date: today,
-          },
-          {
-            id: 'b_today2',
-            time: '10:00',
-            patientName: 'Second Patient',
-            patientNotes: 'Routine check.',
-            appointmentNotes: 'Discuss results.',
-            doctorId: 'doc1',
-            date: today,
-          },
-        ],
-      });
-    }
-    // Fallback for other doctors
-    return HttpResponse.json({ data: [] });
-  }),
-
-  // Mock staff patients list
-  http.get(`${API_BASE_URL}/api/v1/staff/patients`, () => {
-    async ({ request }) => {
-      // Mock patient data, IDs match booking data
-      const patients = [
-        {
-          id: 'p1',
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john.doe@example.com',
-          dob: '1990-01-01',
-          phone: '555-1234',
-        },
-        {
-          id: 'p2',
-          firstName: 'Jane',
-          lastName: 'Smith',
-          email: 'jane.smith@example.com',
-          dob: '1985-05-15',
-          phone: '555-5678',
-        },
-        {
-          id: 'p3',
-          firstName: 'Sam',
-          lastName: 'Lee',
-          email: 'sam.lee@example.com',
-          dob: '2000-09-30',
-          phone: '555-9012',
-        },
-        {
-          id: 'p4',
-          firstName: 'Alex',
-          lastName: 'Kim',
-          email: 'alex.kim@example.com',
-          dob: '1995-07-12',
-          phone: '555-3456',
-        },
-      ];
-      // Await request.url if needed (for MSW v2 compatibility)
-      const urlStr = typeof request.url === 'function' ? await request.url() : request.url;
-      const url = new URL(urlStr);
-      const filters = {
-        firstName: url.searchParams.get('firstName'),
-        lastName: url.searchParams.get('lastName'),
-        email: url.searchParams.get('email'),
-        dob: url.searchParams.get('dob'),
-        phone: url.searchParams.get('phone'),
-      };
-      // Filter patients by non-empty query params
-      const filtered = patients.filter(p => {
-        return Object.entries(filters).every(([key, val]) => {
-          if (!val) return true;
-          return p[key].toLowerCase().includes(val.toLowerCase());
+  http.get(
+    `${API_BASE_URL}/api/v1/bookings/doctors/:doctorId`,
+    function handler(req) {
+      const { doctorId } = req.params;
+      const today = "2026-01-21";
+      if (doctorId === "doc1") {
+        return HttpResponse.json({
+          data: [
+            {
+              _id: "b_today",
+              time: "08:30",
+              patient: {
+                _id: "p1",
+                firstName: "Test",
+                lastName: "Patient",
+              },
+              patientNotes: "Needs follow-up.",
+              appointmentNotes: "Review new symptoms.",
+              doctorId: "doc1",
+              date: today,
+            },
+            {
+              _id: "b_today2",
+              time: "10:00",
+              patient: {
+                _id: "p2",
+                firstName: "Second",
+                lastName: "Patient",
+              },
+              patientNotes: "Routine check.",
+              appointmentNotes: "Discuss results.",
+              doctorId: "doc1",
+              date: today,
+            },
+          ],
         });
-      });
-      return HttpResponse.json({ data: filtered });
-    };
-  }),
+      }
+      return HttpResponse.json({ data: [] });
+    },
+  ),
 
-  // Mock get patient profie request
+
+  // Mock get patient profile request
   http.get(`${API_BASE_URL}/api/v1/patients/1TestUserId`, () => {
     return HttpResponse.json({
       data: {
-        firstName: 'TestFirstName',
-        middleName: 'TestMiddleName',
-        lastName: 'TestLastName',
-        dateOfBirth: '2001-01-02',
-        phone: '0400111222',
+        firstName: "TestFirstName",
+        middleName: "TestMiddleName",
+        lastName: "TestLastName",
+        dateOfBirth: "2001-01-02",
+        phone: "0400111222",
       },
     });
   }),
 
-  // Mock get doctor profie request
+  // Mock get doctor profile request
   http.get(`${API_BASE_URL}/api/v1/doctors/1TestUserId`, () => {
     return HttpResponse.json({
       data: {
-        firstName: 'TestDoctorFirstName',
-        lastName: 'TestDoctorLastName',
-        shiftStartTime: '08:30',
-        shiftEndTime: '16:30',
+        firstName: "TestDoctorFirstName",
+        lastName: "TestDoctorLastName",
+        shiftStartTime: "08:30",
+        shiftEndTime: "16:30",
       },
     });
   }),
 
-  // Mock get staff profie request
+  // Mock get staff profile request
   http.get(`${API_BASE_URL}/api/v1/staff/1TestUserId`, () => {
     return HttpResponse.json({
       data: {
-        firstName: 'TestDoctorFirstName',
-        lastName: 'TestDoctorLastName',
+        firstName: "TestDoctorFirstName",
+        lastName: "TestDoctorLastName",
       },
     });
   }),
 
   // Mock patch profile
-  http.patch(`${API_BASE_URL}/api/v1/patients/1TestUserId`, async ({ request }) => {
-    const reqJson = await request.clone().json();
+  http.patch(
+    `${API_BASE_URL}/api/v1/patients/1TestUserId`,
+    async ({ request }) => {
+      const reqJson = await request.clone().json();
 
-    if (reqJson.firstName === 'ValidFirstName')
+      if (reqJson.firstName === "ValidFirstName")
+        return HttpResponse.json({
+          success: true,
+        });
+
       return HttpResponse.json({
-        success: true,
-      });
-
-    return HttpResponse.json({
-      success: false,
-      error: {
-        message: 'Test profile update failed',
-      },
-    });
-  }),
-
-  // Mock staff get users request
-  http.get(`${API_BASE_URL}/api/v1/staff/users`, () => {
-    return HttpResponse.json({
-      success: true,
-      data: [
-        {
-          user: {
-            _id: 'mockId1',
-            email: 'mock@email.com',
-            userType: {
-              typeName: 'patient',
-            },
-          },
-          firstName: 'mockFirstName',
-          lastName: 'mockLastName',
-          dateOfBirth: '2000-01-01',
-          phone: '0400111222',
-        },
-        {
-          user: {
-            _id: 'mockId2',
-            email: 'mockdoc@email.com',
-            userType: {
-              typeName: 'doctor',
-            },
-          },
-          firstName: 'mockDocName',
-          lastName: 'mockDocLName',
-          shiftStartTime: '08:00',
-          shiftEndTime: '16:00',
-        },
-        {
-          user: {
-            _id: 'mockId3',
-            email: 'mockstaff@email.com',
-            userType: {
-              typeName: 'staff',
-            },
-          },
-          firstName: 'mockStaffName',
-          lastName: 'mockStaffLName',
-        },
-      ],
-    });
-  }),
-
-  // Mock patient profile lookup
-  http.get(`${API_BASE_URL}/api/v1/patients/:userId`, ({ params }) => {
-    const { userId } = params;
-
-    if (userId === 'mockId1') {
-      return HttpResponse.json({
-        success: true,
-        data: {
-          user: {
-            _id: 'mockId1',
-            email: 'mock@email.com',
-            userType: {
-              typeName: 'patient',
-            },
-          },
-          firstName: 'mockFirstName',
-          lastName: 'mockLastName',
-          dateOfBirth: '2000-01-01',
-          phone: '0400111222',
-        },
-      });
-    }
-
-    return HttpResponse.json(
-      {
         success: false,
-        message: 'Mock user not found',
-      },
-      { status: 404 },
-    );
-  }),
-
-  // Mock PATCH patient profile
-  http.patch(`${API_BASE_URL}/api/v1/patients/:userId`, async ({ request }) => {
-    const reqJson = await request.clone().json();
-
-    if (reqJson.firstName && reqJson.firstName === 'errorName') {
-      return HttpResponse.json(
-        {
-          success: false,
-          message: 'Mock error reason',
+        error: {
+          message: "Test profile update failed",
         },
-        { status: 400 },
-      );
-    }
-
-    return HttpResponse.json({
-      success: true,
-      data: {
-        user: {
-          _id: 'mockId1',
-          email: 'mock@email.com',
-          userType: {
-            typeName: 'patient',
-          },
-        },
-        firstName: 'mockFirstName',
-        lastName: 'mockLastName',
-        dateOfBirth: '2000-01-01',
-        phone: '0400111222',
-      },
-    });
-  }),
+      });
+    },
+  ),
 ];

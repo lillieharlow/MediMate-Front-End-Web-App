@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+
 import DashboardCard from '../../../src/components/dashboard/DashboardCard.jsx';
 
 describe('DashboardCard', () => {

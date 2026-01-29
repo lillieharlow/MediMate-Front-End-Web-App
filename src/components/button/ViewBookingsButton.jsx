@@ -1,17 +1,20 @@
 /*
-- "View Bookings" button for viewing a patient's bookings
-*/
-import { useNavigate } from "react-router";
+ * ViewBookingsButton.jsx
+ *
+ * Renders a "View Bookings" action button for viewing a patient's bookings.
+ * Calls onClick() when clicked.
+ * ActionButton for styling.
+ */
+
 import ActionButton from "./ActionButton";
 
-function ViewBookingsButton({ patientId }) {
-  const navigate = useNavigate();
+function ViewBookingsButton({ onClick }) {
   return (
     <ActionButton
       $bg="#388bff"
       $color="#000000"
       type="button"
-      onClick={() => navigate(`/patients/${patientId}/bookings`)}
+      onClick={onClick}
     >
       View Bookings
     </ActionButton>

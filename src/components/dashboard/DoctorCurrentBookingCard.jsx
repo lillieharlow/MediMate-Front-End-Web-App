@@ -1,17 +1,20 @@
 /*
-DoctorCurrentBookingCard component
-- Displays the current booking for a doctor, including patient and appointment notes
-- Used in the doctor dashboard
-*/
+ * DoctorCurrentBookingCard.jsx
+ *
+ * Displays the current booking for a doctor, including patient notes and editable appointment notes.
+ * Used in the doctor dashboard.
+ * Allows doctors to view and update appointment notes for the current booking.
+ */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
+
 import DoctorManagerListCard from "./DoctorManagerListCard.jsx";
+import NotesSection from "../NotesSection.jsx";
 import { NameBox, ColoredButton } from "../../style/componentStyles";
 
-import { useState, useEffect } from "react";
 import { updateDoctorNotes, getDoctorNotes } from "../../api/booking";
-import NotesSection from "../NotesSection.jsx";
 
 const CurrentBookingCard = ({ booking }) => {
   const [appointmentNotes, setAppointmentNotes] = useState("");
@@ -19,7 +22,7 @@ const CurrentBookingCard = ({ booking }) => {
 
   useEffect(() => {
     setCurrentBooking(booking);
-    setSaveMsg(""); // Clear save message when booking changes
+    setSaveMsg("");
     async function fetchDoctorNotes() {
       if (booking?._id) {
         const res = await getDoctorNotes(booking._id);
@@ -39,11 +42,10 @@ const CurrentBookingCard = ({ booking }) => {
     setSaveMsg("");
     try {
       await updateDoctorNotes(currentBooking._id, appointmentNotes);
-      // Fetch updated doctor notes
       const notesRes = await getDoctorNotes(currentBooking._id);
       setAppointmentNotes(notesRes?.data?.doctorNotes || "");
       setSaveMsg("Notes saved!");
-      setTimeout(() => setSaveMsg(""), 2000); // Hide message after 2 seconds
+      setTimeout(() => setSaveMsg(""), 2000);
     } catch {
       setSaveMsg("Failed to save notes.");
       setTimeout(() => setSaveMsg(""), 2000);
@@ -52,7 +54,21 @@ const CurrentBookingCard = ({ booking }) => {
     }
   };
 
-  if (!currentBooking) return <div data-testid="doctor-current-booking-card">No current booking.</div>;
+  if (!currentBooking)
+    return (
+      <div data-testid="doctor-current-booking-card">
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: "1.5em",
+            color: "#e0e0e0",
+            fontWeight: 500,
+          }}
+        >
+          ---------- No current booking ----------
+        </div>
+      </div>
+    );
 
   return (
     <div data-testid="doctor-current-booking-card">
@@ -97,7 +113,7 @@ const CurrentBookingCard = ({ booking }) => {
         {saveMsg && (
           <div
             style={{
-              color: saveMsg.includes("saved") ? "#111" : "red",
+              color: saveMsg.includes("saved") ? "#000000" : "red",
               marginTop: 4,
               textAlign: "center",
             }}

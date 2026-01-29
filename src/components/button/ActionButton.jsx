@@ -1,9 +1,10 @@
 /*
-ActionButton component
-- Generic styled button for all actions in the app
-- Accepts $bg and $color props for changing colors
-- Accepts children for button text/content
-*/
+ * ActionButton.jsx
+ *
+ * Generic styled button for actions throughout the app.
+ * Accepts $bg and $color props for custom colors.
+ * Renders children as button content.
+ */
 
 import { ColoredButton } from "../../style/componentStyles";
 
