@@ -1,11 +1,15 @@
 /*
-DoctorTodaysBookingsCard component
-- Displays today's bookings for a doctor or staff user
-- Colors past bookings grey, centers the list, and shows a message when all bookings are done
-*/
+ * DoctorTodaysBookingsCard.jsx
+ *
+ * Displays today's bookings for a doctor or staff user in a dashboard card.
+ * - Colors past bookings grey.
+ * - Allows selecting a booking via click (doctor only).
+ * Used in doctor and staff dashboards.
+ */
 
-// biome-ignore assist/source/organizeImports: manually ordered for clarity
+// biome-ignore assist/source/organizeImports: manually ordered
 import PropTypes from "prop-types";
+
 import DashboardCard from "./DashboardCard";
 import DoctorManagerListCard from "./DoctorManagerListCard";
 import { NameBox, NameBoxRow } from "../../style/componentStyles";
@@ -14,56 +18,62 @@ const TodaysBookingsCard = ({
   doctorBookings,
   containerClassName,
   cardStyle,
-  onBookingSelect,
   selectedBooking,
+  onBookingSelect,
+  disablePointer,
 }) => {
   const now = new Date();
   return (
-    <div data-testid="doctor-todays-bookings-card">
-      <DashboardCard title="Today's Bookings" style={cardStyle}>
-        <div className={containerClassName}>
-          {doctorBookings.length === 0 ? (
-            <div />
-          ) : (
-            <>
-              {doctorBookings.map((booking) => {
-                const bookingTime = new Date(booking.datetimeStart);
-                const isPast = bookingTime < now;
-                const isSelected =
-                  selectedBooking && booking._id === selectedBooking._id;
-                let bgColor;
-                if (isPast) {
-                  bgColor = "#e0e0e0";
-                } else {
-                  bgColor = undefined;
+    <DashboardCard title="Today's Bookings" style={cardStyle}>
+      <div
+        className={containerClassName}
+        data-testid="doctor-todays-bookings-card"
+      >
+        {doctorBookings.length === 0 ? (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "1.5em",
+              color: "#e0e0e0",
+              fontWeight: 500,
+            }}
+          >
+            ---------- No more bookings today ----------
+          </div>
+        ) : (
+          doctorBookings.map((booking) => {
+            const bookingTime = new Date(booking.datetimeStart);
+            const isPast = bookingTime < now;
+            const isSelected =
+              selectedBooking && booking._id === selectedBooking._id;
+            let bgColor;
+            if (isPast) {
+              bgColor = "#e0e0e0";
+            } else {
+              bgColor = undefined;
+            }
+            return (
+              <NameBoxRow
+                $selected={isSelected}
+                key={booking._id}
+                onClick={() =>
+                  typeof onBookingSelect === "function" &&
+                  onBookingSelect(booking)
                 }
-                return (
-                  <NameBoxRow $selected={isSelected} key={booking._id}>
-                    <NameBox
-                      $bg={bgColor}
-                      style={{ cursor: "pointer" }}
-                      onClick={() => onBookingSelect?.(booking)}
-                    >
-                      <DoctorManagerListCard booking={booking} />
-                    </NameBox>
-                  </NameBoxRow>
-                );
-              })}
-              <div
-                style={{
-                  textAlign: "center",
-                  marginTop: "1.5em",
-                  color: "#e0e0e0",
-                  fontWeight: 500,
-                }}
+                style={{ cursor: disablePointer ? "default" : "pointer" }}
               >
-                ---------- No more bookings today ----------
-              </div>
-            </>
-          )}
-        </div>
-      </DashboardCard>
-    </div>
+                <NameBox
+                  $bg={bgColor}
+                  style={{ width: '80%', margin: '0 auto' }}
+                >
+                  <DoctorManagerListCard booking={booking} />
+                </NameBox>
+              </NameBoxRow>
+            );
+          })
+        )}
+      </div>
+    </DashboardCard>
   );
 };
 

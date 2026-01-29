@@ -1,11 +1,16 @@
 /*
-Dashboard Card component
-- Displaying dashboard sections in a card style
-- title required, optional custom content and styles
-- For use on dashboard pages
-*/
+ * DashboardCard.jsx
+ *
+ * Reusable card component for displaying dashboard sections.
+ * Props:
+ *   - title (string, required): The card's title.
+ *   - children (node): Card content; can include actions.
+ *   - style (object): Optional custom styles for the card.
+ * Used on dashboard pages to wrap dashboard content in a styled card.
+ */
 
 import PropTypes from "prop-types";
+
 import { Card, DashboardCardContent } from "../../style/componentStyles.js";
 
 const DashboardCard = ({ title, children, style }) => {
@@ -22,7 +27,9 @@ const DashboardCard = ({ title, children, style }) => {
             </div>
           )}
       </div>
-      <DashboardCardContent className="dashboard-card-content">{children}</DashboardCardContent>
+      <DashboardCardContent className="dashboard-card-content">
+        {children}
+      </DashboardCardContent>
     </Card>
   );
 };

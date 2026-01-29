@@ -11,7 +11,6 @@ export function getJwtPayload(token) {
     const tokenJson = atob(base64.replace(/-/, '+').replace(/_/, '/'));
     return JSON.parse(tokenJson);
   } catch (err) {
-    console.log(err);
     return null;
   }
 }

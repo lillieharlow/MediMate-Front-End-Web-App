@@ -1,10 +1,13 @@
 /*
-NotesSection component
-- Used for text input areas for patient notes added at booking
-- Also used for doctor notes added by the doctor
-*/
+ * NotesSection.jsx
+ *
+ * Reusable section for displaying and editing notes.
+ * Used for patient notes (added at booking) and doctor notes (added by the doctor).
+ * Renders a labeled textarea, optionally read-only.
+ */
 
 import PropTypes from "prop-types";
+
 import { StyledTextarea } from "../style/componentStyles";
 
 const NotesSection = ({
