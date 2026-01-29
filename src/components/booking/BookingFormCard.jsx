@@ -20,7 +20,6 @@ import {
 } from "../../style/componentStyles";
 import CloseButton from "../button/CloseButton";
 
-// Doctor selection section extracted for DRYness
 function DoctorSelectSection({
   doctors,
   doctor,
@@ -55,7 +54,7 @@ function DoctorSelectSection({
           }}
           required
           style={{
-            width: 180,
+            width: "100%",
             textAlign: "center",
           }}
           disabled={externalLoading || doctors.length === 0}
@@ -81,7 +80,7 @@ function DoctorSelectSection({
           value={doctor._id}
           disabled
           style={{
-            width: 180,
+            width: "100%",
             textAlign: "center",
             background: "#f8f8f8",
             color: "#333",
@@ -199,7 +198,7 @@ export default function BookingFormCard({
               onChange={(e) => setTime(e.target.value)}
               style={{
                 marginBottom: 0,
-                width: 180,
+                width: "100%",
                 background:
                   availableSlots.length === 0 &&
                   date &&

@@ -8,6 +8,7 @@ export const Card = styled.div`
   height: 60vh;
   max-height: 70vh;
   overflow-y: auto;
+  overflow-x: hidden;
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 1.5rem 2.5rem;
@@ -66,9 +67,9 @@ export const StyledForm = styled.form`
 `;
 
 export const StyledInput = styled.input`
-  width: 180px;
-  min-width: 120px;
-  max-width: 220px;
+  width: 250px;
+  min-width: 180px;
+  max-width: 250px;
   padding: 0.4rem 0.7rem;
   border-radius: 6px;
   border: 1px solid #cccccc;
@@ -92,18 +93,22 @@ export const FormErrorSpan = styled.span`
 `;
 
 export const FormFieldRow = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
+  width: 100%;
 `;
 
 export const FormFieldLabel = styled.label`
-  font-weight: normal;
-  margin-right: 0;
+  font-weight: 500;
+  margin-right: 10px;
   min-width: 0;
   margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  height: 40px;
 `;
 
 export const ColoredButton = styled.button`
@@ -135,12 +140,17 @@ export const NameBox = styled.div`
   border-radius: 24px;
   margin-left: auto;
   margin-right: auto;
-  width: fit-content;
-  min-width: 320px;
-  max-width: 400px;
+  width: 100%;
+  max-width: 100%;
   padding: 0.3rem 2.5rem;
   font-weight: bold;
   font-size: 1.1rem;
+  box-sizing: border-box;
+  @media (max-width: 600px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+  }
 `;
 
 export const NameBoxRow = styled.div`
@@ -187,9 +197,9 @@ export const StyledLabel = styled.label`
 `;
 
 export const StyledSelect = styled.select`
-  width: 180px;
-  min-width: 120px;
-  max-width: 220px;
+  width: 250px;
+  min-width: 180px;
+  max-width: 250px;
   padding: 0.4rem 0.7rem;
   border-radius: 6px;
   border: 1px solid #cccccc;
@@ -219,12 +229,13 @@ export const PopupCard = styled.div`
   width: auto;
   height: auto;
   border-radius: 12px;
-  padding: 1.5rem 2.5rem 1.2rem 2.5rem;
-  background: #fff;
   padding: 2.2rem 3.2rem 2rem 3.2rem;
+  background: #fff;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   > h3 {
     margin-bottom: 0.8rem;
     width: 100%;
@@ -305,6 +316,7 @@ export const ModalTitle = styled.h2`
   color: #000;
   margin: 0 0 16px 0;
   text-align: center;
+  width: 100%;
 `;
 
 export const ErrorMessage = styled.div`
