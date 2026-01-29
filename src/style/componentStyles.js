@@ -67,10 +67,16 @@ export const StyledForm = styled.form`
 `;
 
 export const StyledInput = styled.input`
-  padding: 0.2rem;
-  border-radius: 4px;
-  outline: none;
-  border: 1px solid rgba(204, 204, 204, 0.5);
+  width: 180px;
+  min-width: 120px;
+  max-width: 220px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0 auto 1rem auto;
+  display: block;
 
   &:focus {
     border: 1.5px solid rgba(0, 123, 255, 0.5);
@@ -167,12 +173,16 @@ export const StyledLabel = styled.label`
 `;
 
 export const StyledSelect = styled.select`
-  flex: 1 1 0;
+  width: 180px;
   min-width: 120px;
+  max-width: 220px;
   padding: 0.4rem 0.7rem;
   border-radius: 6px;
   border: 1px solid #cccccc;
   font-size: 1rem;
+  text-align: center;
+  margin: 0 auto 1rem auto;
+  display: block;
 `;
 
 export const StyledTextarea = styled.textarea`
@@ -188,7 +198,7 @@ export const StyledTextarea = styled.textarea`
   margin-top: 0.3rem;
 `;
 
-// Modal overlay for popups for booking creation/cancellation/update
+// Modal overlay for popups - booking creation/cancellation/update
 export const PopupCard = styled.div`
   flex: 1 1 350px;
   min-width: 300px;
@@ -198,7 +208,7 @@ export const PopupCard = styled.div`
   border-radius: 12px;
   padding: 1.5rem 2.5rem 1.2rem 2.5rem;
   background: #fff;
-    padding: 2.2rem 3.2rem 2rem 3.2rem;
+  padding: 2.2rem 3.2rem 2rem 3.2rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -219,7 +229,15 @@ export const PopupCard = styled.div`
   }
   margin: 0;
   position: relative;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 400px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  position: relative;
   @media (max-width: 900px) {
     width: 90vw;
     min-width: unset;
@@ -246,7 +264,8 @@ export const StyledCloseButton = styled.button`
   cursor: pointer;
   outline: none;
   box-shadow: none;
-  &:focus, &:active {
+  &:focus,
+  &:active {
     outline: none;
     box-shadow: none;
     border: none;
@@ -265,6 +284,14 @@ export const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+`;
+
+export const ModalTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+  margin: 0 0 16px 0;
+  text-align: center;
 `;
 
 export const ErrorMessage = styled.div`
