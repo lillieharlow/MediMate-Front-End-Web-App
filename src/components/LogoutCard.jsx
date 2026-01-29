@@ -9,7 +9,7 @@ export default function LogoutCard() {
   const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated) navigate("/");
+    if (!isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
 
   return (

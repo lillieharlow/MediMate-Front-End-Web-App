@@ -3,14 +3,14 @@ import ManageProfileCard from "../components/ManageProfileCard";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function ProfilePage() {
-  const { isAuthenticated, userType } = useAuth();
+  const { isAuthenticated, userType, userId } = useAuth();
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return (
     <main>
       <h2>Manage Your Profile</h2>
-      <ManageProfileCard userType={userType} />
+      <ManageProfileCard userInfo={{userType, userId}} />
     </main>
   );
 }

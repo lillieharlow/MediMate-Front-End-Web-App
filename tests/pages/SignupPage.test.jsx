@@ -42,8 +42,14 @@ describe('test /signup page', () => {
     const emailInput = screen.getByTestId('app-signup-form-input-email');
     const passwordInput = screen.getByTestId('app-signup-form-input-password');
     const submitBtn = screen.getByTestId('app-signup-form-button-submit');
+
     await user.type(emailInput, 'ok-email@example.com');
     await user.type(passwordInput, 'ThisDoesntMatter');
+    await user.type(screen.getByTestId('app-signup-form-input-firstname'), 'Myname');
+    await user.type(screen.getByTestId('app-signup-form-input-lastname'), 'Mysurname');
+    await user.type(screen.getByTestId('app-signup-form-input-dob'), '2000-01-01');
+    await user.type(screen.getByTestId('app-signup-form-input-phone'), '0400111222');
+
     await user.click(submitBtn);
 
     expect(screen.getByText(/patient account created/i)).toBeInTheDocument();
@@ -56,8 +62,14 @@ describe('test /signup page', () => {
     const emailInput = screen.getByTestId('app-signup-form-input-email');
     const passwordInput = screen.getByTestId('app-signup-form-input-password');
     const submitBtn = screen.getByTestId('app-signup-form-button-submit');
+
     await user.type(emailInput, 'duplicate@example.com');
     await user.type(passwordInput, 'ThisDoesntMatter');
+    await user.type(screen.getByTestId('app-signup-form-input-firstname'), 'Myname');
+    await user.type(screen.getByTestId('app-signup-form-input-lastname'), 'Mysurname');
+    await user.type(screen.getByTestId('app-signup-form-input-dob'), '2000-01-01');
+    await user.type(screen.getByTestId('app-signup-form-input-phone'), '0400111222');
+
     await user.click(submitBtn);
 
     expect(screen.getByText(/test email already in use/i)).toBeInTheDocument();

@@ -73,7 +73,7 @@ describe('test /profile page', () => {
     await user.type(fNameInput, 'ValidFirstName');
     await user.click(submitButton);
 
-    expect(screen.getByText(/profile updated succesfully/i)).toBeInTheDocument();
+    expect(screen.getByText(/profile updated successfully/i)).toBeInTheDocument();
   });
 
   it('Updating profile fields with invalid values displays error message', async () => {

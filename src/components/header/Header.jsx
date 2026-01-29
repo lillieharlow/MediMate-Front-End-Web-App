@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import styled from "styled-components";
-import { useAuth } from "../../contexts/AuthContext";
-import HeaderMenu from "./HeaderMenu";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import styled from 'styled-components';
+import { useAuth } from '../../contexts/AuthContext';
+import { BlurOverlay } from '../../style/componentStyles';
+import HeaderMenu from './HeaderMenu';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -13,17 +14,6 @@ const StyledHeader = styled.header`
 
 const MenuButton = styled.button`
   padding: 0.5rem 0.75rem;
-`;
-
-const MenuOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.01);
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
 `;
 
 export default function Header() {
@@ -42,35 +32,24 @@ export default function Header() {
   return (
     <StyledHeader>
       <span>
-        <Link to="/" style={{ color: "inherit" }}>
+        <Link to="/" style={{ color: 'inherit' }}>
           <h3 data-testid="app-header-title">MediMate</h3>
         </Link>
       </span>
 
       {/* Conditionally render menu button for logged in users */}
       {isAuthenticated && (
-        <div style={{ position: "relative" }}>
-          <MenuButton
-            type="button"
-            onClick={() => setMenuOpen((prev) => !prev)}
-          >
-            <span
-              style={{ fontSize: "16pt" }}
-              data-testid="app-header-menu-icon"
-            >
+        <div style={{ position: 'relative' }}>
+          <MenuButton type="button" onClick={() => setMenuOpen(prev => !prev)}>
+            <span style={{ fontSize: '16pt' }} data-testid="app-header-menu-icon">
               ☰
             </span>
           </MenuButton>
 
           {/* Render overlay first so the menu is still interactable */}
-          {menuOpen && <MenuOverlay onClick={closeMenu} />}
+          {menuOpen && <BlurOverlay onClick={closeMenu} />}
 
-          {menuOpen && (
-            <HeaderMenu
-              onClose={() => setMenuOpen(false)}
-              onClickItem={closeMenu}
-            />
-          )}
+          {menuOpen && <HeaderMenu onClose={() => setMenuOpen(false)} onClickItem={closeMenu} />}
         </div>
       )}
     </StyledHeader>

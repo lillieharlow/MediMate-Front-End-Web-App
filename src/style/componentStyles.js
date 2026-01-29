@@ -33,6 +33,17 @@ export const Card = styled.div`
   }
 `;
 
+export const DialogCard = styled.div`
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 1.5rem 2.5rem;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const DashboardCardRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -61,8 +72,21 @@ export const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+`;
+
+export const InputGrid = styled.div`
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 1rem;
+  align-items: center;
   > label {
     font-weight: bold;
+    text-align: right;
+
+    &.is-required::after {
+      content: " *";
+      color: red;
+    }
   }
 `;
 
@@ -81,6 +105,12 @@ export const StyledInput = styled.input`
   &:focus {
     border: 1.5px solid rgba(0, 123, 255, 0.5);
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    color: black;
+  }
+
+  &:user-invalid {
+    border: 1.5px solid rgba(255, 0, 0, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
     color: black;
   }
 `;
@@ -209,6 +239,21 @@ export const StyledSelect = styled.select`
   display: block;
 `;
 
+export const CenteredHeading = styled.h4`
+  text-align: center;
+  margin: 1.2rem 0 1.2rem 0;
+`;
+
+export const BlurOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.01);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+`;
 export const StyledTextarea = styled.textarea`
   min-width: 120px;
   max-width: 400px;
