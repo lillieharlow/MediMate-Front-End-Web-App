@@ -75,17 +75,17 @@ function StaffPatientManager({
   };
 
   useEffect(() => {
-    getAllPatients().then(setPatients);
+    getAllPatients().then((result) => setPatients(result || []));
   }, []);
-
-  function handleChange(e) {
-    setSearch({ ...search, [e.target.name]: e.target.value });
-  }
 
   function handleFindPatient() {
     getAllPatients(search).then((result) => {
-      setPatients(result);
+      setPatients(result || []);
     });
+  }
+
+  function handleChange(e) {
+    setSearch({ ...search, [e.target.name]: e.target.value });
   }
 
   return (
