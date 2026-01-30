@@ -1,3 +1,4 @@
+// biome-ignore assist/source/organizeImports: manually ordered
 import { Route, Routes } from "react-router";
 import DashboardPage from "../pages/DashboardPage";
 import HomePage from "../pages/HomePage";
@@ -6,6 +7,8 @@ import LogoutPage from "../pages/LogoutPage";
 import ProfilePage from "../pages/ProfilePage";
 import SignupPage from "../pages/SignupPage";
 import UserAdminPage from "../pages/UserAdminPage";
+import ServerErrorPage from "../pages/ServerErrorPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 export default function AppRoutes() {
   return (
@@ -17,6 +20,8 @@ export default function AppRoutes() {
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/useradmin" element={<UserAdminPage />} />
       <Route path="/logout" element={<LogoutPage />} />
+      <Route path="/500" element={<ServerErrorPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
