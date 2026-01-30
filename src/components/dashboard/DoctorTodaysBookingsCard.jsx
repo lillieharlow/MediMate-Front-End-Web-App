@@ -23,13 +23,19 @@ const TodaysBookingsCard = ({
   disablePointer,
 }) => {
   const now = new Date();
+  // Sort bookings by datetimeStart ascending
+  const sortedBookings = [...doctorBookings].sort((a, b) => {
+    if (!(a.datetimeStart && b.datetimeStart)) return 0;
+    return new Date(a.datetimeStart) - new Date(b.datetimeStart);
+  });
+
   return (
     <DashboardCard title="Today's Bookings" style={cardStyle}>
       <div
         className={containerClassName}
         data-testid="doctor-todays-bookings-card"
       >
-        {doctorBookings.length === 0 ? (
+        {sortedBookings.length === 0 ? (
           <div
             style={{
               textAlign: "center",
@@ -41,7 +47,7 @@ const TodaysBookingsCard = ({
             ---------- No more bookings today ----------
           </div>
         ) : (
-          doctorBookings.map((booking) => {
+          sortedBookings.map((booking) => {
             const bookingTime = new Date(booking.datetimeStart);
             const isPast = bookingTime < now;
             const isSelected =
@@ -64,7 +70,7 @@ const TodaysBookingsCard = ({
               >
                 <NameBox
                   $bg={bgColor}
-                  style={{ width: '80%', margin: '0 auto' }}
+                  style={{ width: '70%', margin: '0 auto' }}
                 >
                   <DoctorManagerListCard booking={booking} />
                 </NameBox>

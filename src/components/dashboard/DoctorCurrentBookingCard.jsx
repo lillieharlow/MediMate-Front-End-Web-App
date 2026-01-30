@@ -67,8 +67,8 @@ const CurrentBookingCard = ({ booking }) => {
 
   if (!currentBooking)
     return (
-      <div data-testid="doctor-current-booking-card">
-        <div
+      <section data-testid="doctor-current-booking-card">
+        <p
           style={{
             textAlign: "center",
             marginTop: "1.5em",
@@ -77,27 +77,41 @@ const CurrentBookingCard = ({ booking }) => {
           }}
         >
           ---------- No current booking ----------
-        </div>
-      </div>
+        </p>
+      </section>
     );
 
   return (
-    <div data-testid="doctor-current-booking-card">
-      <NameBox>
-        <DoctorManagerListCard booking={currentBooking} />
-      </NameBox>
-      <NotesSection
-        label="Patient Notes"
-        value={currentBooking?.patientNotes || "No notes."}
-        readOnly
-      />
-      <NotesSection
-        label="Appointment Notes"
-        value={appointmentNotes}
-        onChange={(e) => setAppointmentNotes(e.target.value)}
-        placeholder="Add appointment notes..."
-        style={{ marginTop: "1rem" }}
-      />
+    <section data-testid="doctor-current-booking-card">
+      <article
+        style={{ display: "flex", justifyContent: "center", width: "100%" }}
+      >
+        <NameBox
+          style={{
+            width: "70%",
+            margin: "0 auto",
+          }}
+        >
+          <DoctorManagerListCard booking={currentBooking} />
+        </NameBox>
+      </article>
+      <section>
+        <NotesSection
+          label="Patient Notes"
+          value={currentBooking?.patientNotes || "No notes."}
+          readOnly
+          style={{ marginTop: "1rem" }}
+        />
+      </section>
+      <section>
+        <NotesSection
+          label="Appointment Notes"
+          value={appointmentNotes}
+          onChange={(e) => setAppointmentNotes(e.target.value)}
+          placeholder="Add appointment notes..."
+          style={{ marginTop: "1rem" }}
+        />
+      </section>
       <div
         style={{
           display: "flex",
@@ -110,11 +124,8 @@ const CurrentBookingCard = ({ booking }) => {
           type="button"
           $bg="#388bff"
           style={{
-            marginTop: "0.7rem",
+            marginTop: "1.5rem",
             minWidth: 160,
-            display: "block",
-            marginLeft: "auto",
-            marginRight: "auto",
           }}
           onClick={handleSaveNotes}
           disabled={saving}
@@ -122,18 +133,18 @@ const CurrentBookingCard = ({ booking }) => {
           {saving ? "Saving..." : "Save Notes"}
         </ColoredButton>
         {saveMsg && (
-          <div
+          <p
             style={{
               color: saveMsg.includes("saved") ? "#000000" : "red",
-              marginTop: 4,
+              marginTop: "1rem",
               textAlign: "center",
             }}
           >
             {saveMsg}
-          </div>
+          </p>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

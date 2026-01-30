@@ -183,27 +183,29 @@ export default function UpdateBookingModal({
   if (!open) return null;
 
   return (
-    <BookingFormCard
-      open={open}
-      onClose={onClose}
-      doctor={doctor}
-      patientId={patientId}
-      onSubmit={handleSubmit}
-      submitLabel="Update Booking"
-      loading={loading}
-      error={error}
-      availableSlots={availableSlots}
-      setDate={setDate}
-      setTime={setTime}
-      setDuration={setDuration}
-      setNotes={setNotes}
-      date={date}
-      time={time}
-      duration={duration}
-      notes={notes}
-      disableDoctorSelect={true}
-      title="Update Booking"
-      onBookingUpdated={onBookingUpdated}
-    />
+    <section>
+      <BookingFormCard
+        open={open}
+        onClose={onClose}
+        doctor={doctor}
+        patientId={patientId}
+        onSubmit={handleSubmit}
+        submitLabel="Update Booking"
+        loading={loading}
+        error={error}
+        availableSlots={availableSlots}
+        setDate={setDate}
+        setTime={setTime}
+        setDuration={setDuration}
+        setNotes={setNotes}
+        date={date}
+        time={time}
+        duration={duration}
+        notes={notes}
+        disableDoctorSelect={true}
+        title="Update Booking"
+        onBookingUpdated={onBookingUpdated}
+      />
+    </section>
   );
 }

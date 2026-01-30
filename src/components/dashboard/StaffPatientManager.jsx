@@ -21,6 +21,8 @@ import {
   NameBox,
   PatientListActions,
   ListSeparator,
+  StyledUl,
+  StyledLi,
 } from "../../style/componentStyles.js";
 
 import { getPatientFullName } from "../../utils/patientUtils.js";
@@ -89,7 +91,7 @@ function StaffPatientManager({
   }
 
   return (
-    <div>
+    <section>
       <PatientSearchFields>
         <label>
           First Name
@@ -129,14 +131,14 @@ function StaffPatientManager({
         <FindPatientButton onFind={handleFindPatient} />
         <ListSeparator />
       </PatientSearchFields>
-      <div className="patient-list">
+      <StyledUl>
         {patients.length === 0 ? (
-          <div
+          <p
             data-testid="staff-patient-manager"
             style={{ textAlign: "center", color: "#e0e0e0" }}
           >
             ---------- No patients found ----------
-          </div>
+          </p>
         ) : (
           patients.map((patient) => {
             const user =
@@ -145,19 +147,7 @@ function StaffPatientManager({
                 : {};
             const patientId = user._id;
             return (
-              <div
-                key={patientId}
-                data-testid="staff-patient-manager"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  marginBottom: "1.2rem",
-                  paddingBottom: "1.2rem",
-                  width: "100%",
-                }}
-              >
+              <StyledLi key={patientId} data-testid="staff-patient-manager">
                 <NameBox $bg="#80d09e">{getPatientFullName(patient)}</NameBox>
                 <PatientListActions>
                   <ViewBookingsButton
@@ -171,18 +161,18 @@ function StaffPatientManager({
                   />
                 </PatientListActions>
                 <ListSeparator />
-              </div>
+              </StyledLi>
             );
           })
         )}
-      </div>
+      </StyledUl>
       <ViewBookingsModal
         open={showBookingsModal}
         onClose={() => setShowBookingsModal(false)}
         patientId={selectedPatientId}
         doctors={doctors}
       />
-    </div>
+    </section>
   );
 }
 

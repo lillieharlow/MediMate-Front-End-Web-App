@@ -18,7 +18,7 @@ const NotesSection = ({
   style = {},
   onChange,
 }) => (
-  <div
+  <section
     style={{
       display: "flex",
       flexDirection: "column",
@@ -27,16 +27,20 @@ const NotesSection = ({
       ...style,
     }}
   >
-    <div style={{ textAlign: "center", width: "100%" }}>
+    <label
+      htmlFor="notes-section-textarea"
+      style={{ textAlign: "center", width: "100%" }}
+    >
       <strong>{label}</strong>
-    </div>
+    </label>
     <StyledTextarea
+      id="notes-section-textarea"
       value={value}
       readOnly={readOnly}
       placeholder={placeholder}
       onChange={onChange}
     />
-  </div>
+  </section>
 );
 
 NotesSection.propTypes = {

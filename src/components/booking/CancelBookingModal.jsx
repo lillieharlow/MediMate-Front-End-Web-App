@@ -18,8 +18,7 @@ import ActionButton from "../button/ActionButton";
 export default function CancelBookingModal({ open, onConfirm, onClose }) {
   if (!open) return null;
   return (
-    <div
-      role="dialog"
+    <dialog
       aria-modal="true"
       tabIndex={-1}
       style={{
@@ -78,6 +77,6 @@ export default function CancelBookingModal({ open, onConfirm, onClose }) {
           Yes, cancel appointment
         </ActionButton>
       </PopupCard>
-    </div>
+    </dialog>
   );
 }

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Card = styled.div`
+export const Card = styled.section`
   flex: 1 1 350px;
   min-width: 300px;
   max-width: 600px;
@@ -31,9 +31,17 @@ export const Card = styled.div`
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
+  @media (max-width: 1040px) and (min-width: 840px) {
+    width: 80%;
+    max-width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 `;
 
-export const DialogCard = styled.div`
+export const DialogCard = styled.section`
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 1.5rem 2.5rem;
@@ -44,7 +52,7 @@ export const DialogCard = styled.div`
   align-items: center;
 `;
 
-export const DashboardCardRow = styled.div`
+export const DashboardCardRow = styled.main`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -72,6 +80,25 @@ export const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+`;
+
+export const StyledUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+  list-style: none;
+`;
+
+export const StyledLi = styled.li`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.4rem;
 `;
 
 export const InputGrid = styled.div`
@@ -122,7 +149,7 @@ export const FormErrorSpan = styled.span`
   }
 `;
 
-export const FormFieldRow = styled.div`
+export const FormFieldRow = styled.ul`
   margin-bottom: 16px;
   display: flex;
   align-items: center;
@@ -161,7 +188,7 @@ export const ColoredButton = styled.button`
   }
 `;
 
-export const NameBox = styled.div`
+export const NameBox = styled.article`
   background: ${({ $bg }) => $bg || "#80d09e"};
   display: flex;
   justify-content: center;
@@ -170,23 +197,32 @@ export const NameBox = styled.div`
   border-radius: 24px;
   margin-left: 1.5rem;
   margin-right: 1.5rem;
-  width: auto;
-  max-width: 700px;
+  width: 80%;
+  max-width: 400px;
   padding: 0.3rem 2.5rem;
   font-weight: bold;
   font-size: 1.1rem;
   box-sizing: border-box;
-  @media (max-width: 600px) {
+  @media (max-width: 1040px) {
+    width: 80%;
+    min-width: 0;
+    max-width: 99vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+    @media (max-width: 600px) {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     font-size: 1rem;
-    max-width: 98vw;
+    max-width: 80%;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }
 `;
 
-export const NameBoxRow = styled.div`
+export const NameBoxRow = styled.ul`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -202,7 +238,7 @@ export const NameBoxRow = styled.div`
   margin-right: -2.5rem;
 `;
 
-export const PatientListActions = styled.div`
+export const PatientListActions = styled.article`
   display: flex;
   gap: 1.5rem;
   margin-top: 0.8rem;
@@ -270,13 +306,14 @@ export const StyledTextarea = styled.textarea`
   margin-top: 0.3rem;
 `;
 
-export const PopupCard = styled.div`
+export const PopupCard = styled.dialog`
   flex: 1 1 500px;
   min-width: 420px;
   max-width: 700px;
   width: 100%;
   height: auto;
   border-radius: 12px;
+  border: none;
   padding: 2.2rem 3.2rem 2rem 3.2rem;
   box-sizing: border-box;
   @media (max-width: 800px) {
@@ -374,7 +411,7 @@ export const ModalTitle = styled.h2`
   width: 100%;
 `;
 
-export const ErrorMessage = styled.div`
+export const ErrorMessage = styled.p`
   margin-top: 10px;
   color: red;
   font-size: 14px;

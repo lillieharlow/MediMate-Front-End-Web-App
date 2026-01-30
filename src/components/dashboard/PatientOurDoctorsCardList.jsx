@@ -25,52 +25,37 @@ function PatientOurDoctorsCardList({
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+    <section
+      aria-label="Our Doctors"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        alignItems: "center",
+      }}
+    >
       {doctors.map((doctor) => (
         <NameBox
           key={doctor._id}
           $bg="#fff"
           style={{
-            display: "flex",
-            alignItems: "center",
-            padding: "0.7rem 2.5rem",
-            gap: "3.5rem",
+            padding: "1rem 2rem",
           }}
         >
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              minWidth: 44,
-              justifyContent: "center",
-            }}
-          >
-            <FaUserMd style={{ fontSize: 50, color: "#222" }} />
-          </span>
-          <span
+            <FaUserMd style={{ fontSize: 40, color: "#222" }} />
+          <p
             style={{
               flex: 1,
               textAlign: "center",
-              fontSize: "0.98rem",
+              fontSize: "rem",
               letterSpacing: "0.2px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              lineHeight: 1.1,
             }}
           >
-            <span>
               Dr. {doctor.firstName} {doctor.lastName}
-            </span>
-          </span>
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              minWidth: 110,
-              justifyContent: "center",
-            }}
-          >
+          </p>
             <BookButton
               doctor={doctor}
               patientId={patientId}
@@ -78,10 +63,9 @@ function PatientOurDoctorsCardList({
               onBookingCreated={onBookingCreated}
               onBookButtonClick={() => handleBookButtonClick(doctor.user)}
             />
-          </span>
         </NameBox>
       ))}
-    </div>
+    </section>
   );
 }
 

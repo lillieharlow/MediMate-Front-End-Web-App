@@ -16,7 +16,7 @@ import { Card, DashboardCardContent } from "../../style/componentStyles.js";
 const DashboardCard = ({ title, children, style }) => {
   return (
     <Card style={style}>
-      <div className="dashboard-card-header">
+      <header className="dashboard-card-header">
         <h3 className="dashboard-card-title">{title}</h3>
         {typeof children === "object" &&
           children &&
@@ -26,7 +26,7 @@ const DashboardCard = ({ title, children, style }) => {
               {children.props.actions}
             </div>
           )}
-      </div>
+      </header>
       <DashboardCardContent className="dashboard-card-content">
         {children}
       </DashboardCardContent>

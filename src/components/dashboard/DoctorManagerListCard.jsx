@@ -7,7 +7,6 @@
  */
 
 import PropTypes from "prop-types";
-
 import { FiClock } from "react-icons/fi";
 
 import { getPatientFullName } from "../../utils/patientUtils";
@@ -26,7 +25,14 @@ const DoctorManagerListCard = ({ booking }) => {
   return (
     <div data-testid="doctor-manager-list-card">
       <FiClock style={{ marginRight: "0.7em", verticalAlign: "middle" }} />
-      <span style={{ marginRight: "1.2em", fontWeight: 500 }}>{time}</span>
+      {booking.datetimeStart ? (
+        <time
+          dateTime={booking.datetimeStart}
+          style={{ marginRight: "1.2em", fontWeight: 500 }}
+        >
+          {time}
+        </time>
+      ) : null}
       <span>{patientName}</span>
     </div>
   );

@@ -49,21 +49,40 @@ function PatientMyBookingsCard({
   };
 
   return (
-    <>
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        {sortedBookings.length === 0 ? (
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: "1em",
-              color: "#e0e0e0",
-              fontWeight: 500,
-            }}
-          >
-            ---------- No bookings ----------
-          </div>
-        ) : (
-          sortedBookings.map((booking) => {
+    <section
+      aria-label="My Bookings"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        alignItems: "center",
+      }}
+    >
+      {sortedBookings.length === 0 ? (
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "1em",
+            color: "#e0e0e0",
+            fontWeight: 500,
+          }}
+        >
+          ---------- No bookings ----------
+        </p>
+      ) : (
+        <ul
+          style={{
+            width: "100%",
+            padding: 0,
+            margin: 0,
+            listStyle: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1rem",
+          }}
+        >
+          {sortedBookings.map((booking) => {
             const dateObj = booking.datetimeStart
               ? new Date(booking.datetimeStart)
               : null;
@@ -91,107 +110,122 @@ function PatientMyBookingsCard({
               ? `Booking Status: ${booking.bookingStatus}`
               : "Booking Status: -";
             return (
-              <NameBox $bg="#fff" key={booking._id}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    minWidth: 70,
-                    marginRight: 18,
-                    position: "relative",
-                    paddingTop: 16,
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      right: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      fontSize: 15,
-                    }}
-                  >
-                    <span style={{ fontSize: 18, marginRight: 2 }}>
-                      <FaUserMd />
-                    </span>
-                    <span>{`Dr. ${doctor.firstName} ${doctor.lastName}`}</span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      fontSize: 15,
-                      marginBottom: 4,
-                    }}
-                  >
-                    <FaRegCalendarAlt style={{ fontSize: 18 }} />
-                    <span>{date}</span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      fontSize: 15,
-                    }}
-                  >
-                    <FaRegClock style={{ fontSize: 17 }} />
-                    <span>{time}</span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "100%",
-                      alignItems: "center",
-                      marginTop: 4,
-                    }}
-                  >
-                    <span
-                      style={{ fontSize: 14, flex: 1, fontWeight: "normal" }}
-                    >
-                      {durationText}
-                    </span>
-                    <span
+              <li
+                key={booking._id}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <article style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                  <NameBox $bg="#fff" style={{ width: "95%", maxWidth: 700, minWidth: 320, margin: "0 auto" }}>
+                    <div
                       style={{
-                        fontSize: 14,
-                        fontWeight: "normal",
-                        textAlign: "right",
-                        minWidth: 120,
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: 70,
+                        marginRight: 18,
+                        position: "relative",
+                        paddingTop: 16,
                       }}
                     >
-                      {statusText}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 20,
-                      margin: 16,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <ManageBookingButton
-                      bookingId={booking._id}
-                      onManage={() => {
-                        setSelectedBooking(booking);
-                        setSelectedDoctor(doctor);
-                        setShowUpdate(true);
-                      }}
-                    />
-                    <CancelBookingButton
-                      bookingId={booking._id}
-                      onCancel={handleCancelBooking}
-                    />
-                  </div>
-                </div>
-              </NameBox>
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 10,
+                          right: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                          fontSize: 15,
+                        }}
+                      >
+                        <span style={{ fontSize: 18, marginRight: 2 }}>
+                          <FaUserMd />
+                        </span>
+                        <span>{`Dr. ${doctor.firstName} ${doctor.lastName}`}</span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                          fontSize: 15,
+                          marginBottom: 4,
+                        }}
+                      >
+                        <FaRegCalendarAlt style={{ fontSize: 18 }} />
+                        <time>{date}</time>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                          fontSize: 15,
+                        }}
+                      >
+                        <FaRegClock style={{ fontSize: 17 }} />
+                        <time>{time}</time>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "100%",
+                          alignItems: "center",
+                          marginTop: 4,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 14,
+                            flex: 1,
+                            fontWeight: "normal",
+                          }}
+                        >
+                          {durationText}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 14,
+                            fontWeight: "normal",
+                            textAlign: "right",
+                            minWidth: 120,
+                          }}
+                        >
+                          {statusText}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: 20,
+                          margin: 16,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <ManageBookingButton
+                          bookingId={booking._id}
+                          onManage={() => {
+                            setSelectedBooking(booking);
+                            setSelectedDoctor(doctor);
+                            setShowUpdate(true);
+                          }}
+                        />
+                        <CancelBookingButton
+                          bookingId={booking._id}
+                          onCancel={handleCancelBooking}
+                        />
+                      </div>
+                    </div>
+                  </NameBox>
+                </article>
+              </li>
             );
-          })
-        )}
-      </div>
+          })}
+        </ul>
+      )}
       {showUpdate && selectedBooking && selectedDoctor && (
         <UpdateBookingModal
           open={showUpdate}
@@ -207,7 +241,7 @@ function PatientMyBookingsCard({
           }}
         />
       )}
-    </>
+    </section>
   );
 }
 

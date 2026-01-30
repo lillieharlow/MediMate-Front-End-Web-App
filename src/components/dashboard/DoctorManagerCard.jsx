@@ -49,7 +49,7 @@ function DoctorManagerCard({
     : [];
 
   return (
-    <div data-testid="doctor-manager-card">
+    <section data-testid="doctor-manager-card">
       <StyledLabel
         style={{
           width: "100%",
@@ -58,9 +58,9 @@ function DoctorManagerCard({
           alignItems: "center",
         }}
       >
-        <span style={{ minWidth: 110, textAlign: "center", marginBottom: 4 }}>
+        <p style={{ minWidth: 110, textAlign: "center", marginBottom: 4 }}>
           Select doctor
-        </span>
+        </p>
         <StyledSelect
           id="doctor-manager-select"
           name="doctor-manager-select"
@@ -101,7 +101,7 @@ function DoctorManagerCard({
         }}
         disablePointer={disablePointer}
       />
-    </div>
+    </section>
   );
 }
 

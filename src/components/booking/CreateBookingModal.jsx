@@ -184,30 +184,32 @@ export default function CreateBookingCard({
   if (!open) return null;
 
   return (
-    <BookingFormCard
-      open={open}
-      onClose={onClose}
-      doctor={doctor}
-      setDoctor={setDoctor}
-      patientId={patientId}
-      doctors={doctors}
-      onSubmit={handleSubmit}
-      submitLabel="Create Booking"
-      loading={loading}
-      error={error}
-      availableSlots={availableSlots}
-      setDate={setDate}
-      setTime={setTime}
-      setDuration={setDuration}
-      setNotes={setNotes}
-      date={date}
-      time={time}
-      duration={duration}
-      notes={notes}
-      disableDoctorSelect={
-        disableDoctorSelect || (!!initialDoctor && !doctorsProp)
-      }
-      title="Create Booking"
-    />
+    <section>
+      <BookingFormCard
+        open={open}
+        onClose={onClose}
+        doctor={doctor}
+        setDoctor={setDoctor}
+        patientId={patientId}
+        doctors={doctors}
+        onSubmit={handleSubmit}
+        submitLabel="Create Booking"
+        loading={loading}
+        error={error}
+        availableSlots={availableSlots}
+        setDate={setDate}
+        setTime={setTime}
+        setDuration={setDuration}
+        setNotes={setNotes}
+        date={date}
+        time={time}
+        duration={duration}
+        notes={notes}
+        disableDoctorSelect={
+          disableDoctorSelect || (!!initialDoctor && !doctorsProp)
+        }
+        title="Create Booking"
+      />
+    </section>
   );
 }

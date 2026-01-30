@@ -35,8 +35,7 @@ export default function ViewBookingsModal({
 
   useEffect(() => {
     if (!(open && patientId)) return;
-    getPatientBookings(patientId)
-      .then((data) => setBookings(data || []));
+    getPatientBookings(patientId).then((data) => setBookings(data || []));
   }, [open, patientId]);
 
   if (!open) return null;
