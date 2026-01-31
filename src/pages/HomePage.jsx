@@ -1,5 +1,5 @@
-import { Navigate } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
+import { Navigate } from 'react-router';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function HomePage() {
   const { isAuthenticated } = useAuth();

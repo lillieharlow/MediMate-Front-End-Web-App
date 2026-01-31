@@ -5,20 +5,19 @@
  * Used by CreateBookingModal and UpdateBookingModal.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
 import {
+  ColoredButton,
+  ErrorMessage,
+  FormFieldLabel,
+  FormFieldRow,
+  ModalOverlay,
+  ModalTitle,
+  PopupCard,
   StyledForm,
   StyledInput,
   StyledSelect,
-  ColoredButton,
-  FormFieldRow,
-  FormFieldLabel,
-  PopupCard,
-  ModalOverlay,
-  ModalTitle,
-  ErrorMessage,
-} from "../../style/componentStyles";
-import CloseButton from "../button/CloseButton";
+} from '../../style/componentStyles';
+import CloseButton from '../button/CloseButton';
 
 function DoctorSelectSection({
   doctors,
@@ -39,28 +38,26 @@ function DoctorSelectSection({
           id="doctor-select"
           name="doctor-select"
           autoComplete="organization"
-          value={doctor?.user?._id || ""}
-          onChange={(e) => {
-            const selected = doctors.find(
-              (d) => d.user && d.user._id === e.target.value,
-            );
-            setDate("");
-            setTime("");
-            setNotes("");
-            setDuration("15");
+          value={doctor?.user?._id || ''}
+          onChange={e => {
+            const selected = doctors.find(d => d.user && d.user._id === e.target.value);
+            setDate('');
+            setTime('');
+            setNotes('');
+            setDuration('15');
             if (selected && setDoctor) {
               setDoctor(selected);
             }
           }}
           required
           style={{
-            width: "100%",
-            textAlign: "center",
+            width: '100%',
+            textAlign: 'center',
           }}
           disabled={externalLoading || doctors.length === 0}
         >
           <option value="">Select doctor</option>
-          {doctors.map((d) => (
+          {doctors.map(d => (
             <option key={d._id} value={d.user?._id}>
               Dr. {d.firstName} {d.lastName}
             </option>
@@ -72,18 +69,16 @@ function DoctorSelectSection({
   if (doctor) {
     return (
       <FormFieldRow>
-        <FormFieldLabel htmlFor="doctor-select-disabled">
-          Doctor:
-        </FormFieldLabel>
+        <FormFieldLabel htmlFor="doctor-select-disabled">Doctor:</FormFieldLabel>
         <StyledSelect
           id="doctor-select-disabled"
           value={doctor._id}
           disabled
           style={{
-            width: "100%",
-            textAlign: "center",
-            background: "#f8f8f8",
-            color: "#333",
+            width: '100%',
+            textAlign: 'center',
+            background: '#f8f8f8',
+            color: '#333',
           }}
         >
           <option value={doctor.user}>
@@ -103,9 +98,9 @@ export default function BookingFormCard({
   setDoctor,
   doctors,
   onSubmit,
-  submitLabel = "Create Booking",
+  submitLabel = 'Create Booking',
   loading: externalLoading = false,
-  error: externalError = "",
+  error: externalError = '',
   availableSlots = [],
   setDate,
   setTime,
@@ -119,14 +114,13 @@ export default function BookingFormCard({
   title,
 }) {
   const todayObj = new Date();
-  const todayStr = `${todayObj.getFullYear()}-${String(todayObj.getMonth() + 1).padStart(2, "0")}-${String(todayObj.getDate()).padStart(2, "0")}`;
+  const todayStr = `${todayObj.getFullYear()}-${String(todayObj.getMonth() + 1).padStart(2, '0')}-${String(todayObj.getDate()).padStart(2, '0')}`;
 
   if (!open) return null;
 
   let buttonLabel = submitLabel;
   if (externalLoading) {
-    buttonLabel =
-      submitLabel === "Update Booking" ? "Updating..." : "Creating...";
+    buttonLabel = submitLabel === 'Update Booking' ? 'Updating...' : 'Creating...';
   }
 
   return (
@@ -139,7 +133,7 @@ export default function BookingFormCard({
           </FormFieldRow>
         )}
         <StyledForm
-          onSubmit={(e) => {
+          onSubmit={e => {
             if (onSubmit) {
               onSubmit(e);
             } else {
@@ -167,21 +161,19 @@ export default function BookingFormCard({
               autoComplete="bday"
               value={date}
               min={todayStr}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={e => setDate(e.target.value)}
               required
               style={{ marginBottom: 0, width: 180 }}
             />
           </FormFieldRow>
           <FormFieldRow>
-            <FormFieldLabel htmlFor="booking-duration">
-              Duration:
-            </FormFieldLabel>
+            <FormFieldLabel htmlFor="booking-duration">Duration:</FormFieldLabel>
             <StyledSelect
               id="booking-duration"
               name="booking-duration"
               autoComplete="off"
               value={duration}
-              onChange={(e) => setDuration(e.target.value)}
+              onChange={e => setDuration(e.target.value)}
               style={{ marginBottom: 0, width: 180 }}
             >
               <option value="15">15 min</option>
@@ -195,40 +187,31 @@ export default function BookingFormCard({
               name="booking-time"
               autoComplete="off"
               value={time}
-              onChange={(e) => setTime(e.target.value)}
+              onChange={e => setTime(e.target.value)}
               style={{
                 marginBottom: 0,
-                width: "100%",
+                width: '100%',
                 background:
-                  availableSlots.length === 0 &&
-                  date &&
-                  doctor &&
-                  !externalLoading
-                    ? "#f8f8f8"
+                  availableSlots.length === 0 && date && doctor && !externalLoading
+                    ? '#f8f8f8'
                     : undefined,
                 fontStyle:
-                  availableSlots.length === 0 &&
-                  date &&
-                  doctor &&
-                  !externalLoading
-                    ? "italic"
+                  availableSlots.length === 0 && date && doctor && !externalLoading
+                    ? 'italic'
                     : undefined,
               }}
               disabled={!date || externalLoading}
             >
               {externalLoading && <option value="">Loading...</option>}
-              {!externalLoading &&
-                availableSlots.length === 0 &&
-                date &&
-                doctor && (
-                  <option value="" disabled>
-                    No appointments available
-                  </option>
-                )}
+              {!externalLoading && availableSlots.length === 0 && date && doctor && (
+                <option value="" disabled>
+                  No appointments available
+                </option>
+              )}
               {!externalLoading && availableSlots.length > 0 && (
                 <>
                   <option value="">Select time</option>
-                  {availableSlots.map((slot) => (
+                  {availableSlots.map(slot => (
                     <option key={slot.value} value={slot.value}>
                       {slot.label}
                     </option>
@@ -239,9 +222,9 @@ export default function BookingFormCard({
           </FormFieldRow>
           <FormFieldRow
             style={{
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
             <FormFieldLabel htmlFor="booking-notes" style={{ marginBottom: 4 }}>
@@ -252,24 +235,21 @@ export default function BookingFormCard({
               name="booking-notes"
               autoComplete="off"
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={e => setNotes(e.target.value)}
               placeholder="Reason for your booking, anything the Doctor should know?"
               style={{
                 minHeight: 60,
                 borderRadius: 4,
-                padding: "0.2rem",
-                width: "100%",
-                boxSizing: "border-box",
+                padding: '0.2rem',
+                width: '100%',
+                boxSizing: 'border-box',
               }}
             />
           </FormFieldRow>
           <ColoredButton
             type="submit"
             disabled={
-              externalLoading ||
-              !date ||
-              !time ||
-              !availableSlots.some((slot) => slot.value === time)
+              externalLoading || !date || !time || !availableSlots.some(slot => slot.value === time)
             }
           >
             {buttonLabel}

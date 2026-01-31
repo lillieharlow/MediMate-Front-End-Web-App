@@ -5,11 +5,9 @@
  */
 
 const NotFoundPage = () => (
-  <main style={{ textAlign: "center", marginTop: "10vh" }}>
+  <main style={{ textAlign: 'center', marginTop: '10vh' }}>
     <h1>404 - Page Not Found</h1>
-    <p>
-      Sorry, the page you are looking for does not exist.
-    </p>
+    <p>Sorry, the page you are looking for does not exist.</p>
     <a href="/dashboard">Click here to go back to yourDashboard</a>
   </main>
 );

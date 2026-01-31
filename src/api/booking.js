@@ -51,7 +51,12 @@ export async function updateBooking(bookingId, updateData) {
 
 // Update doctor notes of a booking
 export async function updateDoctorNotes(bookingId, doctorNotes) {
-  return await getApiResponse('PATCH', `api/v1/bookings/${bookingId}/doctorNotes`, { doctorNotes }, true);
+  return await getApiResponse(
+    'PATCH',
+    `api/v1/bookings/${bookingId}/doctorNotes`,
+    { doctorNotes },
+    true,
+  );
 }
 
 // Get doctor notes of a booking

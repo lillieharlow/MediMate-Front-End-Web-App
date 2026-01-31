@@ -8,7 +8,7 @@ describe('DashboardCard', () => {
     render(
       <DashboardCard title="Test Title">
         <div>Child Content</div>
-      </DashboardCard>
+      </DashboardCard>,
     );
     expect(screen.getByText('Test Title')).toBeInTheDocument();
     expect(screen.getByText('Child Content')).toBeInTheDocument();

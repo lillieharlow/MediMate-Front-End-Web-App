@@ -6,9 +6,9 @@
  * Renders a labeled textarea, optionally read-only.
  */
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { StyledTextarea } from "../style/componentStyles";
+import { StyledTextarea } from '../style/componentStyles';
 
 const NotesSection = ({
   label,
@@ -20,17 +20,14 @@ const NotesSection = ({
 }) => (
   <section
     style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      width: "100%",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
       ...style,
     }}
   >
-    <label
-      htmlFor="notes-section-textarea"
-      style={{ textAlign: "center", width: "100%" }}
-    >
+    <label htmlFor="notes-section-textarea" style={{ textAlign: 'center', width: '100%' }}>
       <strong>{label}</strong>
     </label>
     <StyledTextarea

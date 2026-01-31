@@ -7,28 +7,23 @@
  * Used in the patient and staff dashboards.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import { useState } from "react";
+import { useState } from 'react';
+import { FaRegCalendarAlt, FaRegClock, FaUserMd } from 'react-icons/fa';
 
-import { NameBox } from "../../style/componentStyles.js";
-import { FaRegCalendarAlt, FaRegClock, FaUserMd } from "react-icons/fa";
-import ManageBookingButton from "../button/ManageBookingButton.jsx";
-import UpdateBookingModal from "../booking/UpdateBookingModal.jsx";
-import CancelBookingButton from "../button/CancelBookingButton.jsx";
+import { deleteBooking } from '../../api/booking';
+import { NameBox } from '../../style/componentStyles.js';
 
-import { deleteBooking } from "../../api/booking";
+import UpdateBookingModal from '../booking/UpdateBookingModal.jsx';
+import CancelBookingButton from '../button/CancelBookingButton.jsx';
+import ManageBookingButton from '../button/ManageBookingButton.jsx';
 
-function PatientMyBookingsCard({
-  bookings = [],
-  doctors = [],
-  onBookingsRefresh,
-}) {
+function PatientMyBookingsCard({ bookings = [], doctors = [], onBookingsRefresh }) {
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
   const now = new Date();
-  const futureBookings = bookings.filter((b) => {
+  const futureBookings = bookings.filter(b => {
     const bookingDate = b.datetimeStart ? new Date(b.datetimeStart) : null;
     return bookingDate && bookingDate > now;
   });
@@ -39,12 +34,12 @@ function PatientMyBookingsCard({
     return aDate - bDate;
   });
 
-  const handleCancelBooking = async (bookingId) => {
+  const handleCancelBooking = async bookingId => {
     try {
       await deleteBooking(bookingId);
       if (onBookingsRefresh) onBookingsRefresh();
     } catch {
-      alert("Failed to cancel booking. Please try again.");
+      alert('Failed to cancel booking. Please try again.');
     }
   };
 
@@ -52,18 +47,18 @@ function PatientMyBookingsCard({
     <section
       aria-label="My Bookings"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        alignItems: 'center',
       }}
     >
       {sortedBookings.length === 0 ? (
         <p
           style={{
-            textAlign: "center",
-            marginTop: "1em",
-            color: "#e0e0e0",
+            textAlign: 'center',
+            marginTop: '1em',
+            color: '#e0e0e0',
             fontWeight: 500,
           }}
         >
@@ -72,71 +67,71 @@ function PatientMyBookingsCard({
       ) : (
         <ul
           style={{
-            width: "100%",
+            width: '100%',
             padding: 0,
             margin: 0,
-            listStyle: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "1rem",
+            listStyle: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1rem',
           }}
         >
-          {sortedBookings.map((booking) => {
-            const dateObj = booking.datetimeStart
-              ? new Date(booking.datetimeStart)
-              : null;
-            const date = dateObj ? dateObj.toLocaleDateString() : "-";
+          {sortedBookings.map(booking => {
+            const dateObj = booking.datetimeStart ? new Date(booking.datetimeStart) : null;
+            const date = dateObj ? dateObj.toLocaleDateString() : '-';
             const time = dateObj
               ? dateObj.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
+                  hour: '2-digit',
+                  minute: '2-digit',
                   hour12: true,
                 })
-              : "-";
+              : '-';
             let doctor = null;
             if (Array.isArray(doctors) && booking.doctorId) {
               doctor = doctors.find(
-                (doc) =>
-                  (doc.user &&
-                    String(doc.user._id) === String(booking.doctorId)) ||
-                  String(doc._id) === String(booking.doctorId),
+                doc =>
+                  (doc.user && String(doc.user._id) === String(booking.doctorId))
+                  || String(doc._id) === String(booking.doctorId),
               );
             }
             const durationText = booking.bookingDuration
               ? `Duration: ${booking.bookingDuration} min`
-              : "Duration: -";
+              : 'Duration: -';
             const statusText = booking.bookingStatus
               ? `Booking Status: ${booking.bookingStatus}`
-              : "Booking Status: -";
+              : 'Booking Status: -';
             return (
               <li
                 key={booking._id}
                 style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
               >
-                <article style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                  <NameBox $bg="#fff" style={{ width: "95%", maxWidth: 700, minWidth: 320, margin: "0 auto" }}>
+                <article style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                  <NameBox
+                    $bg="#fff"
+                    style={{ width: '95%', maxWidth: 700, minWidth: 320, margin: '0 auto' }}
+                  >
                     <div
                       style={{
-                        display: "flex",
-                        flexDirection: "column",
+                        display: 'flex',
+                        flexDirection: 'column',
                         minWidth: 70,
                         marginRight: 18,
-                        position: "relative",
+                        position: 'relative',
                         paddingTop: 16,
                       }}
                     >
                       <div
                         style={{
-                          position: "absolute",
+                          position: 'absolute',
                           top: 10,
                           right: 0,
-                          display: "flex",
-                          alignItems: "center",
+                          display: 'flex',
+                          alignItems: 'center',
                           gap: 6,
                           fontSize: 15,
                         }}
@@ -148,8 +143,8 @@ function PatientMyBookingsCard({
                       </div>
                       <div
                         style={{
-                          display: "flex",
-                          alignItems: "center",
+                          display: 'flex',
+                          alignItems: 'center',
                           gap: 6,
                           fontSize: 15,
                           marginBottom: 4,
@@ -160,8 +155,8 @@ function PatientMyBookingsCard({
                       </div>
                       <div
                         style={{
-                          display: "flex",
-                          alignItems: "center",
+                          display: 'flex',
+                          alignItems: 'center',
                           gap: 6,
                           fontSize: 15,
                         }}
@@ -171,9 +166,9 @@ function PatientMyBookingsCard({
                       </div>
                       <div
                         style={{
-                          display: "flex",
-                          width: "100%",
-                          alignItems: "center",
+                          display: 'flex',
+                          width: '100%',
+                          alignItems: 'center',
                           marginTop: 4,
                         }}
                       >
@@ -181,7 +176,7 @@ function PatientMyBookingsCard({
                           style={{
                             fontSize: 14,
                             flex: 1,
-                            fontWeight: "normal",
+                            fontWeight: 'normal',
                           }}
                         >
                           {durationText}
@@ -189,8 +184,8 @@ function PatientMyBookingsCard({
                         <span
                           style={{
                             fontSize: 14,
-                            fontWeight: "normal",
-                            textAlign: "right",
+                            fontWeight: 'normal',
+                            textAlign: 'right',
                             minWidth: 120,
                           }}
                         >
@@ -199,10 +194,10 @@ function PatientMyBookingsCard({
                       </div>
                       <div
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           gap: 20,
                           margin: 16,
-                          justifyContent: "center",
+                          justifyContent: 'center',
                         }}
                       >
                         <ManageBookingButton

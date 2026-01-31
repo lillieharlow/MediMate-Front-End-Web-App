@@ -90,7 +90,7 @@ describe('Test /useradmin page', () => {
     const user = userEvent.setup();
     const patientRow = await screen.findByRole('row', { name: /patient/i });
     const deleteProfileButton = within(patientRow).getByTestId('app-useradmin-button-delete-user');
-    
+
     await user.click(deleteProfileButton);
 
     expect(await screen.findByTestId('app-delete-user-card')).toBeInTheDocument();

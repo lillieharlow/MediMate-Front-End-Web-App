@@ -6,41 +6,38 @@
  * Allows doctors to view and update appointment notes for the current booking.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-import DoctorManagerListCard from "./DoctorManagerListCard.jsx";
-import NotesSection from "../NotesSection.jsx";
-import { NameBox, ColoredButton } from "../../style/componentStyles";
+import { getDoctorNotes, updateDoctorNotes } from '../../api/booking';
+import { getPatientById } from '../../api/patient';
+import { ColoredButton, NameBox } from '../../style/componentStyles';
 
-import { updateDoctorNotes, getDoctorNotes } from "../../api/booking";
-import { getPatientById } from "../../api/patient";
+import NotesSection from '../NotesSection.jsx';
+import DoctorManagerListCard from './DoctorManagerListCard.jsx';
 
 const CurrentBookingCard = ({ booking }) => {
-  const [appointmentNotes, setAppointmentNotes] = useState("");
+  const [appointmentNotes, setAppointmentNotes] = useState('');
   const [currentBooking, setCurrentBooking] = useState(booking);
   const [saving, setSaving] = useState(false);
-  const [saveMsg, setSaveMsg] = useState("");
+  const [saveMsg, setSaveMsg] = useState('');
 
   useEffect(() => {
     setCurrentBooking(booking);
-    setSaveMsg("");
+    setSaveMsg('');
     async function fetchDoctorNotesAndProfile() {
       if (booking?._id) {
         const res = await getDoctorNotes(booking._id);
-        setAppointmentNotes(res?.data?.doctorNotes || "");
+        setAppointmentNotes(res?.data?.doctorNotes || '');
       } else {
-        setAppointmentNotes("");
+        setAppointmentNotes('');
       }
       if (booking && !booking.patientProfile && booking.patientId) {
         try {
           const profile = await getPatientById(booking.patientId);
-          setCurrentBooking((prev) =>
-            prev ? { ...prev, patientProfile: profile } : prev,
-          );
+          setCurrentBooking(prev => (prev ? { ...prev, patientProfile: profile } : prev));
         } catch (e) {
-          console.error("Failed to fetch patient profile:", e);
+          console.error('Failed to fetch patient profile:', e);
         }
       }
     }
@@ -50,16 +47,16 @@ const CurrentBookingCard = ({ booking }) => {
   const handleSaveNotes = async () => {
     if (!currentBooking) return;
     setSaving(true);
-    setSaveMsg("");
+    setSaveMsg('');
     try {
       await updateDoctorNotes(currentBooking._id, appointmentNotes);
       const notesRes = await getDoctorNotes(currentBooking._id);
-      setAppointmentNotes(notesRes?.data?.doctorNotes || "");
-      setSaveMsg("Notes saved!");
-      setTimeout(() => setSaveMsg(""), 2000);
+      setAppointmentNotes(notesRes?.data?.doctorNotes || '');
+      setSaveMsg('Notes saved!');
+      setTimeout(() => setSaveMsg(''), 2000);
     } catch {
-      setSaveMsg("Failed to save notes.");
-      setTimeout(() => setSaveMsg(""), 2000);
+      setSaveMsg('Failed to save notes.');
+      setTimeout(() => setSaveMsg(''), 2000);
     } finally {
       setSaving(false);
     }
@@ -70,9 +67,9 @@ const CurrentBookingCard = ({ booking }) => {
       <section data-testid="doctor-current-booking-card">
         <p
           style={{
-            textAlign: "center",
-            marginTop: "1.5em",
-            color: "#e0e0e0",
+            textAlign: 'center',
+            marginTop: '1.5em',
+            color: '#e0e0e0',
             fontWeight: 500,
           }}
         >
@@ -83,13 +80,11 @@ const CurrentBookingCard = ({ booking }) => {
 
   return (
     <section data-testid="doctor-current-booking-card">
-      <article
-        style={{ display: "flex", justifyContent: "center", width: "100%" }}
-      >
+      <article style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <NameBox
           style={{
-            width: "70%",
-            margin: "0 auto",
+            width: '70%',
+            margin: '0 auto',
           }}
         >
           <DoctorManagerListCard booking={currentBooking} />
@@ -98,46 +93,46 @@ const CurrentBookingCard = ({ booking }) => {
       <section>
         <NotesSection
           label="Patient Notes"
-          value={currentBooking?.patientNotes || "No notes."}
+          value={currentBooking?.patientNotes || 'No notes.'}
           readOnly
-          style={{ marginTop: "1rem" }}
+          style={{ marginTop: '1rem' }}
         />
       </section>
       <section>
         <NotesSection
           label="Appointment Notes"
           value={appointmentNotes}
-          onChange={(e) => setAppointmentNotes(e.target.value)}
+          onChange={e => setAppointmentNotes(e.target.value)}
           placeholder="Add appointment notes..."
-          style={{ marginTop: "1rem" }}
+          style={{ marginTop: '1rem' }}
         />
       </section>
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
         }}
       >
         <ColoredButton
           type="button"
           $bg="#388bff"
           style={{
-            marginTop: "1.5rem",
+            marginTop: '1.5rem',
             minWidth: 160,
           }}
           onClick={handleSaveNotes}
           disabled={saving}
         >
-          {saving ? "Saving..." : "Save Notes"}
+          {saving ? 'Saving...' : 'Save Notes'}
         </ColoredButton>
         {saveMsg && (
           <p
             style={{
-              color: saveMsg.includes("saved") ? "#000000" : "red",
-              marginTop: "1rem",
-              textAlign: "center",
+              color: saveMsg.includes('saved') ? '#000000' : 'red',
+              marginTop: '1rem',
+              textAlign: 'center',
             }}
           >
             {saveMsg}

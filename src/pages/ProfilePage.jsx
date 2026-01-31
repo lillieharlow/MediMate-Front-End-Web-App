@@ -1,6 +1,6 @@
-import { Navigate } from "react-router";
-import ManageProfileCard from "../components/ManageProfileCard";
-import { useAuth } from "../contexts/AuthContext";
+import { Navigate } from 'react-router';
+import ManageProfileCard from '../components/ManageProfileCard';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function ProfilePage() {
   const { isAuthenticated, userType, userId } = useAuth();
@@ -10,7 +10,7 @@ export default function ProfilePage() {
   return (
     <main>
       <h2>Manage Your Profile</h2>
-      <ManageProfileCard userInfo={{userType, userId}} />
+      <ManageProfileCard userInfo={{ userType, userId }} />
     </main>
   );
 }

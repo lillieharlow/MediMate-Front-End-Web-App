@@ -6,7 +6,7 @@
  * Renders children as button content.
  */
 
-import { ColoredButton } from "../../style/componentStyles";
+import { ColoredButton } from '../../style/componentStyles';
 
 function ActionButton({ children, onClick, bg, color, ...props }) {
   return (

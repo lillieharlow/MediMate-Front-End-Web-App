@@ -6,7 +6,7 @@
  * ActionButton for styling.
  */
 
-import ActionButton from "./ActionButton";
+import ActionButton from './ActionButton';
 
 function ManageBookingButton({ bookingId, onManage }) {
   return (
@@ -14,7 +14,7 @@ function ManageBookingButton({ bookingId, onManage }) {
       $bg="#2393ca"
       $color="#000000"
       onClick={() => onManage(bookingId)}
-      style={{ fontSize: "0.85rem" }}
+      style={{ fontSize: '0.85rem' }}
     >
       Manage Booking
     </ActionButton>

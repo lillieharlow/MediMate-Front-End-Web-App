@@ -9,27 +9,20 @@
  * Used on dashboard pages to wrap dashboard content in a styled card.
  */
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { Card, DashboardCardContent } from "../../style/componentStyles.js";
+import { Card, DashboardCardContent } from '../../style/componentStyles.js';
 
 const DashboardCard = ({ title, children, style }) => {
   return (
     <Card style={style}>
       <header className="dashboard-card-header">
         <h3 className="dashboard-card-title">{title}</h3>
-        {typeof children === "object" &&
-          children &&
-          children.props &&
-          children.props.actions && (
-            <div className="dashboard-card-actions">
-              {children.props.actions}
-            </div>
-          )}
+        {typeof children === 'object' && children && children.props && children.props.actions && (
+          <div className="dashboard-card-actions">{children.props.actions}</div>
+        )}
       </header>
-      <DashboardCardContent className="dashboard-card-content">
-        {children}
-      </DashboardCardContent>
+      <DashboardCardContent className="dashboard-card-content">{children}</DashboardCardContent>
     </Card>
   );
 };

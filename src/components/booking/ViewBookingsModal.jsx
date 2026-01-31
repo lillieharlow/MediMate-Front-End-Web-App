@@ -12,30 +12,20 @@
  *   doctors (array): List of doctor objects for display
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import {
-  ModalOverlay,
-  ModalTitle,
-  PopupCard,
-} from "../../style/componentStyles";
-import CloseButton from "../button/CloseButton";
-import PatientMyBookingsCard from "../dashboard/PatientMyBookingsCard";
+import { getPatientBookings } from '../../api/booking';
+import { ModalOverlay, ModalTitle, PopupCard } from '../../style/componentStyles';
 
-import { getPatientBookings } from "../../api/booking";
+import CloseButton from '../button/CloseButton';
+import PatientMyBookingsCard from '../dashboard/PatientMyBookingsCard';
 
-export default function ViewBookingsModal({
-  open,
-  onClose,
-  patientId,
-  doctors,
-}) {
+export default function ViewBookingsModal({ open, onClose, patientId, doctors }) {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     if (!(open && patientId)) return;
-    getPatientBookings(patientId).then((data) => setBookings(data || []));
+    getPatientBookings(patientId).then(data => setBookings(data || []));
   }, [open, patientId]);
 
   if (!open) return null;

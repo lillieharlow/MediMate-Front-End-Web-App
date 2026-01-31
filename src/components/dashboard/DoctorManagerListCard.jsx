@@ -6,30 +6,25 @@
  * Used in staff and doctor dashboards for today's bookings.
  */
 
-import PropTypes from "prop-types";
-import { FiClock } from "react-icons/fi";
+import PropTypes from 'prop-types';
+import { FiClock } from 'react-icons/fi';
 
-import { getPatientFullName } from "../../utils/patientUtils";
+import { getPatientFullName } from '../../utils/patientUtils';
 
 const DoctorManagerListCard = ({ booking }) => {
   const time = booking.datetimeStart
     ? new Date(booking.datetimeStart).toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit",
+        hour: 'numeric',
+        minute: '2-digit',
         hour12: true,
       })
-    : "";
-  const patientName = booking.patientProfile
-    ? getPatientFullName(booking.patientProfile)
-    : "";
+    : '';
+  const patientName = booking.patientProfile ? getPatientFullName(booking.patientProfile) : '';
   return (
     <div data-testid="doctor-manager-list-card">
-      <FiClock style={{ marginRight: "0.7em", verticalAlign: "middle" }} />
+      <FiClock style={{ marginRight: '0.7em', verticalAlign: 'middle' }} />
       {booking.datetimeStart ? (
-        <time
-          dateTime={booking.datetimeStart}
-          style={{ marginRight: "1.2em", fontWeight: 500 }}
-        >
+        <time dateTime={booking.datetimeStart} style={{ marginRight: '1.2em', fontWeight: 500 }}>
           {time}
         </time>
       ) : null}

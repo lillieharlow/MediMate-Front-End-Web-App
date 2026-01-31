@@ -9,7 +9,7 @@ export default function StaffManageProfileCard({ userInfo, onProfileUpdated }) {
 
   const changeUserType = userType => {
     setUserType(userType);
-    setUserTypeChanged(userType !== initialUserType)
+    setUserTypeChanged(userType !== initialUserType);
   };
 
   return (
@@ -17,7 +17,11 @@ export default function StaffManageProfileCard({ userInfo, onProfileUpdated }) {
       <h2>Edit User Profile</h2>
       <StaffUserTypeSelector onChangeType={changeUserType} />
       <br />
-      <ManageProfileCard userInfo={{ ...userInfo, userType }} onProfileUpdated={onProfileUpdated} userTypeChanged={userTypeChanged} />
+      <ManageProfileCard
+        userInfo={{ ...userInfo, userType }}
+        onProfileUpdated={onProfileUpdated}
+        userTypeChanged={userTypeChanged}
+      />
     </>
   );
 }

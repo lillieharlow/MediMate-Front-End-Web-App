@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { getJwtPayload } from "../utils/jwt";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { getJwtPayload } from '../utils/jwt';
 
 const defaultState = {
   userId: null,
@@ -12,7 +12,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => {
-    const saved = localStorage.getItem("token");
+    const saved = localStorage.getItem('token');
 
     if (!saved) {
       return defaultState;
@@ -37,13 +37,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (!auth.isAuthenticated) {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       return;
     }
 
     const { token } = auth;
 
-    localStorage.setItem("token", token);
+    localStorage.setItem('token', token);
   }, [auth]);
 
   const login = ({ userId, userType, token }) => {
@@ -54,18 +54,14 @@ export const AuthProvider = ({ children }) => {
     setAuth(defaultState);
   };
 
-  return (
-    <AuthContext.Provider value={{ ...auth, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ ...auth, login, logout }}>{children}</AuthContext.Provider>;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

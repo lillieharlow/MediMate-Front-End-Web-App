@@ -8,26 +8,22 @@
  * Used in staff dashboard.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-
-import FindPatientButton from "../button/FindPatientButton.jsx";
-import ViewBookingsButton from "../button/ViewBookingsButton.jsx";
-import BookButton from "../button/BookButton.jsx";
-import ViewBookingsModal from "../booking/ViewBookingsModal.jsx";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { getAllPatients } from '../../api/staff.js';
 import {
-  StyledInput,
+  ListSeparator,
   NameBox,
   PatientListActions,
-  ListSeparator,
-  StyledUl,
+  StyledInput,
   StyledLi,
-} from "../../style/componentStyles.js";
-
-import { getPatientFullName } from "../../utils/patientUtils.js";
-
-import { getAllPatients } from "../../api/staff.js";
+  StyledUl,
+} from '../../style/componentStyles.js';
+import { getPatientFullName } from '../../utils/patientUtils.js';
+import ViewBookingsModal from '../booking/ViewBookingsModal.jsx';
+import BookButton from '../button/BookButton.jsx';
+import FindPatientButton from '../button/FindPatientButton.jsx';
+import ViewBookingsButton from '../button/ViewBookingsButton.jsx';
 
 const PatientSearchFields = styled.div`
   display: flex;
@@ -55,33 +51,29 @@ const PatientSearchFields = styled.div`
   }
 `;
 
-function StaffPatientManager({
-  doctors,
-  onBookingCreated,
-  staffSelectedDoctor,
-}) {
+function StaffPatientManager({ doctors, onBookingCreated, staffSelectedDoctor }) {
   const [patients, setPatients] = useState([]);
   const [search, setSearch] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    dateOfBirth: "",
-    phone: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    dateOfBirth: '',
+    phone: '',
   });
   const [showBookingsModal, setShowBookingsModal] = useState(false);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
 
-  const handleViewBookings = (patientId) => {
+  const handleViewBookings = patientId => {
     setSelectedPatientId(patientId);
     setShowBookingsModal(true);
   };
 
   useEffect(() => {
-    getAllPatients().then((result) => setPatients(result || []));
+    getAllPatients().then(result => setPatients(result || []));
   }, []);
 
   function handleFindPatient() {
-    getAllPatients(search).then((result) => {
+    getAllPatients(search).then(result => {
       setPatients(result || []);
     });
   }
@@ -95,19 +87,11 @@ function StaffPatientManager({
       <PatientSearchFields>
         <label>
           First Name
-          <input
-            name="firstName"
-            value={search.firstName}
-            onChange={handleChange}
-          />
+          <input name="firstName" value={search.firstName} onChange={handleChange} />
         </label>
         <label>
           Last Name
-          <input
-            name="lastName"
-            value={search.lastName}
-            onChange={handleChange}
-          />
+          <input name="lastName" value={search.lastName} onChange={handleChange} />
         </label>
         <label>
           Email
@@ -133,26 +117,18 @@ function StaffPatientManager({
       </PatientSearchFields>
       <StyledUl>
         {patients.length === 0 ? (
-          <p
-            data-testid="staff-patient-manager"
-            style={{ textAlign: "center", color: "#e0e0e0" }}
-          >
+          <p data-testid="staff-patient-manager" style={{ textAlign: 'center', color: '#e0e0e0' }}>
             ---------- No patients found ----------
           </p>
         ) : (
-          patients.map((patient) => {
-            const user =
-              patient.user && typeof patient.user === "object"
-                ? patient.user
-                : {};
+          patients.map(patient => {
+            const user = patient.user && typeof patient.user === 'object' ? patient.user : {};
             const patientId = user._id;
             return (
               <StyledLi key={patientId} data-testid="staff-patient-manager">
                 <NameBox $bg="#80d09e">{getPatientFullName(patient)}</NameBox>
                 <PatientListActions>
-                  <ViewBookingsButton
-                    onClick={() => handleViewBookings(patientId)}
-                  />
+                  <ViewBookingsButton onClick={() => handleViewBookings(patientId)} />
                   <BookButton
                     patientId={patientId}
                     onBookingCreated={onBookingCreated}
