@@ -1,3 +1,11 @@
+/*
+ * HeaderMenu.jsx
+ *
+ * Hamburger menu for accessing functions relavent to logged in users type
+ * 
+ * props: onClickItem - function to execute when a menu item is clicked
+ */
+
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
 import HeaderMenuLink from './HeaderMenuLink';

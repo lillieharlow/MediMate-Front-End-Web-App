@@ -1,3 +1,9 @@
+/*
+ * CreateAccountCard.jsx
+ *
+ * Card containing link to the /signup page, allowing users to create a new account
+ */
+
 import { useNavigate } from 'react-router';
 import { DialogCard } from '../style/componentStyles';
 

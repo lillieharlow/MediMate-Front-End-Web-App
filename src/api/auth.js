@@ -1,3 +1,9 @@
+/* Auth Routes
+ *
+ * - POST /api/v1/auth/login                    : Login to the app
+ * - POST /api/v1/auth/signup                   : Create a new patient account
+ * */
+
 import { getApiResponse, getErrorReason } from './apiUtils';
 
 export const loginRequest = async ({ email, password }) => {

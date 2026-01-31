@@ -1,3 +1,14 @@
+/*
+ * ManageProfileCard.jsx
+ *
+ * Card containing profile fields conditionally rendered based on the user type, to facilitate updates to the users profile
+ *
+ * props:
+ * - userInfo: Information of the user to be modified
+ * - onProfileUpdated: Function to execute when profile is updated
+ * - userTypeChanged: Bool indicating if the profile being modified belongs to an altered user account type
+ */
+
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 import { useEffect, useState } from 'react';
 import { getDoctorById, updateDoctor } from '../api/doctor';

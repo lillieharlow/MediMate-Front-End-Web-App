@@ -1,3 +1,9 @@
+/*
+ * LoginForm.jsx
+ *
+ * Form containing fields to facilitate user login
+ */
+
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';

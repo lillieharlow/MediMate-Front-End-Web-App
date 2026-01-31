@@ -1,3 +1,15 @@
+/*
+ * AuthContext.jsx
+ *
+ * Defines the global context containing user authorisation status
+ * 
+ * Fields:
+ * - userId: Backend identifier for the logged in user
+ * - userType: Type of user account
+ * - token: JWT of the logged in user
+ * - isAuthenticated: Bool indicating if user is authenticated
+ */
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getJwtPayload } from '../utils/jwt';
 

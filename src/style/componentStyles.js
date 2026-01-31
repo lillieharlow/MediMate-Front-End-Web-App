@@ -1,3 +1,10 @@
+/*
+ * componentStyles.js
+ *
+ * Define reusable styled components for the app
+ *
+ */
+
 import styled from 'styled-components';
 
 export const Card = styled.section`

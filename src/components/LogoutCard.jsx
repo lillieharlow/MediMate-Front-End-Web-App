@@ -1,3 +1,9 @@
+/*
+ * LogoutCard.jsx
+ *
+ * Card containing log out confirmation dialog
+ */
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 

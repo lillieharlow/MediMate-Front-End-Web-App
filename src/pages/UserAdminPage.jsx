@@ -1,3 +1,12 @@
+/*
+ * UserAdminPage.jsx
+ *
+ * UserAdminPage allows staff to manage accounts of all logged in users.
+ * Redirects to /login if user is not authenticated.
+ * Redirects to /dashboard if user is not authorised as staff.
+ *
+ */
+
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router';
 import styled from 'styled-components';

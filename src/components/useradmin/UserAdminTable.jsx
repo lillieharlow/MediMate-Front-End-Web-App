@@ -1,3 +1,15 @@
+/*
+ * UserAdminTable.jsx
+ *
+ * Table to allow management of users registed for the app
+ * 
+ * props:
+ * - users: Array of app users
+ * - onCreateUser: Function to execute when a user has been created
+ * - onEditUser: Function to execute when a user has been modified
+ * - onDeleteUser: Function to execute when a user has been deleted
+ */
+
 import AddUserButton from '../button/AddUserButton';
 import DeleteProfileButton from '../button/DeleteProfileButton';
 import ManageProfileButton from '../button/ManageProfileButton';

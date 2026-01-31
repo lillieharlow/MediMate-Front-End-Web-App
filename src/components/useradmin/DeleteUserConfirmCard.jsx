@@ -1,3 +1,13 @@
+/*
+ * DeleteUserConfirmCard.jsx
+ *
+ * Card displays when a staff member clicks button to delete a user account
+ *
+ * props:
+ * - userInfo: Contains details of the user to render in the card
+ * - onConfirmDelete: Function to execute when staff confirms deletion of the user account
+ */
+
 import styled from 'styled-components';
 import { deleteDoctor } from '../../api/doctor';
 import { deletePatient } from '../../api/patient';
