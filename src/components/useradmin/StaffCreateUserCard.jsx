@@ -2,7 +2,7 @@
  * StaffCreateUserCard.jsx
  *
  * Card to render when staff account clicks button to create a new user
- * 
+ *
  * props:
  * - onUserAdded: Function to execute when a user is created
  */

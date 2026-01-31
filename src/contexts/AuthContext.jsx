@@ -2,7 +2,7 @@
  * AuthContext.jsx
  *
  * Defines the global context containing user authorisation status
- * 
+ *
  * Fields:
  * - userId: Backend identifier for the logged in user
  * - userType: Type of user account

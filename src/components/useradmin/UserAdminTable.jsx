@@ -2,7 +2,7 @@
  * UserAdminTable.jsx
  *
  * Table to allow management of users registed for the app
- * 
+ *
  * props:
  * - users: Array of app users
  * - onCreateUser: Function to execute when a user has been created

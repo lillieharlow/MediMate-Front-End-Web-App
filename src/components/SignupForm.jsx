@@ -2,7 +2,7 @@
  * SignupForm.jsx
  *
  * Allow new users to create patient accounts with required fields
- * 
+ *
  * props:
  * - userType: Type of user account to create, defaults to patient
  * - staffCreated: Bool indicating if the account is created by a staff member
