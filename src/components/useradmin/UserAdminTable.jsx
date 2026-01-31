@@ -16,7 +16,7 @@ export default function UserAdminTable({ users, onCreateUser, onEditUser, onDele
   };
 
   return (
-    <div>
+    <section>
       <div style={{ width: 'fit-content', marginLeft: 'auto' }}>
         <AddUserButton onAddUser={onAddUser} />
       </div>
@@ -60,6 +60,6 @@ export default function UserAdminTable({ users, onCreateUser, onEditUser, onDele
           })}
         </tbody>
       </table>
-    </div>
+    </section>
   );
 }

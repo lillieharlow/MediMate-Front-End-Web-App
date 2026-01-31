@@ -81,7 +81,6 @@ export default function SignupForm({ userType = 'patient', staffCreated, onUserA
         );
       }
     } catch (error) {
-      console.log(`found a error ${error.message}`);
       setIsError(true);
       setMessage(error.message);
     }
