@@ -16,7 +16,9 @@ export async function getAllDoctors() {
 
 // Get one doctor by userId
 export async function getDoctorById(userId) {
-  return await getApiResponse('GET', `api/v1/doctors/${userId}`, undefined, true).then(res => res.data);
+  return await getApiResponse('GET', `api/v1/doctors/${userId}`, undefined, true).then(
+    res => res.data,
+  );
 }
 
 // Create doctor profile

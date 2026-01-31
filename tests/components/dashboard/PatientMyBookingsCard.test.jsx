@@ -10,17 +10,17 @@ describe('PatientMyBookingsCard', () => {
   });
 
   it('renders bookings and doctor name', () => {
-  const bookings = [
-    {
-      _id: '1',
-      doctorId: 'docid',
-      datetimeStart: new Date(Date.now() + 1000000).toISOString(),
-      bookingDuration: 30,
-      bookingStatus: 'confirmed',
-    },
-  ];
-  const doctors = [{ user: { _id: 'docid' }, firstName: 'John', lastName: 'Smith' }];
-  render(<PatientMyBookingsCard bookings={bookings} doctors={doctors} />);
-  expect(screen.getByText(/Dr. John Smith/)).toBeInTheDocument();
+    const bookings = [
+      {
+        _id: '1',
+        doctorId: 'docid',
+        datetimeStart: new Date(Date.now() + 1000000).toISOString(),
+        bookingDuration: 30,
+        bookingStatus: 'confirmed',
+      },
+    ];
+    const doctors = [{ user: { _id: 'docid' }, firstName: 'John', lastName: 'Smith' }];
+    render(<PatientMyBookingsCard bookings={bookings} doctors={doctors} />);
+    expect(screen.getByText(/Dr. John Smith/)).toBeInTheDocument();
   });
 });

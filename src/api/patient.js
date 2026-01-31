@@ -16,7 +16,9 @@ export async function createPatientProfile(patientData) {
 
 // Get patient by userId
 export async function getPatientById(userId) {
-  return await getApiResponse('GET', `api/v1/patients/${userId}`, undefined, true).then(res => res.data);
+  return await getApiResponse('GET', `api/v1/patients/${userId}`, undefined, true).then(
+    res => res.data,
+  );
 }
 
 // Update patient profile

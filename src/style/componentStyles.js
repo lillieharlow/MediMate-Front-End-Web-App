@@ -1,4 +1,11 @@
-import styled from "styled-components";
+/*
+ * componentStyles.js
+ *
+ * Define reusable styled components for the app
+ *
+ */
+
+import styled from 'styled-components';
 
 export const Card = styled.section`
   flex: 1 1 350px;
@@ -169,8 +176,8 @@ export const FormFieldLabel = styled.label`
 `;
 
 export const ColoredButton = styled.button`
-  background-color: ${({ $bg }) => $bg || "#008533"};
-  color: ${({ $color }) => $color || "#fff"};
+  background-color: ${({ $bg }) => $bg || '#008533'};
+  color: ${({ $color }) => $color || '#fff'};
   font-weight: bold;
   border: 2px solid #000000;
   border-radius: 6px;
@@ -189,7 +196,7 @@ export const ColoredButton = styled.button`
 `;
 
 export const NameBox = styled.article`
-  background: ${({ $bg }) => $bg || "#80d09e"};
+  background: ${({ $bg }) => $bg || '#80d09e'};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -227,7 +234,7 @@ export const NameBoxRow = styled.ul`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ $selected }) => ($selected ? "#acacacba" : "transparent")};
+  background: ${({ $selected }) => ($selected ? '#acacacba' : 'transparent')};
   margin-bottom: 0.6rem;
   box-sizing: border-box;
   padding-left: 0;

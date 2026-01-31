@@ -20,21 +20,12 @@
  * />
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
-import BookingFormCard from "./BookingFormCard";
+import { createBooking, getDoctorBookings, getPatientBookings } from '../../api/booking';
 
-import {
-  generateSlots,
-  filterAvailableSlots,
-} from "../../utils/bookingSlotUtils";
-
-import {
-  getDoctorBookings,
-  getPatientBookings,
-  createBooking,
-} from "../../api/booking";
+import { filterAvailableSlots, generateSlots } from '../../utils/bookingSlotUtils';
+import BookingFormCard from './BookingFormCard';
 
 export default function CreateBookingCard({
   open,
@@ -46,14 +37,14 @@ export default function CreateBookingCard({
   disableDoctorSelect = false,
 }) {
   const [availableSlots, setAvailableSlots] = useState([]);
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [duration, setDuration] = useState("15");
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [duration, setDuration] = useState('15');
   const [doctor, setDoctor] = useState(initialDoctor || null);
   const [doctors, setDoctors] = useState(doctorsProp || []);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   function setErrorAndLoading(msg) {
     setError(msg);
@@ -63,7 +54,7 @@ export default function CreateBookingCard({
   // Load all doctors if not provided (for staff users)
   useEffect(() => {
     if (open && !initialDoctor && (!doctorsProp || doctorsProp.length === 0)) {
-      import("../../api/doctor").then(({ getAllDoctors }) => {
+      import('../../api/doctor').then(({ getAllDoctors }) => {
         getAllDoctors().then(setDoctors);
       });
     }
@@ -71,45 +62,25 @@ export default function CreateBookingCard({
 
   useEffect(() => {
     // Accept both doctor._id and doctor.user?._id for compatibility
-    let doctorId = "";
-    if (typeof doctor?.user?._id === "string") {
+    let doctorId = '';
+    if (typeof doctor?.user?._id === 'string') {
       doctorId = doctor.user._id;
-    } else if (typeof doctor?._id === "string") {
+    } else if (typeof doctor?._id === 'string') {
       doctorId = doctor._id;
     }
 
     // Only proceed if doctorId is a valid 24-char hex string
-    if (
-      !(
-        open &&
-        date &&
-        doctorId &&
-        patientId &&
-        doctorId.match(/^[0-9a-fA-F]{24}$/)
-      )
-    )
-      return;
+    if (!(open && date && doctorId && patientId && doctorId.match(/^[0-9a-fA-F]{24}$/))) return;
 
     setLoading(true);
-    Promise.all([
-      getDoctorBookings(doctorId, date),
-      getPatientBookings(patientId, date),
-    ])
+    Promise.all([getDoctorBookings(doctorId, date), getPatientBookings(patientId, date)])
       .then(([doctorBookingsRes, patientBookingsRes]) => {
-        const shiftStart = doctor.shiftStart || "09:00";
-        const shiftEnd = doctor.shiftEnd || "17:00";
+        const shiftStart = doctor.shiftStart || '09:00';
+        const shiftEnd = doctor.shiftEnd || '17:00';
         const slotDuration = parseInt(duration, 10) || 15;
         const slots = generateSlots(date, shiftStart, shiftEnd, slotDuration);
-        const allBookings = [
-          ...(doctorBookingsRes || []),
-          ...(patientBookingsRes || []),
-        ];
-        const filteredSlots = filterAvailableSlots(
-          slots,
-          allBookings,
-          date,
-          slotDuration,
-        );
+        const allBookings = [...(doctorBookingsRes || []), ...(patientBookingsRes || [])];
+        const filteredSlots = filterAvailableSlots(slots, allBookings, date, slotDuration);
         setAvailableSlots(filteredSlots);
       })
       .catch(() => {
@@ -120,32 +91,32 @@ export default function CreateBookingCard({
 
   // Reset selected time when date or doctor changes
   useEffect(() => {
-    setTime("");
+    setTime('');
   }, []);
 
   // Clear error when date, doctor, or time changes
   useEffect(() => {
-    setError("");
+    setError('');
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setError('');
     try {
       // Accept both doctor._id and doctor.user?._id for compatibility
       const doctorId = doctor?.user?._id || doctor?._id;
       if (!(date && time && doctorId && patientId)) {
-        setErrorAndLoading("Please select all required fields.");
+        setErrorAndLoading('Please select all required fields.');
         return;
       }
-      if (!availableSlots.some((slot) => slot.value === time)) {
-        setErrorAndLoading("Please select a valid available time slot.");
+      if (!availableSlots.some(slot => slot.value === time)) {
+        setErrorAndLoading('Please select a valid available time slot.');
         return;
       }
       const datetimeStart = new Date(`${date}T${time}`);
       if (Number.isNaN(datetimeStart.getTime())) {
-        setErrorAndLoading("Please select a valid date and time.");
+        setErrorAndLoading('Please select a valid date and time.');
         return;
       }
       const parsedDuration = parseInt(duration, 10);
@@ -159,9 +130,7 @@ export default function CreateBookingCard({
       const result = await createBooking(bookingPayload);
       setLoading(false);
       if (result && result.success === false) {
-        setError(
-          result.message || "Failed to create booking. Please try again.",
-        );
+        setError(result.message || 'Failed to create booking. Please try again.');
         return;
       }
       onClose?.();
@@ -175,7 +144,7 @@ export default function CreateBookingCard({
         }, 750);
       }
     } catch {
-      setError("Failed to create booking. Please try again.");
+      setError('Failed to create booking. Please try again.');
       setLoading(false);
     }
   };
@@ -205,9 +174,7 @@ export default function CreateBookingCard({
         time={time}
         duration={duration}
         notes={notes}
-        disableDoctorSelect={
-          disableDoctorSelect || (!!initialDoctor && !doctorsProp)
-        }
+        disableDoctorSelect={disableDoctorSelect || (!!initialDoctor && !doctorsProp)}
         title="Create Booking"
       />
     </section>

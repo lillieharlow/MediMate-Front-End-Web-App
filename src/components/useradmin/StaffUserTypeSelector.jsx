@@ -1,3 +1,12 @@
+/*
+ * StaffUserTypeSelector.jsx
+ *
+ * Component to allow modification of a users account type
+ * 
+ * prop:
+ * - onChangeType: Function to execute when a users account type has been changed
+ */
+
 import styled from 'styled-components';
 import { InputGrid } from '../../style/componentStyles';
 

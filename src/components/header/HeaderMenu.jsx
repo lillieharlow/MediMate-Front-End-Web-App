@@ -1,6 +1,14 @@
-import styled from "styled-components";
-import { useAuth } from "../../contexts/AuthContext";
-import HeaderMenuLink from "./HeaderMenuLink";
+/*
+ * HeaderMenu.jsx
+ *
+ * Hamburger menu for accessing functions relavent to logged in users type
+ * 
+ * props: onClickItem - function to execute when a menu item is clicked
+ */
+
+import styled from 'styled-components';
+import { useAuth } from '../../contexts/AuthContext';
+import HeaderMenuLink from './HeaderMenuLink';
 
 const Menu = styled.div`
   background-color: white;
@@ -30,7 +38,7 @@ export default function HeaderMenu({ onClickItem }) {
           </HeaderMenuLink>
         </li>
         {/* Render /useradmin conditionally for staff */}
-        {userType === "staff" && (
+        {userType === 'staff' && (
           <li>
             <HeaderMenuLink to="/useradmin">
               <span>User Administration</span>

@@ -5,21 +5,12 @@
  * UI and logic are based on CreateBookingModal, but pre-fills fields and updates booking via API.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
-import BookingFormCard from "./BookingFormCard";
+import { getDoctorBookings, getPatientBookings, updateBooking } from '../../api/booking';
 
-import {
-  generateSlots,
-  filterAvailableSlots,
-} from "../../utils/bookingSlotUtils";
-
-import {
-  getDoctorBookings,
-  getPatientBookings,
-  updateBooking,
-} from "../../api/booking";
+import { filterAvailableSlots, generateSlots } from '../../utils/bookingSlotUtils';
+import BookingFormCard from './BookingFormCard';
 
 export default function UpdateBookingModal({
   open,
@@ -30,33 +21,31 @@ export default function UpdateBookingModal({
   onBookingUpdated,
 }) {
   const [availableSlots, setAvailableSlots] = useState([]);
-  const [notes, setNotes] = useState(booking?.patientNotes || "");
+  const [notes, setNotes] = useState(booking?.patientNotes || '');
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(
     booking
       ? (() => {
           const d = new Date(booking.datetimeStart);
           const yyyy = d.getFullYear();
-          const mm = String(d.getMonth() + 1).padStart(2, "0");
-          const dd = String(d.getDate()).padStart(2, "0");
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
           return `${yyyy}-${mm}-${dd}`;
         })()
-      : "",
+      : '',
   );
   const [time, setTime] = useState(
     booking
       ? (() => {
           const d = new Date(booking.datetimeStart);
-          const hh = String(d.getHours()).padStart(2, "0");
-          const min = String(d.getMinutes()).padStart(2, "0");
+          const hh = String(d.getHours()).padStart(2, '0');
+          const min = String(d.getMinutes()).padStart(2, '0');
           return `${hh}:${min}`;
         })()
-      : "",
+      : '',
   );
-  const [duration, setDuration] = useState(
-    booking?.bookingDuration?.toString() || "15",
-  );
-  const [error, setError] = useState("");
+  const [duration, setDuration] = useState(booking?.bookingDuration?.toString() || '15');
+  const [error, setError] = useState('');
 
   function setErrorAndLoading(msg) {
     setError(msg);
@@ -66,25 +55,17 @@ export default function UpdateBookingModal({
   useEffect(() => {
     if (!(open && date && doctor && doctor._id && patientId)) return;
     setLoading(true);
-    Promise.all([
-      getDoctorBookings(doctor._id, date),
-      getPatientBookings(patientId, date),
-    ])
+    Promise.all([getDoctorBookings(doctor._id, date), getPatientBookings(patientId, date)])
       .then(([doctorBookingsRes, patientBookingsRes]) => {
-        const filteredDoctorBookings = (doctorBookingsRes || []).filter(
-          (b) => b._id !== booking._id,
-        );
+        const filteredDoctorBookings = (doctorBookingsRes || []).filter(b => b._id !== booking._id);
         const filteredPatientBookings = (patientBookingsRes || []).filter(
-          (b) => b._id !== booking._id,
+          b => b._id !== booking._id,
         );
-        const shiftStart = doctor.shiftStart || "09:00";
-        const shiftEnd = doctor.shiftEnd || "17:00";
+        const shiftStart = doctor.shiftStart || '09:00';
+        const shiftEnd = doctor.shiftEnd || '17:00';
         const slotDuration = parseInt(duration, 10) || 15;
         const slots = generateSlots(date, shiftStart, shiftEnd, slotDuration);
-        const allBookings = [
-          ...filteredDoctorBookings,
-          ...filteredPatientBookings,
-        ];
+        const allBookings = [...filteredDoctorBookings, ...filteredPatientBookings];
         let filteredSlots = filterAvailableSlots(
           slots,
           allBookings,
@@ -95,17 +76,17 @@ export default function UpdateBookingModal({
         // Always include the current booking's slot if not present
         const currentTime = (() => {
           const d = new Date(booking.datetimeStart);
-          const hh = String(d.getHours()).padStart(2, "0");
-          const min = String(d.getMinutes()).padStart(2, "0");
+          const hh = String(d.getHours()).padStart(2, '0');
+          const min = String(d.getMinutes()).padStart(2, '0');
           return `${hh}:${min}`;
         })();
         if (
-          currentTime &&
-          !filteredSlots.some((slot) => slot.value === currentTime) &&
-          slots.some((slot) => slot.value === currentTime)
+          currentTime
+          && !filteredSlots.some(slot => slot.value === currentTime)
+          && slots.some(slot => slot.value === currentTime)
         ) {
           // Add the current slot from slots (with label)
-          const slotToAdd = slots.find((slot) => slot.value === currentTime);
+          const slotToAdd = slots.find(slot => slot.value === currentTime);
           filteredSlots = [slotToAdd, ...filteredSlots];
         }
         setAvailableSlots(filteredSlots);
@@ -114,54 +95,40 @@ export default function UpdateBookingModal({
         setAvailableSlots([]);
       })
       .finally(() => setLoading(false));
-  }, [
-    open,
-    date,
-    doctor,
-    patientId,
-    duration,
-    booking._id,
-    booking.datetimeStart,
-  ]);
+  }, [open, date, doctor, patientId, duration, booking._id, booking.datetimeStart]);
 
   useEffect(() => {
-    setError("");
+    setError('');
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setError('');
     try {
       if (!(date && time && doctor && patientId)) {
-        setErrorAndLoading("Please select all required fields.");
+        setErrorAndLoading('Please select all required fields.');
         return;
       }
-      if (!availableSlots.some((slot) => slot.value === time)) {
-        setErrorAndLoading("Please select a valid available time slot.");
+      if (!availableSlots.some(slot => slot.value === time)) {
+        setErrorAndLoading('Please select a valid available time slot.');
         return;
       }
       const datetimeStart = new Date(`${date}T${time}`);
       if (Number.isNaN(datetimeStart.getTime())) {
-        setErrorAndLoading("Please select a valid date and time.");
+        setErrorAndLoading('Please select a valid date and time.');
         return;
       }
       const parsedDuration = parseInt(duration, 10);
 
       // Get valid doctorId string (must be a valid MongoDB ObjectId string)
-      let doctorId = "";
-      if (
-        typeof doctor?.user?._id === "string" &&
-        doctor.user._id.match(/^[0-9a-fA-F]{24}$/)
-      ) {
+      let doctorId = '';
+      if (typeof doctor?.user?._id === 'string' && doctor.user._id.match(/^[0-9a-fA-F]{24}$/)) {
         doctorId = doctor.user._id;
-      } else if (
-        typeof doctor?._id === "string" &&
-        doctor._id.match(/^[0-9a-fA-F]{24}$/)
-      ) {
+      } else if (typeof doctor?._id === 'string' && doctor._id.match(/^[0-9a-fA-F]{24}$/)) {
         doctorId = doctor._id;
       } else {
-        setErrorAndLoading("Invalid doctor ID format.");
+        setErrorAndLoading('Invalid doctor ID format.');
         return;
       }
 
@@ -175,7 +142,7 @@ export default function UpdateBookingModal({
       if (onBookingUpdated) onBookingUpdated(doctorId);
       if (onClose) onClose();
     } catch {
-      setErrorAndLoading("Failed to update booking. Please try again.");
+      setErrorAndLoading('Failed to update booking. Please try again.');
     }
   };
 

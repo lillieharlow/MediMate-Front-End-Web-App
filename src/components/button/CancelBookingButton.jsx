@@ -6,16 +6,15 @@
  * Calls onCancel(bookingId) if the user confirms.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import { useState } from "react";
+import { useState } from 'react';
 
-import ActionButton from "./ActionButton";
-import CancelBookingModal from "../booking/CancelBookingModal";
+import CancelBookingModal from '../booking/CancelBookingModal';
+import ActionButton from './ActionButton';
 
 function CancelBookingButton({ bookingId, onCancel }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleCancelClick = (e) => {
+  const handleCancelClick = e => {
     e.stopPropagation();
     setShowConfirm(true);
   };
@@ -25,7 +24,7 @@ function CancelBookingButton({ bookingId, onCancel }) {
     onCancel(bookingId);
   };
 
-  const handleClose = (e) => {
+  const handleClose = e => {
     if (e) e.stopPropagation();
     setShowConfirm(false);
   };
@@ -36,15 +35,11 @@ function CancelBookingButton({ bookingId, onCancel }) {
         $bg="#c90000"
         $color="#ffffff"
         onClick={handleCancelClick}
-        style={{ fontSize: "0.85rem" }}
+        style={{ fontSize: '0.85rem' }}
       >
         Cancel Booking
       </ActionButton>
-      <CancelBookingModal
-        open={showConfirm}
-        onConfirm={handleConfirm}
-        onClose={handleClose}
-      />
+      <CancelBookingModal open={showConfirm} onConfirm={handleConfirm} onClose={handleClose} />
     </>
   );
 }

@@ -1,3 +1,11 @@
+/*
+ * LoginPage.jsx
+ *
+ * Login page displays fields to allow login, or creation of a new user account.
+ * Redirects to /dashboard if user is already logged in.
+ *
+ */
+
 import { Navigate } from 'react-router';
 import CreateAccountCard from '../components/CreateAccountCard';
 import LoginForm from '../components/LoginForm';

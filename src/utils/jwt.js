@@ -10,7 +10,7 @@ export function getJwtPayload(token) {
     const base64 = token.split('.')[1];
     const tokenJson = atob(base64.replace(/-/, '+').replace(/_/, '/'));
     return JSON.parse(tokenJson);
-  } catch (err) {
+  } catch {
     return null;
   }
 }

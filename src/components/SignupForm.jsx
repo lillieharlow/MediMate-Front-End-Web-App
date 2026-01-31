@@ -1,5 +1,15 @@
-/** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
+/*
+ * SignupForm.jsx
+ *
+ * Allow new users to create patient accounts with required fields
+ * 
+ * props:
+ * - userType: Type of user account to create, defaults to patient
+ * - staffCreated: Bool indicating if the account is created by a staff member
+ * - onUserAdded: Function to execute when the user has been created
+ */
 
+/** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router';

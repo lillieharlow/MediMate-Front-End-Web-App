@@ -6,16 +6,11 @@
  * ActionButton for styling.
  */
 
-import ActionButton from "./ActionButton";
+import ActionButton from './ActionButton';
 
 function ViewBookingsButton({ onClick }) {
   return (
-    <ActionButton
-      $bg="#388bff"
-      $color="#000000"
-      type="button"
-      onClick={onClick}
-    >
+    <ActionButton $bg="#388bff" $color="#000000" type="button" onClick={onClick}>
       View Bookings
     </ActionButton>
   );

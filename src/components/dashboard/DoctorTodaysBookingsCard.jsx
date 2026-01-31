@@ -7,12 +7,11 @@
  * Used in doctor and staff dashboards.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import DashboardCard from "./DashboardCard";
-import DoctorManagerListCard from "./DoctorManagerListCard";
-import { NameBox, NameBoxRow } from "../../style/componentStyles";
+import { NameBox, NameBoxRow } from '../../style/componentStyles';
+import DashboardCard from './DashboardCard';
+import DoctorManagerListCard from './DoctorManagerListCard';
 
 const TodaysBookingsCard = ({
   doctorBookings,
@@ -31,30 +30,26 @@ const TodaysBookingsCard = ({
 
   return (
     <DashboardCard title="Today's Bookings" style={cardStyle}>
-      <div
-        className={containerClassName}
-        data-testid="doctor-todays-bookings-card"
-      >
+      <div className={containerClassName} data-testid="doctor-todays-bookings-card">
         {sortedBookings.length === 0 ? (
           <div
             style={{
-              textAlign: "center",
-              marginTop: "1.5em",
-              color: "#e0e0e0",
+              textAlign: 'center',
+              marginTop: '1.5em',
+              color: '#e0e0e0',
               fontWeight: 500,
             }}
           >
             ---------- No more bookings today ----------
           </div>
         ) : (
-          sortedBookings.map((booking) => {
+          sortedBookings.map(booking => {
             const bookingTime = new Date(booking.datetimeStart);
             const isPast = bookingTime < now;
-            const isSelected =
-              selectedBooking && booking._id === selectedBooking._id;
+            const isSelected = selectedBooking && booking._id === selectedBooking._id;
             let bgColor;
             if (isPast) {
-              bgColor = "#e0e0e0";
+              bgColor = '#e0e0e0';
             } else {
               bgColor = undefined;
             }
@@ -62,16 +57,10 @@ const TodaysBookingsCard = ({
               <NameBoxRow
                 $selected={isSelected}
                 key={booking._id}
-                onClick={() =>
-                  typeof onBookingSelect === "function" &&
-                  onBookingSelect(booking)
-                }
-                style={{ cursor: disablePointer ? "default" : "pointer" }}
+                onClick={() => typeof onBookingSelect === 'function' && onBookingSelect(booking)}
+                style={{ cursor: disablePointer ? 'default' : 'pointer' }}
               >
-                <NameBox
-                  $bg={bgColor}
-                  style={{ width: '70%', margin: '0 auto' }}
-                >
+                <NameBox $bg={bgColor} style={{ width: '70%', margin: '0 auto' }}>
                   <DoctorManagerListCard booking={booking} />
                 </NameBox>
               </NameBoxRow>
@@ -85,7 +74,7 @@ const TodaysBookingsCard = ({
 
 TodaysBookingsCard.defaultProps = {
   renderBooking: undefined,
-  containerClassName: "",
+  containerClassName: '',
   cardStyle: undefined,
   onBookingSelect: undefined,
   selectedBooking: undefined,

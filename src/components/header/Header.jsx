@@ -1,3 +1,9 @@
+/*
+ * Header.jsx
+ *
+ * Defines the header for use on all app pages
+ */
+
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';

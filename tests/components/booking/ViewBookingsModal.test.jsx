@@ -1,6 +1,5 @@
-// biome-ignore assist/source/organizeImports: manually ordered
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import ViewBookingsModal from '../../../src/components/booking/ViewBookingsModal.jsx';
 

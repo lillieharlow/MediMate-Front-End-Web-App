@@ -1,8 +1,16 @@
-import { useNavigate } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
-import { PopupCard, ModalOverlay } from "../style/componentStyles";
-import CloseButton from "./button/CloseButton";
-import { useEffect } from "react";
+/*
+ * LogoutCard.jsx
+ *
+ * Card containing log out confirmation dialog
+ */
+
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
+
+import { useAuth } from '../contexts/AuthContext';
+
+import { ModalOverlay, PopupCard } from '../style/componentStyles';
+import CloseButton from './button/CloseButton';
 
 export default function LogoutCard() {
   const navigate = useNavigate();
@@ -22,7 +30,7 @@ export default function LogoutCard() {
           type="button"
           onClick={() => logout()}
           data-testid="app-logout-card-button"
-          style={{ backgroundColor: "#d66565", fontWeight: "bold" }}
+          style={{ backgroundColor: '#d66565', fontWeight: 'bold' }}
         >
           Yes, log out
         </button>

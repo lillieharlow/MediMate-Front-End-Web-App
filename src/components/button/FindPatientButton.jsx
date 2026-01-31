@@ -6,7 +6,7 @@
  * ActionButton for styling.
  */
 
-import ActionButton from "./ActionButton";
+import ActionButton from './ActionButton';
 
 function FindPatientButton({ onFind }) {
   return (

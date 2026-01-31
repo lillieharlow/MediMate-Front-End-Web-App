@@ -9,16 +9,14 @@
  * Passes props to the modal and manages modal open/close state.
  */
 
-// biome-ignore assist/source/organizeImports: manually ordered
-import { useState } from "react";
+import { useState } from 'react';
 
-import { useAuth } from "../../contexts/AuthContext";
+import { getDoctorBookings } from '../../api/booking';
+import { getAllDoctors } from '../../api/doctor';
+import { useAuth } from '../../contexts/AuthContext';
 
-import ActionButton from "./ActionButton";
-import CreateBookingModal from "../booking/CreateBookingModal";
-
-import { getAllDoctors } from "../../api/doctor";
-import { getDoctorBookings } from "../../api/booking";
+import CreateBookingModal from '../booking/CreateBookingModal';
+import ActionButton from './ActionButton';
 
 function BookButton({
   doctor,
@@ -35,12 +33,12 @@ function BookButton({
   const { userType } = useAuth();
 
   const handleOpen = async () => {
-    if (userType === "staff") {
+    if (userType === 'staff') {
       setOpen(true);
       const allDocs = await getAllDoctors();
       setDoctors(allDocs || []);
-    } else if (userType === "doctor") {
-      if (typeof doctor?.user === "string") {
+    } else if (userType === 'doctor') {
+      if (typeof doctor?.user === 'string') {
         try {
           const bookings = await getDoctorBookings(doctor.user);
           setLatestBookings(bookings || []);
@@ -50,7 +48,7 @@ function BookButton({
       }
       setOpen(true);
     } else {
-      if (onBookButtonClick && typeof doctor?.user === "string") {
+      if (onBookButtonClick && typeof doctor?.user === 'string') {
         const freshBookings = await onBookButtonClick(doctor.user);
         setLatestBookings(freshBookings || []);
       } else {
@@ -60,8 +58,8 @@ function BookButton({
     }
   };
 
-  const handleBookingCreated = (createdDoctorId) => {
-    if (userType === "staff" && createdDoctorId) {
+  const handleBookingCreated = createdDoctorId => {
+    if (userType === 'staff' && createdDoctorId) {
       onBookingCreated?.(createdDoctorId);
     } else {
       onBookingCreated?.();
@@ -71,11 +69,11 @@ function BookButton({
     setOpen(false);
     if (onModalClose) onModalClose();
   };
-  const isStaff = userType === "staff";
-  const isPatient = userType === "patient";
+  const isStaff = userType === 'staff';
+  const isPatient = userType === 'patient';
   const selectedDoctor =
     isStaff && staffSelectedDoctor
-      ? doctors.find((d) => d.user && d.user._id === staffSelectedDoctor)
+      ? doctors.find(d => d.user && d.user._id === staffSelectedDoctor)
       : doctor;
   return (
     <>

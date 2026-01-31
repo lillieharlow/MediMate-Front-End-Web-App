@@ -6,7 +6,7 @@
  * Accepts an onClick handler prop.
  */
 
-import { StyledCloseButton } from "../../style/componentStyles";
+import { StyledCloseButton } from '../../style/componentStyles';
 
 export default function CloseButton({ onClick }) {
   return (

@@ -1,9 +1,26 @@
+/*
+ * ManageProfileCard.jsx
+ *
+ * Card containing profile fields conditionally rendered based on the user type, to facilitate updates to the users profile
+ *
+ * props:
+ * - userInfo: Information of the user to be modified
+ * - onProfileUpdated: Function to execute when profile is updated
+ * - userTypeChanged: Bool indicating if the profile being modified belongs to an altered user account type
+ */
+
 /** biome-ignore-all lint/a11y/noLabelWithoutControl: Ignored due to use of custom InputField component */
 import { useEffect, useState } from 'react';
 import { getDoctorById, updateDoctor } from '../api/doctor';
 import { getPatientById, updatePatient } from '../api/patient';
 import { changeUserType, getStaffById, updateStaff } from '../api/staff';
-import { DialogCard, FormErrorSpan, InputGrid, StyledForm, StyledInput } from '../style/componentStyles';
+import {
+  DialogCard,
+  FormErrorSpan,
+  InputGrid,
+  StyledForm,
+  StyledInput,
+} from '../style/componentStyles';
 
 export default function ManageProfileCard({ userInfo, onProfileUpdated, userTypeChanged }) {
   const [firstName, setFirstName] = useState('');
