@@ -71,7 +71,5 @@ export const getErrorReason = apiResponse => {
         .join(', ')
     : undefined;
 
-  return (
-    errorsString  || apiResponse.message || apiResponse.name || 'Unknown error'
-  );
+  return errorsString || apiResponse.message || apiResponse.name || 'Unknown error';
 };

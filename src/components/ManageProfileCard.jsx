@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getDoctorById, updateDoctor } from '../api/doctor';
 import { getPatientById, updatePatient } from '../api/patient';
 import { changeUserType, getStaffById, updateStaff } from '../api/staff';
-import { FormErrorSpan, InputGrid, StyledForm, StyledInput } from '../style/componentStyles';
+import { DialogCard, FormErrorSpan, InputGrid, StyledForm, StyledInput } from '../style/componentStyles';
 
 export default function ManageProfileCard({ userInfo, onProfileUpdated, userTypeChanged }) {
   const [firstName, setFirstName] = useState('');
@@ -102,7 +102,7 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated, userType
   }, [userInfo, userTypeChanged]);
 
   return (
-    <div data-testid="app-profile-card">
+    <DialogCard data-testid="app-profile-card">
       <StyledForm onSubmit={handleManageProfile}>
         <InputGrid>
           <label htmlFor="input-first-name">First Name:</label>
@@ -197,6 +197,6 @@ export default function ManageProfileCard({ userInfo, onProfileUpdated, userType
           Save Changes
         </button>
       </StyledForm>
-    </div>
+    </DialogCard>
   );
 }

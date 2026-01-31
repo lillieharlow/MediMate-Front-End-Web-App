@@ -52,7 +52,6 @@ export default function UserAdminPage() {
   };
 
   const updateUserTable = user => {
-    console.log(`new user is ${JSON.stringify(user)}`);
     setUsers(prev => prev.map(u => (u.user._id === user.user._id ? user : u)));
     setTimeout(() => closeCard(), 1000);
   };

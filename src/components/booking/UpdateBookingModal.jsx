@@ -165,7 +165,6 @@ export default function UpdateBookingModal({
         return;
       }
 
-      console.log("handleBookingCreated called with:", doctorId);
       await updateBooking(booking._id, {
         doctorId,
         datetimeStart,
