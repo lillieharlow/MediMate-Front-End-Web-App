@@ -124,6 +124,12 @@ npm test
 
 ## Alternative Technologies
 
+### Hardware Requirements
+
+| Hardware Selection              | Alternatives                         | Reason For Selecting                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bare-metal / self hosted server | Cloud Hosting (AWS, Azure, etc), VPS | Bare-metal hosting provides dedicated resources and is a logical choice while undergoing development, and rapidly spinning up both front end and back end services for the app. For production deployment, an alternative choice would be selected, such as cloud hosting with separate front & back-end deployments, or a virtual private server (VPS), which could accomodate both services at one network location. |
+
 ### Deployment Dependencies
 
 | Package           | Alternatives                          | Reason For Selecting                                                                                                                                                                                                                                                                                                              |
